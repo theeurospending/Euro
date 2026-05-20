@@ -23,12 +23,12 @@ export default async function AdminHome() {
       </p>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
-        <Card title="Data sources" href="/admin/data-sources" hint="Configured in Session 2" />
-        <Card title="Ingest log" href="/admin/ingest-log" hint="Configured in Session 2" />
-        <Card title="Monetary events" href="/admin/monetary-events" hint="Session 3" />
-        <Card title="Countries" href="/admin/countries" hint="Session 5" />
-        <Card title="Blog" href="/admin/blog" hint="Session 8" />
-        <Card title="Social media" href="/admin/social-media/drafts" hint="Session 9–10" />
+        <Card title="Data sources" href="/admin/data-sources" hint="Trigger ingestion, view per-source status" />
+        <Card title="Ingest log" href="/admin/ingest-log" hint="History of every ingest run" />
+        <Card title="Monetary events" href="/admin/monetary-events" hint="ECB rate changes, milestones, crises" />
+        <Card title="Countries" href="/admin/countries" hint="Edit per-country narrative (Tiptap)" />
+        <Card title="Blog" href="/admin/blog" hint="Session 8 (placeholder)" />
+        <Card title="Social media" href="/admin/social-media/drafts" hint="Sessions 9–10 (placeholder)" />
       </div>
 
       <form action="/api/auth/signout" method="POST" className="mt-12">
