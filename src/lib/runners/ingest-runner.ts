@@ -7,6 +7,7 @@ import {
   type EurostatExtractorName,
   type ExtractedRow,
 } from '@/lib/extractors/eurostat';
+import { ECB_EXTRACTORS, type EcbExtractorName } from '@/lib/extractors/ecb';
 
 type TriggeredBy = 'manual' | 'admin' | 'cron';
 
@@ -118,15 +119,19 @@ async function runOneSource(
     .eq('source_name', src.source_name);
 
   try {
-    if (src.category !== 'eurostat') {
+    let fetched: ExtractedRow[];
+    if (src.category === 'eurostat') {
+      const fn = EUROSTAT_EXTRACTORS[src.extractor_name as EurostatExtractorName];
+      if (!fn) throw new Error(`Unknown Eurostat extractor "${src.extractor_name}"`);
+      fetched = await fn({ sinceYear: opts.sinceYear });
+    } else if (src.category === 'ecb') {
+      const fn = ECB_EXTRACTORS[src.extractor_name as EcbExtractorName];
+      if (!fn) throw new Error(`Unknown ECB extractor "${src.extractor_name}"`);
+      const startPeriod = opts.sinceYear ? `${opts.sinceYear}-01-01` : undefined;
+      fetched = await fn({ startPeriod });
+    } else {
       throw new Error(`Unknown source category "${src.category}"`);
     }
-    const extractorFn = EUROSTAT_EXTRACTORS[src.extractor_name as EurostatExtractorName];
-    if (!extractorFn) {
-      throw new Error(`Unknown extractor "${src.extractor_name}"`);
-    }
-
-    const fetched: ExtractedRow[] = await extractorFn({ sinceYear: opts.sinceYear });
     result.rows_fetched = fetched.length;
 
     if (fetched.length === 0) {
