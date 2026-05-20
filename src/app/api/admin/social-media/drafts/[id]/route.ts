@@ -1,11 +1,13 @@
-// Edit / delete / post-now for individual social drafts. The actual posting
-// is a stub here — Session 10 will wire it to a Make.com webhook.
+// Edit / delete / post-now for individual social drafts.
 
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-auth';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
+import { runSocialPublish } from '@/lib/runners/social-publish-runner';
 
+export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await requireAdmin();
@@ -19,12 +21,14 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   const admin = createSupabaseAdminClient();
 
   if (body.action === 'post_now') {
-    // Stub for Session 10: just mark posted with a placeholder.
-    const { error } = await admin.from('social_media_drafts')
-      .update({ status: 'posted', error_message: null, updated_at: new Date().toISOString() })
-      .eq('id', id);
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    return NextResponse.json({ ok: true, note: 'Session 10 will wire Make.com webhook here' });
+    const summary = await runSocialPublish({ draftIds: [id] });
+    if (summary.skipped_no_webhook) {
+      return NextResponse.json({ error: 'No Make.com webhook configured — set it in /admin/social-media/settings' }, { status: 400 });
+    }
+    if (summary.posts_failed > 0) {
+      return NextResponse.json({ error: summary.errors[0]?.message ?? 'publish failed', summary }, { status: 500 });
+    }
+    return NextResponse.json({ ok: true, summary });
   }
 
   const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };

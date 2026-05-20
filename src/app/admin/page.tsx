@@ -28,7 +28,10 @@ export default async function AdminHome() {
         <Card title="Monetary events" href="/admin/monetary-events" hint="ECB rate changes, milestones, crises" />
         <Card title="Countries" href="/admin/countries" hint="Edit per-country narrative (Tiptap)" />
         <Card title="Blog" href="/admin/blog" hint="Session 8 (placeholder)" />
-        <Card title="Social media" href="/admin/social-media/drafts" hint="Sessions 9–10 (placeholder)" />
+        <Card title="Social candidates" href="/admin/social-media/candidates" hint="Auto-detected facts; promote to drafts" />
+        <Card title="Social drafts" href="/admin/social-media/drafts" hint="Edit captions, schedule" />
+        <Card title="Social posts" href="/admin/social-media/posts" hint="Publish history per platform" />
+        <Card title="Social settings" href="/admin/social-media/settings" hint="Make.com webhook + defaults" />
       </div>
 
       <form action="/api/auth/signout" method="POST" className="mt-12">

@@ -1,10 +1,12 @@
-// Cron entrypoint for scheduled publishing (blog now; social in Session 10).
+// Cron entrypoint for scheduled publishing — blog AND social media.
 
 import { NextResponse } from 'next/server';
 import { runScheduledPublish } from '@/lib/runners/scheduled-publish-runner';
+import { runSocialPublish } from '@/lib/runners/social-publish-runner';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+export const maxDuration = 120;
 
 function authorised(request: Request): boolean {
   const provided = request.headers.get('x-ingest-api-key') ?? '';
@@ -20,6 +22,9 @@ export async function POST(request: Request) {
   if (!authorised(request)) {
     return NextResponse.json({ error: 'unauthorised' }, { status: 401 });
   }
-  const summary = await runScheduledPublish();
-  return NextResponse.json({ ok: true, summary });
+  const [blog, social] = await Promise.all([
+    runScheduledPublish(),
+    runSocialPublish(),
+  ]);
+  return NextResponse.json({ ok: true, blog, social });
 }
