@@ -33,6 +33,7 @@ export default async function AdminHome() {
         <Card title="Quick draft" href="/admin/social-media/quick-draft" hint="One-off reactive post (country + metric)" />
         <Card title="Social posts" href="/admin/social-media/posts" hint="Publish history per platform" />
         <Card title="Social settings" href="/admin/social-media/settings" hint="Make.com webhook + defaults" />
+        <Card title="SEO overrides" href="/admin/seo" hint="Per-path title / description / OG image" />
       </div>
 
       <form action="/api/auth/signout" method="POST" className="mt-12">

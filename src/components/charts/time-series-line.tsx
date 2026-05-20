@@ -32,7 +32,9 @@ export function TimeSeriesLine({ series, yLabel, height = 280, events, format }:
   const merged = mergeSeries(series);
   const fmt = (v: number) => formatValue(v, format);
 
+  const ariaLabel = `Line chart: ${series.map((s) => s.label).join(', ')}${yLabel ? ` — ${yLabel}` : ''}`;
   return (
+    <div role="img" aria-label={ariaLabel}>
     <ResponsiveContainer width="100%" height={height}>
       <LineChart data={merged} margin={{ top: 8, right: 16, bottom: 8, left: 8 }}>
         <CartesianGrid stroke={PALETTE.grid} strokeDasharray="3 3" />
@@ -71,6 +73,7 @@ export function TimeSeriesLine({ series, yLabel, height = 280, events, format }:
         ))}
       </LineChart>
     </ResponsiveContainer>
+    </div>
   );
 }
 

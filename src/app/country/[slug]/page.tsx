@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { loadCountryPageData, loadPeerPercentiles } from '@/lib/country-page-data';
+import { getSeoOverride } from '@/lib/seo/overrides';
 import { TimeSeriesLine } from '@/components/charts/time-series-line';
 import { TimeSeriesBar } from '@/components/charts/time-series-bar';
 import { Donut } from '@/components/charts/donut';
@@ -11,17 +12,21 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const data = await loadCountryPageData(slug);
+  const [data, override] = await Promise.all([
+    loadCountryPageData(slug),
+    getSeoOverride(`/country/${slug}`),
+  ]);
   if (!data) return { title: 'Country not found' };
   const c = data.country;
+  const defaultTitle = `${c.name} — economic data and the euro`;
+  const defaultDesc = `Economic trajectory of ${c.name}: spending, debt, deficit, inflation, unemployment and growth from 1999 to ${new Date().getFullYear()}.`;
+  const title = override?.title || defaultTitle;
+  const description = override?.description || defaultDesc;
+  const ogImage = override?.og_image_url || `https://eurospending.org/og/country/${slug}`;
   return {
-    title: `${c.name} — economic data and the euro`,
-    description: `Economic trajectory of ${c.name}: spending, debt, deficit, inflation, unemployment and growth from 1999 to ${new Date().getFullYear()}.`,
-    openGraph: {
-      title: `${c.name} — economic data`,
-      description: `${c.name}'s economic history through the euro era.`,
-      type: 'website',
-    },
+    title, description,
+    openGraph: { title, description, type: 'website', images: [{ url: ogImage, width: 1200, height: 630 }] },
+    twitter:   { card: 'summary_large_image', title, description, images: [ogImage] },
   };
 }
 
