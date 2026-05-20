@@ -79,12 +79,46 @@ export const ecb_bsi_money_supply   = (opts: EcbExtractorOpts = {}) => runDatase
 export const ecb_exr_fx             = (opts: EcbExtractorOpts = {}) => runDatasets(['EXR'], opts);
 export const ecb_icp_hicp           = (opts: EcbExtractorOpts = {}) => runDatasets(['ICP'], opts);
 
+// Sovereign 10Y benchmark yield for every eurozone member.
+// ECB IRS series pattern: M.<COUNTRY>.L.L40.CI.0000.EUR.N.Z (monthly).
+const EUROZONE_FOR_YIELDS = [
+  'DE', 'FR', 'IT', 'ES', 'GR', 'PT', 'IE', 'NL', 'BE', 'AT',
+  'FI', 'LU', 'CY', 'MT', 'SK', 'SI', 'EE', 'LV', 'LT', 'HR',
+];
+
+export async function ecb_irs_sovereign_yields(opts: EcbExtractorOpts = {}): Promise<ExtractedRow[]> {
+  const startPeriod = opts.startPeriod ?? DEFAULT_START;
+  const out: ExtractedRow[] = [];
+  for (const country of EUROZONE_FOR_YIELDS) {
+    const seriesKey = `M.${country}.L.L40.CI.0000.EUR.N.Z`;
+    try {
+      const obs = await fetchEcb('IRS', seriesKey, { startPeriod });
+      for (const o of obs) {
+        out.push({
+          country_iso: country,
+          metric_key: 'sovereign_10y_yield',
+          period_start: o.period_start,
+          value: o.value,
+          unit: '%',
+          source: 'ecb:IRS',
+        });
+      }
+    } catch (e) {
+      // Per-country failures shouldn't kill the whole batch — the runner records them as errors.
+      // We re-throw here so the runner sees and logs the failure.
+      throw new Error(`country=${country}: ${e instanceof Error ? e.message : e}`);
+    }
+  }
+  return out;
+}
+
 export const ECB_EXTRACTORS = {
   ecb_fm_rates_and_yield,
   ecb_ilm_balance_sheet,
   ecb_bsi_money_supply,
   ecb_exr_fx,
   ecb_icp_hicp,
+  ecb_irs_sovereign_yields,
 } as const;
 
 export type EcbExtractorName = keyof typeof ECB_EXTRACTORS;

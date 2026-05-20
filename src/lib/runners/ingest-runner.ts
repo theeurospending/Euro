@@ -8,6 +8,7 @@ import {
   type ExtractedRow,
 } from '@/lib/extractors/eurostat';
 import { ECB_EXTRACTORS, type EcbExtractorName } from '@/lib/extractors/ecb';
+import { IMF_EXTRACTORS, type ImfExtractorName } from '@/lib/extractors/imf';
 
 type TriggeredBy = 'manual' | 'admin' | 'cron';
 
@@ -129,6 +130,10 @@ async function runOneSource(
       if (!fn) throw new Error(`Unknown ECB extractor "${src.extractor_name}"`);
       const startPeriod = opts.sinceYear ? `${opts.sinceYear}-01-01` : undefined;
       fetched = await fn({ startPeriod });
+    } else if (src.category === 'imf') {
+      const fn = IMF_EXTRACTORS[src.extractor_name as ImfExtractorName];
+      if (!fn) throw new Error(`Unknown IMF extractor "${src.extractor_name}"`);
+      fetched = await fn({ sinceYear: opts.sinceYear });
     } else {
       throw new Error(`Unknown source category "${src.category}"`);
     }
