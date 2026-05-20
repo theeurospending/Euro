@@ -17,13 +17,14 @@ directory = ".open-next/assets"
 binding = "WORKER_SELF_REFERENCE"
 service = "eurospending"
 
-# Cron triggers — Session 4 ingest crons only.
-# Social cron lines (last two) deferred to Sessions 9/10.
+# Cron triggers.
+# NOTE: dropped the no-op quarterly slot to make room for */15-min publish cron;
+# quarterly hooks will return when Eurostat quarterly extractors land (Session 13).
 [triggers]
 crons = [
   "0 6 * * *",     # daily 06:00 UTC — ECB policy rates, FX
   "0 7 * * 1",     # weekly Mon 07:00 UTC — ECB balance sheet
   "0 8 1 * *",     # monthly 1st 08:00 UTC — money supply, HICP, sovereign yields
-  "0 9 1 */3 *",   # quarterly 1st 09:00 UTC — (placeholder, no sources yet)
   "0 10 1 3 *",    # annual 1 March 10:00 UTC — full Eurostat + IMF WEO refresh
+  "*/15 * * * *",  # every 15 min — scheduled publish (blog now; social in Session 10)
 ]

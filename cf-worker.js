@@ -24,10 +24,8 @@ export default {
       '0 6 * * *':    { path: '/api/cron/ingest', cron: 'daily-06' },
       '0 7 * * 1':    { path: '/api/cron/ingest', cron: 'weekly-mon-07' },
       '0 8 1 * *':    { path: '/api/cron/ingest', cron: 'monthly-1st-08' },
-      '0 9 1 */3 *':  { path: '/api/cron/ingest', cron: 'quarterly-09' },
       '0 10 1 3 *':   { path: '/api/cron/ingest', cron: 'annual-march-10' },
-      '0 9 * * 1':    { path: '/api/cron/social', cron: 'weekly-mon-09' },
-      '*/15 * * * *': { path: '/api/cron/social', cron: 'every-15' },
+      '*/15 * * * *': { path: '/api/cron/publish', cron: 'every-15-publish' },
     };
 
     const target = cronToTarget[event.cron];
