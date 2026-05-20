@@ -18,19 +18,27 @@
     "@tiptap/extension-placeholder": "^3.23.5",
     "@tiptap/react": "^3.23.5",
     "@tiptap/starter-kit": "^3.23.5",
+    "d3-geo": "^3.1.1",
     "next": "16.2.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-is": "^19.2.6",
+    "react-simple-maps": "^3.0.0",
     "recharts": "^3.8.1",
-    "resend": "^6.12.3"
+    "resend": "^6.12.3",
+    "topojson-client": "^3.1.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260519.1",
     "@opennextjs/cloudflare": "^1.19.11",
     "@tailwindcss/postcss": "^4",
+    "@types/d3-geo": "^3.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-is": "^19.2.0",
+    "@types/react-simple-maps": "^3.0.6",
+    "@types/topojson-client": "^3.1.5",
     "tailwindcss": "^4",
     "typescript": "^5",
     "wrangler": "^4.93.0"
