@@ -4,7 +4,7 @@ import { nthCountryColor } from '@/components/charts/palette';
 import type { CompareSeries, ComparableMetric } from '@/lib/compare-data';
 
 export function CompareChart({ series, metric }: { series: CompareSeries[]; metric: ComparableMetric | undefined }) {
-  if (!metric) return <div className="text-sm text-zinc-500">Unknown metric.</div>;
+  if (!metric) return <div className="text-sm text-slate-400">Unknown metric.</div>;
   const format: FormatId = chooseFormat(metric);
   const lines = series.map((s, i) => ({
     label: `${s.flag_emoji ?? ''} ${s.country_name}`,
@@ -12,9 +12,9 @@ export function CompareChart({ series, metric }: { series: CompareSeries[]; metr
     data: s.data.map((p) => ({ period_start: p.period_start, value: p.value })),
   }));
   return (
-    <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-      <div className="text-sm font-medium">{metric.display_name}</div>
-      <div className="text-xs text-zinc-500">{metric.unit} · {metric.frequency}</div>
+    <div className="surface p-4">
+      <div className="font-display text-sm tracking-wide text-white">{metric.display_name}</div>
+      <div className="mt-0.5 font-mono text-xs text-slate-400">{metric.unit} · {metric.frequency}</div>
       <div className="mt-3">
         <TimeSeriesLine series={lines} format={format} height={420} />
       </div>

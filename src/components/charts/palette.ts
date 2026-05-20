@@ -1,27 +1,38 @@
-// Shared chart palette. Hex values mirror Tailwind tokens so visual changes
-// are easy to make consistently across all chart types.
+// Chart palette aligned with the EUROSPENDING Brand Kit v1.0.
+// Charts render on navy surfaces — colours chosen for legibility on dark bg.
 
 export const PALETTE = {
-  primary:  '#0f172a', // zinc-900
-  primaryDim: '#71717a', // zinc-500
-  axis:     '#a1a1aa', // zinc-400
-  grid:     '#e4e4e7', // zinc-200
-  gridDark: '#27272a', // zinc-800
+  // Brand foundations
+  navy: '#1B2A4A',
+  navyDeep: '#15203C',
+  lav: '#C5CBF0',
+  lavDeep: '#B8BFE8',
+  gold: '#FFCC00',
+  paper: '#F6F4EF',
+  ink: '#1B2A4A',
 
-  positive: '#16a34a', // green-600
-  negative: '#dc2626', // red-600
-  warning:  '#f59e0b', // amber-500
-  forecast: '#94a3b8', // slate-400 (dashed forecasts)
+  // Functional roles
+  primary:    '#C5CBF0',          // lavender on navy
+  primaryDim: 'rgba(197,203,240,0.45)',
+  axis:       'rgba(197,203,240,0.55)',
+  grid:       'rgba(197,203,240,0.12)',
+  gridDark:   'rgba(197,203,240,0.18)',
 
+  positive:   '#5eead4',          // teal
+  negative:   '#fb7185',          // rose
+  warning:    '#FFCC00',          // brand gold
+  forecast:   'rgba(197,203,240,0.55)',
+
+  // Multi-series cycle on navy backgrounds — high-contrast yet on-brand.
   countries: [
-    '#0f766e', // teal-700
-    '#7c2d12', // orange-900
-    '#1e40af', // blue-800
-    '#7e22ce', // purple-700
-    '#be123c', // rose-700
-    '#15803d', // green-700
-    '#a16207', // amber-700
-    '#0c4a6e', // sky-900
+    '#C5CBF0',  // brand lavender
+    '#FFCC00',  // brand gold
+    '#5eead4',  // teal
+    '#fb7185',  // rose
+    '#a78bfa',  // violet
+    '#34d399',  // emerald
+    '#fbbf24',  // amber
+    '#60a5fa',  // sky
   ],
 } as const;
 

@@ -89,23 +89,23 @@ export function ComparePicker({
             <button
               key={iso}
               onClick={() => toggleCountry(iso)}
-              className="inline-flex items-center gap-1.5 rounded-full bg-zinc-900 px-3 py-1 text-xs text-white dark:bg-white dark:text-zinc-900"
+              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-lav)] px-3 py-1 text-xs font-medium text-[var(--brand-navy)]"
             >
-              {c.flag} {c.name} <span className="text-zinc-400">×</span>
+              {c.flag} {c.name} <span className="opacity-60">×</span>
             </button>
           );
         })}
       </div>
 
       {/* Search + pick more */}
-      <details className="rounded border border-zinc-200 p-3 dark:border-zinc-800">
-        <summary className="cursor-pointer text-sm font-medium">Add / remove countries</summary>
+      <details className="surface p-3">
+        <summary className="cursor-pointer text-sm font-medium text-white">Add / remove countries</summary>
         <input
           type="search"
           placeholder="Filter…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="mt-3 w-full rounded-md border border-zinc-300 px-3 py-1.5 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+          className="mt-3 w-full rounded-md border border-white/15 bg-[var(--brand-navy-deep)] px-3 py-1.5 text-sm text-slate-100 placeholder:text-slate-500 focus:border-[var(--brand-lav)] focus:outline-none"
         />
         <div className="mt-3 grid grid-cols-2 gap-1 sm:grid-cols-4">
           {filtered.map((c) => {
@@ -114,7 +114,7 @@ export function ComparePicker({
               <button
                 key={c.iso}
                 onClick={() => toggleCountry(c.iso)}
-                className={`flex items-center gap-1.5 rounded px-2 py-1 text-left text-xs ${active ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900' : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'}`}
+                className={`flex items-center gap-1.5 rounded px-2 py-1 text-left text-xs transition-colors ${active ? 'bg-[var(--brand-lav)] text-[var(--brand-navy)] font-medium' : 'text-slate-300 hover:bg-white/5'}`}
               >
                 <span>{c.flag}</span><span className="truncate">{c.name}</span>
               </button>
@@ -125,11 +125,11 @@ export function ComparePicker({
 
       {/* Metric select */}
       <label className="block">
-        <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">Metric</span>
+        <span className="kicker text-[10px]">Metric</span>
         <select
           value={selectedMetric}
           onChange={(e) => navigate({ metric: e.target.value })}
-          className="mt-1 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+          className="mt-2 w-full rounded-md border border-white/15 bg-[var(--brand-navy-deep)] px-3 py-2 text-sm text-slate-100 focus:border-[var(--brand-lav)] focus:outline-none"
         >
           {availableMetrics.map((m) => (
             <option key={m.key} value={m.key}>{m.display_name} ({m.unit})</option>
@@ -146,7 +146,7 @@ export function ComparePicker({
               <button
                 key={r.label}
                 onClick={() => navigate({ from: r.from })}
-                className={`rounded-full px-3 py-1 text-xs ${active ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900' : 'border border-zinc-300 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800'}`}
+                className={`rounded-full px-3 py-1 text-xs transition-colors ${active ? 'bg-[var(--brand-lav)] text-[var(--brand-navy)] font-medium' : 'border border-white/15 text-slate-300 hover:bg-white/5'}`}
               >
                 {r.label}
               </button>

@@ -57,12 +57,16 @@ export function EuropeMap({ countries, defaultMetric = 'gov_debt_pct_gdp' }: {
   return (
     <div className="relative">
       {/* Metric toolbar */}
-      <div className="mb-3 flex flex-wrap gap-2">
+      <div className="mb-4 flex flex-wrap gap-2">
         {(Object.keys(HOMEPAGE_METRIC_LABELS) as HomepageMetric[]).map((m) => (
           <button
             key={m}
             onClick={() => setMetric(m)}
-            className={`rounded-full px-3 py-1 text-xs ${m === metric ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900' : 'border border-zinc-300 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800'}`}
+            className={`rounded-full px-3 py-1 text-xs transition-colors ${
+              m === metric
+                ? 'bg-[var(--brand-lav)] text-[var(--brand-navy)] font-medium'
+                : 'border border-white/15 text-slate-300 hover:bg-white/5'
+            }`}
           >
             {HOMEPAGE_METRIC_LABELS[m].label}
           </button>
@@ -83,8 +87,8 @@ export function EuropeMap({ countries, defaultMetric = 'gov_debt_pct_gdp' }: {
             const c = iso ? byIso.get(iso) : undefined;
             const value = c?.metrics[metric]?.value;
             const fill = isEU
-              ? (typeof value === 'number' ? scale(value) : '#e4e4e7')
-              : '#f4f4f5';
+              ? (typeof value === 'number' ? scale(value) : 'rgba(197,203,240,0.18)')
+              : 'rgba(197,203,240,0.06)';
             const d = path(f);
             if (!d) return null;
             return (
@@ -92,8 +96,8 @@ export function EuropeMap({ countries, defaultMetric = 'gov_debt_pct_gdp' }: {
                 <path
                   d={d}
                   fill={fill}
-                  stroke="#fff"
-                  strokeWidth={0.5}
+                  stroke="#15203C"
+                  strokeWidth={0.6}
                   className={isEU ? 'cursor-pointer transition-opacity hover:opacity-80' : 'pointer-events-none'}
                   onMouseEnter={(e) => {
                     if (!isEU || !iso) return;
@@ -109,12 +113,12 @@ export function EuropeMap({ countries, defaultMetric = 'gov_debt_pct_gdp' }: {
         {/* Hover card */}
         {hoverCountry && hover && (
           <div
-            className="pointer-events-none fixed z-10 -translate-x-1/2 -translate-y-full rounded-lg border border-zinc-200 bg-white p-3 shadow-lg dark:border-zinc-700 dark:bg-zinc-900"
+            className="pointer-events-none fixed z-10 -translate-x-1/2 -translate-y-full rounded-lg border border-white/15 bg-[var(--brand-navy-deep)] p-3 shadow-2xl"
             style={{ left: hover.x, top: hover.y - 8, maxWidth: 240 }}
           >
             <div className="flex items-baseline gap-2">
               <span className="text-2xl">{hoverCountry.flag_emoji}</span>
-              <span className="font-semibold">{hoverCountry.name}</span>
+              <span className="font-display text-white">{hoverCountry.name}</span>
             </div>
             <div className="mt-2 grid grid-cols-2 gap-1 text-xs">
               {(Object.keys(HOMEPAGE_METRIC_LABELS) as HomepageMetric[]).map((m) => {
@@ -122,15 +126,15 @@ export function EuropeMap({ countries, defaultMetric = 'gov_debt_pct_gdp' }: {
                 if (!v) return null;
                 return (
                   <div key={m} className="flex flex-col">
-                    <span className="text-zinc-500">{HOMEPAGE_METRIC_LABELS[m].label}</span>
-                    <span className="font-mono">{fmtValue(m, v.value)}</span>
+                    <span className="text-slate-400">{HOMEPAGE_METRIC_LABELS[m].label}</span>
+                    <span className="font-mono text-slate-200">{fmtValue(m, v.value)}</span>
                   </div>
                 );
               })}
             </div>
             {hoverCountry.metrics[metric]?.spark && (
               <div className="mt-2">
-                <Sparkline data={hoverCountry.metrics[metric]!.spark} width={200} height={24} />
+                <Sparkline data={hoverCountry.metrics[metric]!.spark} width={200} height={24} color="#C5CBF0" />
               </div>
             )}
           </div>

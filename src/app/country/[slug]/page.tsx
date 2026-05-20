@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { loadCountryPageData, loadPeerPercentiles } from '@/lib/country-page-data';
 import { getSeoOverride } from '@/lib/seo/overrides';
+import { SiteHeader } from '@/components/layout/site-header';
 import { TimeSeriesLine } from '@/components/charts/time-series-line';
 import { TimeSeriesBar } from '@/components/charts/time-series-bar';
 import { Donut } from '@/components/charts/donut';
@@ -44,18 +45,18 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
   const c = data.country;
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
-      <a href="/" className="text-sm text-zinc-500 underline">← Home</a>
-
+    <>
+    <SiteHeader />
+    <main className="mx-auto max-w-5xl px-6 py-10 text-slate-100">
       {/* Header */}
-      <header className="mt-4 flex items-baseline gap-3">
-        <span className="text-5xl">{c.flag_emoji}</span>
-        <h1 className="text-4xl font-bold tracking-tight">{c.name}</h1>
+      <header className="mt-4 flex items-baseline gap-4">
+        <span className="text-6xl">{c.flag_emoji}</span>
+        <h1 className="font-display text-5xl tracking-tight text-white">{c.name}</h1>
       </header>
-      <p className="mt-2 text-sm text-zinc-500">
+      <p className="kicker mt-3">
         {c.is_eu_member && c.joined_eu && <>EU member since {fmtYear(c.joined_eu)}{c.is_eurozone_member && c.joined_eurozone ? ` · eurozone since ${fmtYear(c.joined_eurozone)}` : ''}</>}
         {!c.is_eu_member && <>Non-EU comparator</>}
-        {c.capital && <> · capital: {c.capital}</>}
+        {c.capital && <> · capital {c.capital}</>}
       </p>
 
       {/* Snapshot */}
@@ -70,7 +71,7 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
 
       {/* Narrative — intro */}
       {data.narrative.intro_html && (
-        <section className="prose prose-zinc mt-10 max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: data.narrative.intro_html }} />
+        <section className="prose-on-navy mt-10 max-w-none text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: data.narrative.intro_html }} />
       )}
 
       {/* Fiscal trajectory */}
@@ -149,10 +150,14 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
         <Section title="vs. EU peers" hint="Rank against the other 26 EU member states for the latest available period">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {Object.entries(peers).map(([m, p]) => (
-              <div key={m} className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-                <div className="text-xs text-zinc-500">{prettyMetric(m)}</div>
-                <div className="mt-1 text-3xl font-bold">{p.rank}<span className="text-base text-zinc-400">/{p.total}</span></div>
-                <div className="mt-1 text-xs text-zinc-500">{prettyMetric(m, true)}: {fmtPeerValue(m, p.value)}</div>
+              <div key={m} className="surface p-4">
+                <div className="kicker text-[10px]">{prettyMetric(m)}</div>
+                <div className="font-display mt-2 text-4xl text-white">
+                  {p.rank}<span className="text-base text-slate-500">/{p.total}</span>
+                </div>
+                <div className="mt-1 text-xs text-slate-400">
+                  {prettyMetric(m, true)}: <span className="font-mono text-slate-200">{fmtPeerValue(m, p.value)}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -175,7 +180,7 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       )}
 
       {/* Narrative tail */}
-      <div className="prose prose-zinc mt-12 max-w-none dark:prose-invert">
+      <div className="prose-on-navy mt-12 max-w-none space-y-6 text-base leading-relaxed">
         {data.narrative.fiscal_context_html && (
           <section dangerouslySetInnerHTML={{ __html: data.narrative.fiscal_context_html }} />
         )}
@@ -188,12 +193,12 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       </div>
 
       {/* Sources footer */}
-      <footer className="mt-16 border-t border-zinc-200 pt-6 text-xs text-zinc-500 dark:border-zinc-800">
-        <div className="font-medium">Data sources</div>
-        <ul className="mt-2 grid gap-1 sm:grid-cols-2">
+      <footer className="mt-16 border-t border-white/10 pt-6 text-xs text-slate-400">
+        <div className="kicker">Data sources</div>
+        <ul className="mt-3 grid gap-1 sm:grid-cols-2">
           {data.sources.map((s) => (
-            <li key={s.source} className="font-mono">
-              {s.source}{s.latest_ingest && <span className="ml-1 text-zinc-400">· refreshed {fmtRelative(s.latest_ingest)}</span>}
+            <li key={s.source} className="font-mono text-slate-300">
+              {s.source}{s.latest_ingest && <span className="ml-1 text-slate-500">· refreshed {fmtRelative(s.latest_ingest)}</span>}
             </li>
           ))}
         </ul>
@@ -202,25 +207,26 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       {/* JSON-LD */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(c)) }} />
     </main>
+    </>
   );
 }
 
 // ============================================================================
 function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
-    <section className="mt-12">
-      <h2 className="text-xl font-semibold">{title}</h2>
-      {hint && <p className="mt-1 text-xs text-zinc-500">{hint}</p>}
-      <div className="mt-4">{children}</div>
+    <section className="mt-14">
+      <h2 className="font-display text-2xl text-white">{title}</h2>
+      {hint && <p className="mt-1 text-xs text-slate-400">{hint}</p>}
+      <div className="mt-5">{children}</div>
     </section>
   );
 }
 
 function ChartCard({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
-      <div className="text-sm font-medium">{title}</div>
-      {subtitle && <div className="text-xs text-zinc-500">{subtitle}</div>}
+    <div className="surface p-4">
+      <div className="font-display text-sm tracking-wide text-white">{title}</div>
+      {subtitle && <div className="mt-0.5 text-xs text-slate-400">{subtitle}</div>}
       <div className="mt-3">{children}</div>
     </div>
   );
@@ -238,27 +244,32 @@ function Snapshot({
 }) {
   const snap = data.snapshot[metric];
   if (!snap || !snap.latest) {
-    return <div className="rounded-md border border-zinc-200 p-3 dark:border-zinc-800"><div className="text-xs text-zinc-500">{label}</div><div className="mt-1 text-zinc-400">—</div></div>;
+    return (
+      <div className="surface p-3">
+        <div className="kicker text-[10px]">{label}</div>
+        <div className="mt-1 text-slate-500">—</div>
+      </div>
+    );
   }
   const v = snap.latest.value;
   const delta = snap.yoy_delta_abs;
   const goodDirection = delta == null ? null : (invertDirection ? delta < 0 : delta > 0);
   const deltaColor = colorByDirection && delta != null
-    ? (goodDirection ? 'text-green-700' : 'text-red-700')
-    : 'text-zinc-500';
+    ? (goodDirection ? 'text-teal-300' : 'text-rose-300')
+    : 'text-slate-400';
 
   return (
-    <div className="rounded-md border border-zinc-200 p-3 dark:border-zinc-800">
-      <div className="text-xs text-zinc-500">{label}</div>
-      <div className="mt-1 flex items-baseline gap-1">
-        <span className="text-xl font-semibold">{fmtSnapshot(v, metric)}</span>
-        <span className="text-xs text-zinc-400">{unit}</span>
+    <div className="surface p-3">
+      <div className="kicker text-[10px]">{label}</div>
+      <div className="mt-1 flex items-baseline gap-1.5">
+        <span className="font-display text-2xl text-white">{fmtSnapshot(v, metric)}</span>
+        <span className="font-mono text-[10px] text-slate-400">{unit}</span>
       </div>
-      <div className={`mt-0.5 text-xs ${deltaColor}`}>
+      <div className={`mt-0.5 text-xs font-mono ${deltaColor}`}>
         {delta == null ? '—' : `${delta >= 0 ? '+' : ''}${delta.toFixed(2)} YoY`}
       </div>
-      <div className="mt-1"><Sparkline data={snap.spark} /></div>
-      <div className="mt-1 text-[10px] text-zinc-400">as of {snap.latest.period_start.slice(0, 7)}</div>
+      <div className="mt-1"><Sparkline data={snap.spark} color="#C5CBF0" /></div>
+      <div className="mt-1 font-mono text-[10px] text-slate-500">as of {snap.latest.period_start.slice(0, 7)}</div>
     </div>
   );
 }

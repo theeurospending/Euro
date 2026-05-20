@@ -3,6 +3,7 @@ import { listComparableMetrics, loadCompareSeries, loadLeaderboard } from '@/lib
 import { ComparePicker } from '@/components/compare/picker';
 import { CompareChart } from '@/components/compare/compare-chart';
 import { Leaderboard } from '@/components/compare/leaderboard';
+import { SiteHeader } from '@/components/layout/site-header';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,11 +31,14 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
   ]);
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
-      <a href="/" className="text-sm text-zinc-500 underline">← Home</a>
-      <h1 className="mt-4 text-4xl font-bold tracking-tight">Compare</h1>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-        Pick countries and a metric. URL is shareable: <code className="font-mono text-xs">?countries=DE,FR&metric=gov_debt_pct_gdp&from=2008</code>
+    <>
+    <SiteHeader />
+    <main className="mx-auto max-w-5xl px-6 py-10 text-slate-100">
+      <div className="kicker">Side-by-side</div>
+      <h1 className="font-display mt-3 text-5xl tracking-tight text-white">Compare</h1>
+      <p className="mt-3 max-w-2xl text-sm text-slate-300">
+        Pick countries and a metric. URL is shareable:{' '}
+        <code className="font-mono text-xs text-[var(--brand-lav)]">?countries=DE,FR&amp;metric=gov_debt_pct_gdp&amp;from=2008</code>
       </p>
 
       <ComparePicker
@@ -56,5 +60,6 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
         )}
       </div>
     </main>
+    </>
   );
 }

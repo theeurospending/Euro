@@ -1,10 +1,14 @@
-// Country-specific OG image. Pulls snapshot stats from the country-page loader
-// and renders a 1200x630 stat card.
+// Country-specific OG image. 1200x630, brand navy + live snapshot stats.
 
 import { ImageResponse } from 'next/og';
 import { loadCountryPageData } from '@/lib/country-page-data';
 
 export const runtime = 'nodejs';
+
+const NAVY = '#1B2A4A';
+const LAV = '#C5CBF0';
+const GOLD = '#FFCC00';
+const TEAL = '#5eead4';
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -19,22 +23,40 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     (
       <div style={{
         width: 1200, height: 630, display: 'flex', flexDirection: 'column',
-        background: '#fafafa', color: '#0f172a', padding: 80, fontFamily: 'sans-serif',
+        background: NAVY, color: '#fafafa', padding: 80,
+        fontFamily: 'sans-serif',
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', width: '100%' }}>
-          <div style={{ display: 'flex', fontSize: 32, fontWeight: 700, color: '#71717a' }}>eurospending.org</div>
-          <div style={{ display: 'flex', fontSize: 32, color: '#71717a' }}>since 1999</div>
+        {/* Brand strip */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: 48, height: 48, borderRadius: 10, background: '#15203C',
+              border: `2px solid ${GOLD}`,
+              fontSize: 30, fontWeight: 900, color: '#fff',
+            }}>€</div>
+            <div style={{ display: 'flex', fontSize: 22, fontWeight: 800, letterSpacing: 3 }}>EUROSPENDING</div>
+          </div>
+          <div style={{ display: 'flex', fontSize: 16, letterSpacing: 2, color: 'rgba(255,255,255,0.45)' }}>
+            EUROSPENDING.ORG
+          </div>
         </div>
 
-        <div style={{ display: 'flex', marginTop: 30, alignItems: 'baseline', gap: 24 }}>
-          <span style={{ display: 'flex', fontSize: 120 }}>{c.flag_emoji}</span>
-          <span style={{ display: 'flex', fontSize: 96, fontWeight: 800 }}>{c.name}</span>
+        {/* Country name */}
+        <div style={{ display: 'flex', marginTop: 50, alignItems: 'baseline', gap: 24 }}>
+          <span style={{ display: 'flex', fontSize: 110 }}>{c.flag_emoji}</span>
+          <span style={{ display: 'flex', fontSize: 96, fontWeight: 800, letterSpacing: 2, lineHeight: 1 }}>{c.name.toUpperCase()}</span>
         </div>
 
-        <div style={{ display: 'flex', marginTop: 'auto', width: '100%', justifyContent: 'space-between' }}>
-          <Stat label="Debt"     value={debt    ? `${debt.value.toFixed(0)}%`    : '—'} />
-          <Stat label="Deficit"  value={deficit ? `${deficit.value.toFixed(1)}%` : '—'} />
-          <Stat label="Inflation" value={hicp    ? `${hicp.value.toFixed(1)}%`    : '—'} />
+        <div style={{ display: 'flex', marginTop: 20, fontSize: 18, letterSpacing: 4, color: LAV }}>
+          {c.is_eurozone_member ? 'EUROZONE MEMBER' : c.is_eu_member ? 'EU MEMBER' : 'COMPARATOR'}
+        </div>
+
+        {/* Stats row */}
+        <div style={{ display: 'flex', marginTop: 'auto', width: '100%', justifyContent: 'space-between', gap: 20 }}>
+          <Stat label="DEBT"      value={debt    ? `${debt.value.toFixed(0)}%`    : '—'} unit="% GDP"  accent={GOLD} />
+          <Stat label="DEFICIT"   value={deficit ? `${deficit.value.toFixed(1)}%` : '—'} unit="% GDP"  accent={LAV} />
+          <Stat label="INFLATION" value={hicp    ? `${hicp.value.toFixed(1)}%`    : '—'} unit="HICP"   accent={TEAL} />
         </div>
       </div>
     ),
@@ -42,11 +64,16 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({ label, value, unit, accent }: { label: string; value: string; unit: string; accent: string }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-      <div style={{ display: 'flex', fontSize: 28, color: '#71717a' }}>{label}</div>
-      <div style={{ display: 'flex', fontSize: 80, fontWeight: 800, color: '#0f766e' }}>{value}</div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+      <div style={{ display: 'flex', fontSize: 16, letterSpacing: 3, color: 'rgba(255,255,255,0.5)' }}>
+        {label}
+      </div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+        <div style={{ display: 'flex', fontSize: 78, fontWeight: 800, lineHeight: 1, color: accent }}>{value}</div>
+        <div style={{ display: 'flex', fontSize: 16, color: 'rgba(255,255,255,0.45)' }}>{unit}</div>
+      </div>
     </div>
   );
 }

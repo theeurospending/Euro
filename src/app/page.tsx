@@ -3,12 +3,13 @@ import Link from 'next/link';
 import { loadHomepageData } from '@/lib/homepage-data';
 import { EuropeMap } from '@/components/map/europe-map';
 import { CountryTileGrid } from '@/components/map/country-tile-grid';
+import { SiteHeader } from '@/components/layout/site-header';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Eurospending — how Europe spends, borrows, and inflates',
-  description: 'Live tracker of every EU country\'s economic trajectory since 1999. Public spending, debt, deficits, inflation, growth — and the story of the euro.',
+  title: 'Eurospending — Euro Economics',
+  description: "Live tracker of every EU country's economic trajectory since 1999. Public spending, debt, deficits, inflation, growth — and the story of the euro.",
   openGraph: {
     title: 'Eurospending',
     description: 'How Europe spends, borrows, and inflates — country by country.',
@@ -21,81 +22,112 @@ export default async function Home() {
   const ez = data.euroSnapshot;
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
-      {/* Hero */}
-      <section className="mb-10">
-        <h1 className="text-4xl font-bold tracking-tight">Eurospending</h1>
-        <p className="mt-3 max-w-2xl text-lg text-zinc-600 dark:text-zinc-400">
-          How Europe spends, borrows, and inflates — country by country, year by year, since 1999.
-          Pick a metric below to colour the map; click any country for the full story.
-        </p>
-      </section>
-
-      {/* Map */}
-      <section className="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
-        <EuropeMap countries={data.countries} />
-      </section>
-
-      {/* Tile grid */}
-      <section className="mt-10">
-        <h2 className="text-2xl font-semibold">All EU countries</h2>
-        <p className="mt-1 text-sm text-zinc-500">Sort by any metric. Click a card for full country page.</p>
-        <div className="mt-4">
-          <CountryTileGrid countries={data.countries} />
-        </div>
-      </section>
-
-      {/* Euro snapshot */}
-      <section className="mt-12">
-        <h2 className="text-2xl font-semibold">Euro currency snapshot</h2>
-        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <MetricCard label="ECB main refi rate" value={ez.ecb_main_refi_rate ? `${ez.ecb_main_refi_rate.value.toFixed(2)}%` : '—'} sub={ez.ecb_main_refi_rate?.period_start} />
-          <MetricCard label="Eurozone HICP (YoY)" value={ez.eurozone_hicp_headline ? `${ez.eurozone_hicp_headline.value.toFixed(1)}%` : '—'} sub={ez.eurozone_hicp_headline?.period_start.slice(0, 7)} />
-          <MetricCard label="EUR / USD" value={ez.eur_usd_rate ? ez.eur_usd_rate.value.toFixed(4) : '—'} sub={ez.eur_usd_rate?.period_start} />
-        </div>
-        {ez.latestEvent && (
-          <div className="mt-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-            <div className="text-xs text-zinc-500">Most recent monetary event · <span className="font-mono">{ez.latestEvent.event_date}</span> · {ez.latestEvent.category}</div>
-            <div className="mt-1 font-semibold">{ez.latestEvent.title}</div>
-            {ez.latestEvent.description && <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">{ez.latestEvent.description}</p>}
+    <>
+      <SiteHeader />
+      <main className="text-slate-100">
+        {/* Hero */}
+        <section className="border-b border-white/10">
+          <div className="mx-auto max-w-6xl px-6 py-16 lg:py-24">
+            <div className="kicker">Euro Economics · since 1999</div>
+            <h1 className="font-display mt-4 text-5xl leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-7xl">
+              How Europe spends,<br />borrows, and inflates.
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg text-slate-300">
+              Live tracker of every EU country&apos;s economic trajectory.
+              Pick a metric to colour the map; click any country for the full story.
+            </p>
           </div>
-        )}
-      </section>
+        </section>
 
-      {/* Navigation cards */}
-      <section className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <NavCard href="/compare" title="Compare countries →" hint="Multi-country, multi-metric overlays" />
-        <NavCard href="/euro"    title="The euro timeline →" hint="ECB rates, balance sheet, FX history with monetary events overlaid" />
-        <NavCard href="/blog"    title="Blog →" hint="Analysis and commentary" />
-      </section>
+        {/* Map */}
+        <section className="border-b border-white/10 bg-[var(--brand-navy-deep)]/40">
+          <div className="mx-auto max-w-6xl px-6 py-12">
+            <div className="surface p-4 lg:p-6">
+              <EuropeMap countries={data.countries} />
+            </div>
+          </div>
+        </section>
 
-      {/* JSON-LD WebSite */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: 'Eurospending',
-        url: 'https://eurospending.org',
-        description: 'Public tracker of EU economic data and the story of the euro.',
-      }) }} />
-    </main>
+        {/* Tile grid */}
+        <section className="border-b border-white/10">
+          <div className="mx-auto max-w-6xl px-6 py-16">
+            <div className="kicker">EU 27</div>
+            <h2 className="font-display mt-3 text-3xl text-white">All EU countries</h2>
+            <p className="mt-2 text-sm text-slate-400">Sort by any metric. Click a card for the full country page.</p>
+            <div className="mt-8">
+              <CountryTileGrid countries={data.countries} />
+            </div>
+          </div>
+        </section>
+
+        {/* Euro snapshot */}
+        <section className="border-b border-white/10">
+          <div className="mx-auto max-w-6xl px-6 py-16">
+            <div className="kicker">Eurozone snapshot</div>
+            <h2 className="font-display mt-3 text-3xl text-white">The currency, right now</h2>
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <MetricCard label="ECB main refi rate" value={ez.ecb_main_refi_rate ? `${ez.ecb_main_refi_rate.value.toFixed(2)}%` : '—'} sub={ez.ecb_main_refi_rate?.period_start} />
+              <MetricCard label="Eurozone HICP (YoY)" value={ez.eurozone_hicp_headline ? `${ez.eurozone_hicp_headline.value.toFixed(1)}%` : '—'} sub={ez.eurozone_hicp_headline?.period_start.slice(0, 7)} />
+              <MetricCard label="EUR / USD" value={ez.eur_usd_rate ? ez.eur_usd_rate.value.toFixed(4) : '—'} sub={ez.eur_usd_rate?.period_start} />
+            </div>
+            {ez.latestEvent && (
+              <div className="surface mt-6 p-5">
+                <div className="kicker">
+                  <span className="font-mono">{ez.latestEvent.event_date}</span>
+                  <span className="ml-3 text-[var(--brand-gold)]">{ez.latestEvent.category}</span>
+                </div>
+                <div className="mt-2 font-display text-xl text-white">{ez.latestEvent.title}</div>
+                {ez.latestEvent.description && <p className="mt-3 text-sm text-slate-300">{ez.latestEvent.description}</p>}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Nav cards */}
+        <section className="border-b border-white/10">
+          <div className="mx-auto max-w-6xl px-6 py-16">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <NavCard href="/compare" title="Compare countries" hint="Multi-country, multi-metric overlays" />
+              <NavCard href="/euro"    title="The euro timeline" hint="ECB rates, balance sheet, FX history with monetary events overlaid" />
+              <NavCard href="/blog"    title="Blog" hint="Analysis and commentary" />
+            </div>
+          </div>
+        </section>
+
+        <footer className="border-t border-white/10">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-8 text-xs text-slate-400">
+            <div className="font-mono">eurospending.org · Brand Kit v1.0</div>
+            <div className="font-mono">Data: Eurostat · ECB · IMF</div>
+          </div>
+        </footer>
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'Eurospending',
+          url: 'https://eurospending.org',
+          description: 'Public tracker of EU economic data and the story of the euro.',
+        }) }} />
+      </main>
+    </>
   );
 }
 
 function MetricCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-      <div className="text-xs text-zinc-500">{label}</div>
-      <div className="mt-1 text-3xl font-bold">{value}</div>
-      {sub && <div className="mt-1 text-xs text-zinc-400">as of {sub}</div>}
+    <div className="surface p-5">
+      <div className="kicker text-xs">{label}</div>
+      <div className="font-display mt-2 text-4xl text-white">{value}</div>
+      {sub && <div className="mt-1 font-mono text-xs text-slate-400">as of {sub}</div>}
     </div>
   );
 }
 
 function NavCard({ href, title, hint }: { href: string; title: string; hint: string }) {
   return (
-    <Link href={href} className="block rounded-lg border border-zinc-200 p-4 transition-colors hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600">
-      <div className="font-semibold">{title}</div>
-      <div className="mt-1 text-sm text-zinc-500">{hint}</div>
+    <Link href={href} className="surface group block p-5 transition-colors hover:border-[var(--brand-gold)]/40">
+      <div className="font-display text-xl text-white">{title} <span className="text-[var(--brand-gold)] transition-transform group-hover:translate-x-0.5">→</span></div>
+      <div className="mt-2 text-sm text-slate-400">{hint}</div>
     </Link>
   );
 }

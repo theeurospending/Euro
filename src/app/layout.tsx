@@ -1,25 +1,39 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, IBM_Plex_Mono, Archivo_Narrow } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ibmMono = IBM_Plex_Mono({
+  variable: "--font-ibm-mono",
   subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+});
+
+const archivoNarrow = Archivo_Narrow({
+  variable: "--font-archivo-narrow",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Eurospending",
+    default: "Eurospending — Euro Economics",
     template: "%s · Eurospending",
   },
   description:
     "Tracking economic data across EU countries — spending, debt, inflation, and the story of the euro.",
   metadataBase: new URL("https://eurospending.org"),
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/icon.svg" }],
+  },
   openGraph: {
     type: 'website',
     siteName: 'Eurospending',
@@ -39,12 +53,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${ibmMono.variable} ${archivoNarrow.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}
-        {/* Cloudflare Web Analytics — free, privacy-friendly, no cookies.
-            Set the token after enabling Web Analytics in the CF dashboard. */}
         {process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN && (
           <script
             defer

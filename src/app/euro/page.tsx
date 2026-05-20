@@ -3,6 +3,7 @@ import { loadEuroPageData } from '@/lib/euro-page-data';
 import { TimeSeriesLine } from '@/components/charts/time-series-line';
 import { PALETTE, nthCountryColor } from '@/components/charts/palette';
 import { EventTimeline } from '@/components/euro/event-timeline';
+import { SiteHeader } from '@/components/layout/site-header';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,20 +40,21 @@ export default async function EuroPage() {
   }));
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
-      <a href="/" className="text-sm text-zinc-500 underline">← Home</a>
-
-      <h1 className="mt-4 text-4xl font-bold tracking-tight">The euro</h1>
-      <p className="mt-3 max-w-2xl text-lg text-zinc-600 dark:text-zinc-400">
-        From 1999 to today: how the single currency was built, broken, and held together.
-        Below is the timeline of policy moves, the rate cycle, the balance sheet, and how
+    <>
+    <SiteHeader />
+    <main className="mx-auto max-w-5xl px-6 py-10 text-slate-100">
+      <div className="kicker">The euro · 1999 → today</div>
+      <h1 className="font-display mt-4 text-5xl tracking-tight text-white sm:text-6xl">The euro</h1>
+      <p className="mt-4 max-w-2xl text-lg text-slate-300">
+        How the single currency was built, broken, and held together.
+        Below: the timeline of policy moves, the rate cycle, the balance sheet, and how
         peripheral spreads tell the real story.
       </p>
 
       {/* Timeline */}
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold">Timeline</h2>
-        <p className="mt-1 text-xs text-zinc-500">{data.events.length} events. Click any event for details + related charts.</p>
+      <section className="mt-12">
+        <h2 className="font-display text-2xl text-white">Timeline</h2>
+        <p className="mt-1 text-xs text-slate-400">{data.events.length} events. Click any event for details + related charts.</p>
         <div className="mt-4">
           <EventTimeline events={data.events} />
         </div>
@@ -101,9 +103,9 @@ export default async function EuroPage() {
       {/* Sovereign yield divergence */}
       <Section title="Sovereign yield divergence (PIIGS vs. Bund)" hint="10Y benchmark monthly — the chart that defined 2010-2012">
         <TimeSeriesLine series={yieldsSeries} format="pct1" height={380} />
-        <p className="mt-3 text-xs text-zinc-500">
-          The spread between Greek/Italian/Portuguese/Spanish/Irish 10Y yields and the German Bund is the cleanest
-          measure of eurozone breakup risk. The narrowing after Draghi's July 2012 "whatever it takes" is the
+        <p className="mt-4 max-w-3xl text-sm text-slate-400">
+          The spread between peripheral 10Y yields and the German Bund is the cleanest measure of
+          eurozone breakup risk. The narrowing after Draghi&apos;s July 2012 &quot;whatever it takes&quot; is the
           single most consequential central-bank communication on record.
         </p>
       </Section>
@@ -116,24 +118,25 @@ export default async function EuroPage() {
         url: 'https://eurospending.org/euro',
       }) }} />
     </main>
+    </>
   );
 }
 
 function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
-    <section className="mt-12">
-      <h2 className="text-xl font-semibold">{title}</h2>
-      {hint && <p className="mt-1 text-xs text-zinc-500">{hint}</p>}
-      <div className="mt-4">{children}</div>
+    <section className="mt-14">
+      <h2 className="font-display text-2xl text-white">{title}</h2>
+      {hint && <p className="mt-1 text-xs text-slate-400">{hint}</p>}
+      <div className="mt-5">{children}</div>
     </section>
   );
 }
 
 function Card({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
-      <div className="text-sm font-medium">{title}</div>
-      {subtitle && <div className="text-xs text-zinc-500">{subtitle}</div>}
+    <div className="surface p-4">
+      <div className="font-display text-sm tracking-wide text-white">{title}</div>
+      {subtitle && <div className="mt-0.5 text-xs text-slate-400">{subtitle}</div>}
       <div className="mt-3">{children}</div>
     </div>
   );
