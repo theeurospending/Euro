@@ -157,13 +157,13 @@ export function ComparePicker({
         <div className="ml-auto flex gap-1">
           <button
             onClick={() => navigate({ view: 'chart' })}
-            className={`rounded-full px-3 py-1 text-xs ${selectedView === 'chart' ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900' : 'border border-zinc-300 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800'}`}
+            className={`rounded-full px-3 py-1 text-xs transition-colors ${selectedView === 'chart' ? 'bg-[var(--brand-lav)] text-[var(--brand-navy)] font-medium' : 'border border-white/15 text-slate-300 hover:bg-white/5'}`}
           >
             Chart
           </button>
           <button
             onClick={() => navigate({ view: 'leaderboard' })}
-            className={`rounded-full px-3 py-1 text-xs ${selectedView === 'leaderboard' ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900' : 'border border-zinc-300 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800'}`}
+            className={`rounded-full px-3 py-1 text-xs transition-colors ${selectedView === 'leaderboard' ? 'bg-[var(--brand-lav)] text-[var(--brand-navy)] font-medium' : 'border border-white/15 text-slate-300 hover:bg-white/5'}`}
           >
             Leaderboard
           </button>

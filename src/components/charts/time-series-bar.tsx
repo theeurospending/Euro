@@ -24,7 +24,7 @@ export function TimeSeriesBar({
   thresholds?: { value: number; label: string; color?: string }[];
 }) {
   if (data.length === 0) {
-    return <div className="flex h-32 items-center justify-center rounded border border-dashed border-zinc-300 text-xs text-zinc-400">No data</div>;
+    return <div className="flex h-32 items-center justify-center rounded border border-dashed border-white/15 text-xs text-slate-500">No data</div>;
   }
   const fmt = (v: number) => formatValue(v, format);
 

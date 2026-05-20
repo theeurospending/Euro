@@ -15,7 +15,7 @@ export function Sparkline({
   color?: string;
 }) {
   if (!data || data.length < 2) {
-    return <span className="inline-block text-xs text-zinc-400">—</span>;
+    return <span className="inline-block text-xs text-slate-500">—</span>;
   }
   return (
     <div style={{ width, height }} className="inline-block align-middle">

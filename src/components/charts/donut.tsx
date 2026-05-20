@@ -20,7 +20,7 @@ export function Donut({
   format?: FormatId;
 }) {
   if (data.length === 0 || data.every((d) => d.value === 0)) {
-    return <div className="flex h-40 items-center justify-center rounded border border-dashed border-zinc-300 text-xs text-zinc-400">No data</div>;
+    return <div className="flex h-40 items-center justify-center rounded border border-dashed border-white/15 text-xs text-slate-500">No data</div>;
   }
   const fmt = (v: number) => formatValue(v, format);
   return (

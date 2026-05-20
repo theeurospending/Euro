@@ -91,7 +91,7 @@ function mergeSeries(series: LineSeries[]): Array<Record<string, number | string
 
 function EmptyState() {
   return (
-    <div className="flex h-40 items-center justify-center rounded border border-dashed border-zinc-300 text-xs text-zinc-400">
+    <div className="flex h-40 items-center justify-center rounded border border-dashed border-white/15 text-xs text-slate-500">
       No data
     </div>
   );
