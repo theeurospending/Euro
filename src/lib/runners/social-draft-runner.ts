@@ -40,41 +40,47 @@ export async function runSocialDraftGeneration(opts: { maxDrafts?: number } = {}
 
   // 2. Insert candidates (idempotent via unique index on rule+country+metric+period).
   let inserted = 0; let existing = 0;
-  const insertedCandidates: { id: number; fact: CandidateFact }[] = [];
   for (const f of facts) {
-    const { data, error } = await admin.from('social_media_candidates').insert({
+    const { error } = await admin.from('social_media_candidates').insert({
       country_iso: f.country_iso,
       rule_name: f.rule_name,
       headline: f.headline,
       supporting_data: f.supporting_data,
       priority_score: f.priority_score,
       chart_type: f.chart_type,
-    }).select('id').maybeSingle();
+    });
     if (error) {
-      // Likely the dedup unique-index conflict — count as existing.
       if (/duplicate/i.test(error.message) || /unique/i.test(error.message) || error.code === '23505') existing++;
       else errors.push({ message: `insert candidate: ${error.message}` });
       continue;
     }
-    if (data) {
-      inserted++;
-      insertedCandidates.push({ id: data.id, fact: f });
-    }
+    inserted++;
   }
 
-  // 3. Generate drafts for the top N inserted candidates (by priority).
-  insertedCandidates.sort((a, b) => b.fact.priority_score - a.fact.priority_score);
-  const toGenerate = insertedCandidates.slice(0, cap);
-  let generated = 0; let failed = 0;
+  // 3. Pick top-priority candidates with status='new' for draft generation.
+  const { data: pending } = await admin
+    .from('social_media_candidates')
+    .select('id, country_iso, rule_name, headline, supporting_data, priority_score, chart_type')
+    .eq('status', 'new')
+    .order('priority_score', { ascending: false })
+    .limit(cap);
 
-  for (const { id, fact } of toGenerate) {
+  let generated = 0; let failed = 0;
+  for (const c of pending ?? []) {
+    const fact: CandidateFact = {
+      country_iso: c.country_iso,
+      rule_name: c.rule_name,
+      headline: c.headline,
+      supporting_data: c.supporting_data,
+      priority_score: c.priority_score,
+      chart_type: c.chart_type,
+    };
     try {
-      await generateOneDraft(admin, id, fact);
+      await generateOneDraft(admin, c.id, fact);
       generated++;
     } catch (e) {
       failed++;
-      errors.push({ message: `draft for candidate ${id}: ${e instanceof Error ? e.message : e}` });
-      await admin.from('social_media_candidates').update({ status: 'new' }).eq('id', id);
+      errors.push({ message: `draft for candidate ${c.id}: ${e instanceof Error ? e.message : e}` });
     }
   }
 

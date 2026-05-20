@@ -1,8 +1,7 @@
 // 1080×1080 PNG generator using next/og (Satori).
 //
-// Satori is flexbox-only — no CSS grid, no transforms beyond translate/scale.
-// We draw a "stat card": big number + small bar chart using nested flex boxes
-// with explicit pixel heights/widths.
+// Satori is strict: every <div> with more than one child MUST set display:flex,
+// display:contents, or display:none. We default every container to display:flex.
 
 import { ImageResponse } from 'next/og';
 import type { CandidateFact, DataPoint } from '@/lib/social/types';
@@ -10,7 +9,6 @@ import type { CandidateFact, DataPoint } from '@/lib/social/types';
 const WIDTH = 1080;
 const HEIGHT = 1080;
 
-// Eurospending brand
 const BG = '#fafafa';
 const FG = '#0f172a';
 const MUTED = '#71717a';
@@ -20,9 +18,9 @@ const POSITIVE = '#16a34a';
 
 export type ChartCardInput = {
   fact: CandidateFact;
-  series: DataPoint[];                  // up to ~20 points; will be downsampled if larger
-  unit: string;                         // e.g. '% of GDP'
-  country_label: string;                // 'Italy 🇮🇹' or 'Eurozone 🇪🇺'
+  series: DataPoint[];
+  unit: string;
+  country_label: string;
 };
 
 export async function renderChartCardPng(input: ChartCardInput): Promise<ArrayBuffer> {
@@ -31,6 +29,7 @@ export async function renderChartCardPng(input: ChartCardInput): Promise<ArrayBu
   const periodStr = formatPeriod(fact.supporting_data.period);
   const downsampled = downsample(series, 24);
   const max = Math.max(...downsampled.map((p) => Math.abs(p.value)), 1);
+  const barW = Math.floor((WIDTH - 160 - downsampled.length * 6) / Math.max(downsampled.length, 1));
 
   const response = new ImageResponse(
     (
@@ -39,57 +38,50 @@ export async function renderChartCardPng(input: ChartCardInput): Promise<ArrayBu
         padding: 80, color: FG, fontFamily: 'sans-serif',
       }}>
         {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-          <div style={{ fontSize: 28, fontWeight: 700 }}>{country_label}</div>
-          <div style={{ fontSize: 18, color: MUTED }}>eurospending.org</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', width: '100%' }}>
+          <div style={{ display: 'flex', fontSize: 28, fontWeight: 700 }}>{country_label}</div>
+          <div style={{ display: 'flex', fontSize: 18, color: MUTED }}>eurospending.org</div>
         </div>
 
         {/* Headline */}
-        <div style={{
-          marginTop: 40, fontSize: 36, fontWeight: 500, lineHeight: 1.2, color: FG,
-          display: 'flex',
-        }}>
+        <div style={{ display: 'flex', marginTop: 40, fontSize: 36, fontWeight: 500, lineHeight: 1.2, color: FG, maxWidth: WIDTH - 160 }}>
           {fact.headline}
         </div>
 
         {/* Big value */}
-        <div style={{
-          marginTop: 40, display: 'flex', flexDirection: 'column', alignItems: 'flex-start',
-        }}>
-          <div style={{ fontSize: 200, fontWeight: 800, lineHeight: 1, color: ACCENT }}>{valueStr}</div>
-          <div style={{ marginTop: 12, fontSize: 24, color: MUTED }}>{unit} · {periodStr}</div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 40 }}>
+          <div style={{ display: 'flex', fontSize: 200, fontWeight: 800, lineHeight: 1, color: ACCENT }}>{valueStr}</div>
+          <div style={{ display: 'flex', marginTop: 12, fontSize: 24, color: MUTED }}>{unit} · {periodStr}</div>
         </div>
 
         {/* Bar chart */}
-        {downsampled.length > 0 && (
+        {downsampled.length > 0 ? (
           <div style={{
-            marginTop: 40, display: 'flex', alignItems: 'flex-end', height: 200, gap: 6,
-            borderBottom: `2px solid ${MUTED}`, paddingBottom: 0,
+            display: 'flex', alignItems: 'flex-end', height: 200, gap: 6,
+            marginTop: 40, borderBottom: `2px solid ${MUTED}`,
           }}>
-            {downsampled.map((p, i) => {
-              const h = Math.max(2, Math.round((Math.abs(p.value) / max) * 180));
-              const color = p.value >= 0 ? POSITIVE : NEGATIVE;
-              return (
-                <div key={i} style={{
-                  width: Math.floor((WIDTH - 160 - downsampled.length * 6) / downsampled.length),
-                  height: h, background: color, display: 'flex',
-                }} />
-              );
-            })}
+            {downsampled.map((p, i) => (
+              <div key={i} style={{
+                display: 'flex',
+                width: barW,
+                height: Math.max(2, Math.round((Math.abs(p.value) / max) * 180)),
+                background: p.value >= 0 ? POSITIVE : NEGATIVE,
+              }} />
+            ))}
           </div>
-        )}
+        ) : <div style={{ display: 'flex' }} />}
 
         {/* Footer */}
-        <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', fontSize: 18, color: MUTED }}>
-          <div>{`${fact.rule_name} · priority ${fact.priority_score}`}</div>
-          <div>Source: Eurostat / ECB / IMF</div>
+        <div style={{
+          display: 'flex', marginTop: 'auto', justifyContent: 'space-between',
+          width: '100%', fontSize: 18, color: MUTED,
+        }}>
+          <div style={{ display: 'flex' }}>{`${fact.rule_name} · priority ${fact.priority_score}`}</div>
+          <div style={{ display: 'flex' }}>Source: Eurostat / ECB / IMF</div>
         </div>
       </div>
     ),
-    {
-      width: WIDTH,
-      height: HEIGHT,
-    },
+    { width: WIDTH, height: HEIGHT },
   );
 
   return await response.arrayBuffer();

@@ -2,6 +2,7 @@
 // runs each rule, returns deduped candidate facts sorted by priority.
 
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
+import { fetchAll } from '@/lib/supabase/paginate';
 import type { CandidateFact, SeriesIndex } from '@/lib/social/types';
 import { detectThresholdCrossings } from './rules/threshold-crossing';
 import { detectMultiYearExtremes } from './rules/multi-year-extreme';
@@ -28,19 +29,24 @@ export async function detectFacts(): Promise<CandidateFact[]> {
   sinceCutoff.setUTCFullYear(sinceCutoff.getUTCFullYear() - 30);
   const sinceIso = sinceCutoff.toISOString().slice(0, 10);
 
-  const [pointsRes, eventsRes] = await Promise.all([
-    admin.from('economic_data_points')
-      .select('country_iso, metric_key, period_start, value, is_forecast')
-      .in('country_iso', EU27)
-      .in('metric_key', METRICS_FOR_DETECTION)
-      .eq('is_forecast', false)
-      .gte('period_start', sinceIso)
-      .order('period_start', { ascending: true }),
+  // PostgREST max_rows on Supabase caps at 1000 rows. Page through.
+  const [allPoints, eventsRes] = await Promise.all([
+    fetchAll<{ country_iso: string; metric_key: string; period_start: string; value: number; is_forecast: boolean }>((from, to) =>
+      admin.from('economic_data_points')
+        .select('country_iso, metric_key, period_start, value, is_forecast')
+        .in('country_iso', EU27)
+        .in('metric_key', METRICS_FOR_DETECTION)
+        .eq('is_forecast', false)
+        .gte('period_start', sinceIso)
+        .order('period_start', { ascending: true })
+        .range(from, to)
+    ),
     admin.from('monetary_events').select('id, event_date, category, title, description').order('event_date'),
   ]);
+  const events = eventsRes.data;
 
   const series: SeriesIndex = new Map();
-  for (const r of pointsRes.data ?? []) {
+  for (const r of allPoints) {
     const k = `${r.country_iso}|${r.metric_key}`;
     const arr = series.get(k) ?? [];
     arr.push({ period_start: r.period_start, value: Number(r.value) });
@@ -52,7 +58,7 @@ export async function detectFacts(): Promise<CandidateFact[]> {
     ...detectMultiYearExtremes(series, EU27),
     ...detectRankChanges(series),
     ...detectStreaks(series, EU27),
-    ...detectAnniversaries(eventsRes.data ?? []),
+    ...detectAnniversaries(events ?? []),
   ];
 
   // Dedupe by (rule, country_iso, metric, period).
