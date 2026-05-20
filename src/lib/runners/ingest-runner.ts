@@ -312,9 +312,16 @@ async function diffAndUpsert(
   }
 
   // Chunked upsert.
+  // Final safety dedupe in case any extractor concatenated sub-batches with overlapping keys.
+  const dedupedMap = new Map<string, ExtractedRow>();
+  for (const r of toUpsert) {
+    dedupedMap.set(`${r.country_iso}|${r.metric_key}|${r.period_start}`, r);
+  }
+  const dedupedUpsert = [...dedupedMap.values()];
+
   const CHUNK = 500;
-  for (let i = 0; i < toUpsert.length; i += CHUNK) {
-    const chunk = toUpsert.slice(i, i + CHUNK);
+  for (let i = 0; i < dedupedUpsert.length; i += CHUNK) {
+    const chunk = dedupedUpsert.slice(i, i + CHUNK);
     const { error } = await admin
       .from('economic_data_points')
       .upsert(chunk.map((r) => ({

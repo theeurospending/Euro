@@ -39,6 +39,9 @@ const EUROSTAT_ROOT = 'https://ec.europa.eu/eurostat/api/dissemination/statistic
 
 // Eurostat geo code → our internal iso_code mapping.
 // We accept ISO-2 plus Eurostat's special aggregates.
+// PRECEDENCE: for aggregates like EZ (eurozone) and EU, Eurostat may emit
+// multiple variants (EA19 + EA20, EU27_2020 + EU28) for the same year. We
+// keep ALL mappings in the table but dedupe by precedence — higher number wins.
 const GEO_TO_ISO: Record<string, string> = {
   EA20: 'EZ',
   EA19: 'EZ',
@@ -53,8 +56,18 @@ const GEO_TO_ISO: Record<string, string> = {
   EL: 'GR',          // Eurostat uses EL for Greece
 };
 
+// Higher = more preferred when multiple Eurostat aggregate codes map to the same iso.
+const GEO_PRECEDENCE: Record<string, number> = {
+  EA20: 100, EA19: 90, EA18: 80, EA17: 70, EA12: 60,
+  EU27_2020: 100, EU28: 90, EU27: 80, EU15: 70,
+};
+
 export function eurostatGeoToIso(eurostatGeo: string): string {
   return GEO_TO_ISO[eurostatGeo] ?? eurostatGeo;
+}
+
+function geoPrecedence(eurostatGeo: string): number {
+  return GEO_PRECEDENCE[eurostatGeo] ?? 1000;  // ISO-2 country codes always win over aggregates
 }
 
 const KNOWN_ISO_CODES = new Set([
@@ -177,7 +190,17 @@ export function parseAnnual(ds: JsonStatDataset): EurostatNormalisedRow[] {
     });
   }
 
-  return rows;
+  // Dedupe by (iso, period) keeping highest-precedence source code.
+  // Country-code rows have precedence 1000; aggregate variants compete with each other.
+  const seen = new Map<string, EurostatNormalisedRow>();
+  for (const r of rows) {
+    const key = `${r.country_iso}|${r.period_start}`;
+    const existing = seen.get(key);
+    if (!existing || geoPrecedence(r.eurostat_geo) > geoPrecedence(existing.eurostat_geo)) {
+      seen.set(key, r);
+    }
+  }
+  return [...seen.values()];
 }
 
 function invertCategoryIndex(idx: Record<string, number> | string[], size: number): string[] {
