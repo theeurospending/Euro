@@ -118,18 +118,47 @@ async function publishOne(
     throw new Error(`Make webhook HTTP ${res.status}: ${text.slice(0, 300)}`);
   }
 
-  // Default to all-platforms-ok unless Make's response says otherwise.
-  // We expect a shape like { platforms: { instagram: "ok", x: "ok" } } — if Make sends it.
+  // Detect Make's default "Accepted" immediate-response (returned BEFORE the
+  // scenario actually runs). When we see this, the post may have failed at
+  // Buffer/Meta downstream — we can't know. Surface this as a partial/unknown
+  // state rather than silently claiming success.
+  const isStructuredResponse = parsed && typeof parsed === 'object' && 'platforms' in parsed;
+  const isMakeImmediateAck =
+    !isStructuredResponse && (
+      text.trim() === 'Accepted' ||
+      (parsed && typeof parsed === 'object' && 'raw' in (parsed as Record<string, unknown>) &&
+       String((parsed as Record<string, unknown>).raw).trim() === 'Accepted')
+    );
+
   const platformStatuses: Record<string, string> = {};
-  for (const p of draft.platforms) platformStatuses[p] = 'ok';
-  if (parsed && typeof parsed === 'object' && parsed && 'platforms' in parsed) {
-    const responsePlatforms = (parsed as Record<string, unknown>).platforms;
-    if (responsePlatforms && typeof responsePlatforms === 'object') {
-      Object.assign(platformStatuses, responsePlatforms);
+  if (isStructuredResponse) {
+    // Make returned a real per-platform map — use it.
+    for (const p of draft.platforms) platformStatuses[p] = 'ok';
+    const respPlatforms = (parsed as Record<string, unknown>).platforms;
+    if (respPlatforms && typeof respPlatforms === 'object') {
+      Object.assign(platformStatuses, respPlatforms);
     }
+  } else if (isMakeImmediateAck) {
+    // Make swallowed the response — we genuinely don't know what happened.
+    for (const p of draft.platforms) platformStatuses[p] = 'unknown';
+  } else {
+    // Some other 2xx — assume best case.
+    for (const p of draft.platforms) platformStatuses[p] = 'ok';
   }
 
-  // Write post history row.
+  // If any platform shows "error", treat the whole publish as a failure.
+  const failedPlatforms = Object.entries(platformStatuses)
+    .filter(([, status]) => typeof status === 'string' && status.toLowerCase().startsWith('error'));
+  const anyUnknown = Object.values(platformStatuses).some((s) => s === 'unknown');
+
+  // Persist a post history row in every case — even failures — so the admin
+  // /admin/social-media/posts page reflects reality.
+  const errorMessage = failedPlatforms.length > 0
+    ? `Make reported failures: ${failedPlatforms.map(([k, v]) => `${k}=${v}`).join(', ')}`
+    : anyUnknown
+      ? 'Make returned "Accepted" before the scenario completed — actual platform delivery is unknown. Wire a Webhook Response module at the end of the scenario.'
+      : null;
+
   const { error: postErr } = await admin.from('social_media_posts').insert({
     draft_id: draft.id,
     country_iso: draft.country_iso,
@@ -138,12 +167,24 @@ async function publishOne(
     platforms: draft.platforms,
     platform_statuses: platformStatuses,
     make_response: parsed ?? null,
+    error_message: errorMessage,
   });
   if (postErr) throw new Error(`insert post: ${postErr.message}`);
 
-  // Mark draft posted.
+  // Surface failures back up to the caller so the draft is marked 'failed',
+  // not 'posted', and surfaces in the admin UI.
+  if (failedPlatforms.length > 0) {
+    throw new Error(errorMessage!);
+  }
+
+  // Mark draft posted (or 'posted_unknown' if we genuinely don't know).
+  const draftStatus = anyUnknown ? 'posted' : 'posted'; // status stays 'posted' for UI compat; error_message carries the warning
   const { error: draftErr } = await admin.from('social_media_drafts')
-    .update({ status: 'posted', error_message: null, updated_at: new Date().toISOString() })
+    .update({
+      status: draftStatus,
+      error_message: anyUnknown ? errorMessage : null,
+      updated_at: new Date().toISOString(),
+    })
     .eq('id', draft.id);
   if (draftErr) throw new Error(`update draft: ${draftErr.message}`);
 }

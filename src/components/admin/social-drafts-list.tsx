@@ -90,7 +90,11 @@ export function DraftsList({ drafts }: { drafts: Draft[] }) {
                   </button>
                 </div>
               </div>
-              {d.error_message && <div className="mt-2 text-xs text-red-700">{d.error_message}</div>}
+              {d.error_message && (
+                <div className={`mt-2 text-xs ${d.status === 'failed' ? 'text-red-700' : 'text-amber-700'}`}>
+                  {d.status === 'failed' ? '✗ ' : '⚠ '}{d.error_message}
+                </div>
+              )}
             </div>
           </div>
         </article>
