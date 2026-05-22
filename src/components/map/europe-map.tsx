@@ -25,19 +25,20 @@ function getProjection() {
     .translate([VIEWBOX_W / 2, VIEWBOX_H / 2 - 20]);
 }
 
-// Subtle navy shade palette — used as the default fill when no metric is
-// active. Each country gets one shade deterministically from its numeric id.
-const NAVY_SHADES = [
-  '#1B2A4A', '#22335A', '#1A2647', '#27396B', '#1E2D55',
-  '#15223F', '#283D75', '#1D2E54',
-];
+// Single brand-navy fill for default ('none') mode — clean Eurostat-style.
+const DEFAULT_FILL = '#3E5996';
 
-// Sequential blue scale used when a metric is active — runs from a deep
-// navy to bright lavender, on-brand and readable on the dark background.
-const METRIC_BLUES = ['#1F2A52', '#2B3E7A', '#465A9F', '#7A87C4', '#C5CBF0'];
+// Sequential blue scale used when a metric is active — strong dark→pale gradient,
+// matches the Daft.ie / Eurostat report style. Darkest = highest pressure.
+const METRIC_BLUES = ['#1F3461', '#2D5499', '#4E73C2', '#7AABDA', '#B5D3E8'];
+
+// Non-EU / non-eurozone fill.
+const OUT_OF_SCOPE_FILL = '#cbd5e1';
+const COUNTRY_BORDER = '#ffffff';
 
 export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
-  const [mode, setMode] = useState<ColourMode>('none');
+  // Default to debt — gives the map an immediate "story" instead of opening blank.
+  const [mode, setMode] = useState<ColourMode>('gov_debt_pct_gdp');
   const [hover, setHover] = useState<{ iso: string; x: number; y: number } | null>(null);
 
   const features = useMemo(() => {
@@ -64,8 +65,35 @@ export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
 
   const hoverCountry = hover ? byIso.get(hover.iso) : null;
 
+  // Compute the EU-wide latest-period summary for the headline.
+  const headlineSummary = useMemo(() => {
+    if (mode === 'none') return null;
+    const eu = countries.filter((c) => c.is_eu_member && !c.is_aggregate);
+    const cells = eu
+      .map((c) => c.metrics[mode])
+      .filter((x): x is NonNullable<typeof x> => Boolean(x));
+    if (cells.length === 0) return null;
+    const total = cells.reduce((s, c) => s + c.value, 0);
+    const mean = total / cells.length;
+    const periodLabels = [...new Set(cells.map((c) => c.period_start.slice(0, 7)))].sort();
+    const latestPeriod = periodLabels[periodLabels.length - 1];
+    return { mean, count: cells.length, period: latestPeriod };
+  }, [mode, countries]);
+
+  const activeLabel = mode === 'none' ? null : HOMEPAGE_METRIC_LABELS[mode];
+
   return (
     <div className="relative">
+      {/* Headline summary */}
+      {activeLabel && headlineSummary && (
+        <div className="mb-5">
+          <h3 className="font-display text-2xl tracking-tight text-white sm:text-3xl">
+            The average {activeLabel.label.toLowerCase()} across the EU 27 in {fmtPeriod(headlineSummary.period)} was{' '}
+            <span className="text-[var(--brand-gold)]">{fmtSummary(mode, headlineSummary.mean)}</span>
+          </h3>
+        </div>
+      )}
+
       {/* Metric toolbar */}
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <span className="font-mono text-[10px] uppercase tracking-widest text-slate-400">View</span>
@@ -96,13 +124,13 @@ export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
 
             let fill: string;
             if (mode === 'none') {
-              if (isEU) fill = NAVY_SHADES[numericId % NAVY_SHADES.length];
-              else fill = '#cbd5e1';                  // non-EU: pale slate
+              if (isEU) fill = DEFAULT_FILL;
+              else fill = OUT_OF_SCOPE_FILL;
             } else {
               const value = c?.metrics[mode]?.value;
               if (isEU && typeof value === 'number' && metricScale) fill = metricScale(value);
               else if (isEU) fill = '#e2e8f0';
-              else fill = '#cbd5e1';
+              else fill = OUT_OF_SCOPE_FILL;
             }
 
             const interactive = isEU && Boolean(iso);
@@ -111,8 +139,8 @@ export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
                 <path
                   d={d}
                   fill={fill}
-                  stroke="#ffffff"
-                  strokeWidth={0.8}
+                  stroke={COUNTRY_BORDER}
+                  strokeWidth={1.0}
                   className={interactive ? 'cursor-pointer transition-opacity hover:opacity-80' : 'pointer-events-none'}
                   onMouseEnter={(e) => {
                     if (!interactive || !iso) return;
@@ -187,6 +215,21 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
 function fmtValue(m: HomepageMetric, v: number): string {
   if (m === 'gdp_per_capita_eur') return `€${Math.round(v).toLocaleString()}`;
   return `${v.toFixed(1)}%`;
+}
+
+function fmtSummary(m: HomepageMetric, v: number): string {
+  if (m === 'gdp_per_capita_eur') return `€${Math.round(v).toLocaleString()}`;
+  return `${v.toFixed(1)}%`;
+}
+
+function fmtPeriod(p: string): string {
+  // Accept 'YYYY-MM' or 'YYYY-MM-DD' input; return a friendly label.
+  if (/^\d{4}-\d{2}$/.test(p)) {
+    const [y, mo] = p.split('-');
+    const monthName = new Date(Date.UTC(Number(y), Number(mo) - 1, 1)).toLocaleString('en-GB', { month: 'long' });
+    return `${monthName} ${y}`;
+  }
+  return p;
 }
 
 // Sequential blue scale based on quintiles.
