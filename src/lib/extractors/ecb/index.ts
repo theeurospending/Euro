@@ -112,6 +112,41 @@ export async function ecb_irs_sovereign_yields(opts: EcbExtractorOpts = {}): Pro
   return out;
 }
 
+// Non-EZ EU members: 10Y benchmark yield in LOCAL currency.
+// ECB IRS pattern: M.<COUNTRY>.L.L40.CI.0000.<CCY>.N.Z
+const NON_EZ_EU: Array<{ iso: string; ccy: string }> = [
+  { iso: 'PL', ccy: 'PLN' },
+  { iso: 'CZ', ccy: 'CZK' },
+  { iso: 'HU', ccy: 'HUF' },
+  { iso: 'RO', ccy: 'RON' },
+  { iso: 'SE', ccy: 'SEK' },
+  { iso: 'DK', ccy: 'DKK' },
+];
+
+export async function ecb_irs_non_ez_yields(opts: EcbExtractorOpts = {}): Promise<ExtractedRow[]> {
+  const startPeriod = opts.startPeriod ?? DEFAULT_START;
+  const out: ExtractedRow[] = [];
+  for (const { iso, ccy } of NON_EZ_EU) {
+    const seriesKey = `M.${iso}.L.L40.CI.0000.${ccy}.N.Z`;
+    try {
+      const obs = await fetchEcb('IRS', seriesKey, { startPeriod });
+      for (const o of obs) {
+        out.push({
+          country_iso: iso,
+          metric_key: 'sovereign_10y_yield_local',
+          period_start: o.period_start,
+          value: o.value,
+          unit: '%',
+          source: 'ecb:IRS',
+        });
+      }
+    } catch {
+      // Some countries don't have this series — skip silently.
+    }
+  }
+  return out;
+}
+
 export const ECB_EXTRACTORS = {
   ecb_fm_rates_and_yield,
   ecb_ilm_balance_sheet,
@@ -119,6 +154,7 @@ export const ECB_EXTRACTORS = {
   ecb_exr_fx,
   ecb_icp_hicp,
   ecb_irs_sovereign_yields,
+  ecb_irs_non_ez_yields,
 } as const;
 
 export type EcbExtractorName = keyof typeof ECB_EXTRACTORS;

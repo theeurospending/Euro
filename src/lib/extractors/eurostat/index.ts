@@ -2,7 +2,7 @@
 //   (opts) => Promise<ExtractedRow[]>
 // Output rows are ready to be diffed and upserted by the ingest runner.
 
-import { fetchEurostat, parseAnnual, type EurostatNormalisedRow } from '@/lib/extractors/eurostat-base';
+import { fetchEurostat, parseAnnual, parseEurostat, type EurostatNormalisedRow } from '@/lib/extractors/eurostat-base';
 
 export type ExtractedRow = {
   country_iso: string;
@@ -205,6 +205,34 @@ export async function eurostat_demo_pjan(opts: ExtractorOpts = {}): Promise<Extr
   return attach(parseAnnual(ds), 'population_total', 'persons', 'eurostat:demo_pjan');
 }
 
+// ----------------------------------------------------------------------------
+// prc_hicp_manr — monthly HICP annual rate of change
+// ----------------------------------------------------------------------------
+export async function eurostat_prc_hicp_manr(opts: ExtractorOpts = {}): Promise<ExtractedRow[]> {
+  const since = opts.sinceYear ?? DEFAULT_SINCE;
+  const ds = await fetchEurostat('prc_hicp_manr', {
+    coicop: 'CP00',
+    unit: 'RCH_A',
+    sinceTimePeriod: `${since}M01`,
+  });
+  return attach(parseEurostat(ds, 'monthly'), 'hicp_monthly_pct', '%', 'eurostat:prc_hicp_manr');
+}
+
+// ----------------------------------------------------------------------------
+// une_rt_m — monthly unemployment rate (seasonally adjusted)
+// ----------------------------------------------------------------------------
+export async function eurostat_une_rt_m(opts: ExtractorOpts = {}): Promise<ExtractedRow[]> {
+  const since = opts.sinceYear ?? DEFAULT_SINCE;
+  const ds = await fetchEurostat('une_rt_m', {
+    sex: 'T',
+    age: 'Y15-74',
+    unit: 'PC_ACT',
+    s_adj: 'SA',
+    sinceTimePeriod: `${since}M01`,
+  });
+  return attach(parseEurostat(ds, 'monthly'), 'unemployment_monthly_pct', '%', 'eurostat:une_rt_m');
+}
+
 // Registry — looked up by `data_sources.extractor_name`.
 export const EUROSTAT_EXTRACTORS = {
   eurostat_gov_10a_main,
@@ -215,6 +243,8 @@ export const EUROSTAT_EXTRACTORS = {
   eurostat_prc_hicp_aind,
   eurostat_une_rt_a,
   eurostat_demo_pjan,
+  eurostat_prc_hicp_manr,
+  eurostat_une_rt_m,
 } as const;
 
 export type EurostatExtractorName = keyof typeof EUROSTAT_EXTRACTORS;

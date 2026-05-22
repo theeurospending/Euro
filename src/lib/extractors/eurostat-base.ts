@@ -127,6 +127,89 @@ export async function fetchEurostat(dataset: string, params: Record<string, stri
  *
  * Filters out cells with no value, unknown countries, and non-annual time labels.
  */
+// Convert a Eurostat time label like "2024M03" / "2024-Q2" / "2024" into a
+// canonical period_start YYYY-MM-DD, or null if it's not the requested frequency.
+function eurostatTimeLabelToPeriodStart(label: string, frequency: 'annual' | 'monthly' | 'quarterly'): string | null {
+  if (frequency === 'annual') {
+    return /^\d{4}$/.test(label) ? `${label}-01-01` : null;
+  }
+  if (frequency === 'monthly') {
+    const m = label.match(/^(\d{4})M(\d{2})$/);
+    if (m) return `${m[1]}-${m[2]}-01`;
+    return null;
+  }
+  if (frequency === 'quarterly') {
+    const q = label.match(/^(\d{4})-?Q(\d)$/);
+    if (q) {
+      const month = String((parseInt(q[2], 10) - 1) * 3 + 1).padStart(2, '0');
+      return `${q[1]}-${month}-01`;
+    }
+    return null;
+  }
+  return null;
+}
+
+export function parseEurostat(ds: JsonStatDataset, frequency: 'annual' | 'monthly' | 'quarterly' = 'annual'): EurostatNormalisedRow[] {
+  const dims = ds.id;
+  const sizes = ds.size;
+  const geoDimIdx = dims.indexOf('geo');
+  const timeDimIdx = dims.indexOf('time');
+  if (geoDimIdx === -1 || timeDimIdx === -1) {
+    throw new Error(`parseEurostat: dataset is missing geo or time dimension (id=${dims.join(',')})`);
+  }
+
+  const geoByPos = invertCategoryIndex(ds.dimension.geo.category.index, sizes[geoDimIdx]);
+  const timeByPos = invertCategoryIndex(ds.dimension.time.category.index, sizes[timeDimIdx]);
+  const strides = computeStrides(sizes);
+  const total = sizes.reduce((a, b) => a * b, 1);
+  const rows: EurostatNormalisedRow[] = [];
+  const valueObj = Array.isArray(ds.value) ? null : ds.value;
+  const valueArr = Array.isArray(ds.value) ? ds.value : null;
+
+  for (let flat = 0; flat < total; flat++) {
+    const v = valueObj ? valueObj[String(flat)] : valueArr![flat];
+    if (v == null || typeof v !== 'number' || !Number.isFinite(v)) continue;
+
+    let rem = flat, geoPos = 0, timePos = 0;
+    for (let d = 0; d < dims.length; d++) {
+      const pos = Math.floor(rem / strides[d]);
+      rem -= pos * strides[d];
+      if (d === geoDimIdx) geoPos = pos;
+      if (d === timeDimIdx) timePos = pos;
+    }
+
+    const eurostatGeo = geoByPos[geoPos];
+    const timeLabel = timeByPos[timePos];
+    if (!eurostatGeo || !timeLabel) continue;
+
+    const iso = eurostatGeoToIso(eurostatGeo);
+    if (!isKnownCountry(iso)) continue;
+
+    const period_start = eurostatTimeLabelToPeriodStart(timeLabel, frequency);
+    if (!period_start) continue;
+
+    rows.push({
+      country_iso: iso,
+      eurostat_geo: eurostatGeo,
+      period_start,
+      period_label: timeLabel,
+      value: v,
+      flags: readFlag(ds.status, flat),
+    });
+  }
+
+  // Dedupe by (iso, period) preferring higher-precedence geo (EA20 > EA19, etc.)
+  const seen = new Map<string, EurostatNormalisedRow>();
+  for (const r of rows) {
+    const key = `${r.country_iso}|${r.period_start}`;
+    const existing = seen.get(key);
+    if (!existing || geoPrecedence(r.eurostat_geo) > geoPrecedence(existing.eurostat_geo)) {
+      seen.set(key, r);
+    }
+  }
+  return [...seen.values()];
+}
+
 export function parseAnnual(ds: JsonStatDataset): EurostatNormalisedRow[] {
   const dims = ds.id;
   const sizes = ds.size;
