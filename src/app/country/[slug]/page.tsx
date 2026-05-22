@@ -60,7 +60,7 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       </p>
 
       {/* Snapshot */}
-      <section className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <section className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Snapshot label="GDP nominal"  metric="gdp_nominal_eur_millions"  unit="€M"   data={data} />
         <Snapshot label="GDP per cap"  metric="gdp_per_capita_eur"        unit="€"    data={data} />
         <Snapshot label="Deficit"      metric="gov_deficit_pct_gdp"       unit="% GDP" data={data} colorByDirection />
@@ -125,13 +125,13 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       <Section title="Macro indicators">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <ChartCard title="Real GDP growth" subtitle="% YoY, annual">
-            <TimeSeriesBar data={data.series['gdp_real_growth_pct']?.filter((p) => !p.is_forecast) ?? []} format="pct1" height={220} />
+            <TimeSeriesBar data={data.series['gdp_real_growth_pct']?.filter((p) => !p.is_forecast) ?? []} format="pct1" height={280} />
           </ChartCard>
           <ChartCard title="HICP inflation" subtitle="% YoY, annual average">
-            <TimeSeriesLine series={[{ label: 'HICP', data: data.series['hicp_annual_pct'] ?? [], color: PALETTE.warning }]} format="pct1" height={220} />
+            <TimeSeriesLine series={[{ label: 'HICP', data: data.series['hicp_annual_pct'] ?? [], color: PALETTE.warning }]} format="pct1" height={280} />
           </ChartCard>
           <ChartCard title="Unemployment" subtitle="% of active population">
-            <TimeSeriesLine series={[{ label: 'Unemployment', data: data.series['unemployment_rate_pct'] ?? [], color: PALETTE.negative }]} format="pct1" height={220} />
+            <TimeSeriesLine series={[{ label: 'Unemployment', data: data.series['unemployment_rate_pct'] ?? [], color: PALETTE.negative }]} format="pct1" height={280} />
           </ChartCard>
         </div>
       </Section>
@@ -250,9 +250,9 @@ function Snapshot({
   const snap = data.snapshot[metric];
   if (!snap || !snap.latest) {
     return (
-      <div className="surface p-3">
-        <div className="kicker text-[10px]">{label}</div>
-        <div className="mt-1 text-slate-500">—</div>
+      <div className="surface p-4">
+        <div className="kicker text-xs">{label}</div>
+        <div className="mt-2 text-base text-slate-500">—</div>
       </div>
     );
   }
@@ -264,17 +264,17 @@ function Snapshot({
     : 'text-slate-400';
 
   return (
-    <div className="surface p-3">
-      <div className="kicker text-[10px]">{label}</div>
-      <div className="mt-1 flex items-baseline gap-1.5">
-        <span className="font-display text-2xl text-white">{fmtSnapshot(v, metric)}</span>
-        <span className="font-mono text-[10px] text-slate-400">{unit}</span>
+    <div className="surface p-4">
+      <div className="kicker text-xs">{label}</div>
+      <div className="mt-2 flex items-baseline gap-2">
+        <span className="font-display text-3xl text-white">{fmtSnapshot(v, metric)}</span>
+        <span className="font-mono text-xs text-slate-400">{unit}</span>
       </div>
-      <div className={`mt-0.5 text-xs font-mono ${deltaColor}`}>
+      <div className={`mt-1 font-mono text-sm ${deltaColor}`}>
         {delta == null ? '—' : `${delta >= 0 ? '+' : ''}${delta.toFixed(2)} YoY`}
       </div>
-      <div className="mt-1"><Sparkline data={snap.spark} color="#C5CBF0" /></div>
-      <div className="mt-1 font-mono text-[10px] text-slate-500">as of {snap.latest.period_start.slice(0, 7)}</div>
+      <div className="mt-2"><Sparkline data={snap.spark} color="#C5CBF0" width={120} height={32} /></div>
+      <div className="mt-2 font-mono text-xs text-slate-500">as of {snap.latest.period_start.slice(0, 7)}</div>
     </div>
   );
 }

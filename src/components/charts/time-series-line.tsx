@@ -25,7 +25,7 @@ export type TimeSeriesLineProps = {
   format?: FormatId;
 };
 
-export function TimeSeriesLine({ series, yLabel, height = 280, events, format }: TimeSeriesLineProps) {
+export function TimeSeriesLine({ series, yLabel, height = 360, events, format }: TimeSeriesLineProps) {
   if (series.length === 0 || series.every((s) => s.data.length === 0)) {
     return <EmptyState />;
   }

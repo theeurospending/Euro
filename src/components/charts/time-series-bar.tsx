@@ -9,7 +9,7 @@ export type BarPoint = { period_start: string; value: number };
 export function TimeSeriesBar({
   data,
   yLabel,
-  height = 240,
+  height = 320,
   positiveColor = PALETTE.positive,
   negativeColor = PALETTE.negative,
   format,

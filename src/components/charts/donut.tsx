@@ -8,9 +8,9 @@ export type DonutSlice = { name: string; value: number; color?: string };
 
 export function Donut({
   data,
-  height = 280,
-  innerRadius = 60,
-  outerRadius = 100,
+  height = 360,
+  innerRadius = 80,
+  outerRadius = 130,
   format,
 }: {
   data: DonutSlice[];

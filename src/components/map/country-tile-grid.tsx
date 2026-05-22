@@ -46,32 +46,32 @@ export function CountryTileGrid({ countries }: { countries: CountrySnapshot[] })
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap items-center gap-2 text-xs">
-        <span className="kicker">Sort</span>
+      <div className="mb-5 flex flex-wrap items-center gap-2 text-sm">
+        <span className="kicker text-xs">Sort</span>
         <SortBtn current={sortBy} value="name" onClick={(v) => setSortBy(v)}>Name</SortBtn>
         {SORTABLE_METRICS.map((m) => (
           <SortBtn key={m} current={sortBy} value={m} onClick={(v) => setSortBy(v)}>{HOMEPAGE_METRIC_LABELS[m].label}</SortBtn>
         ))}
         <button
           onClick={() => setSortDir(sortDir === 'asc' ? 'desc' : 'asc')}
-          className="ml-1 rounded-full border border-white/15 px-2 py-1 text-slate-300 hover:bg-white/5"
+          className="ml-1 rounded-full border border-white/15 px-3 py-1.5 text-sm text-slate-300 hover:bg-white/5"
         >
           {sortDir === 'asc' ? '↑ asc' : '↓ desc'}
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {sorted.map((c) => (
           <Link
             key={c.iso_code}
             href={`/country/${c.slug}`}
-            className="surface group block p-3 transition-colors hover:border-[var(--brand-gold)]/40"
+            className="surface group block p-5 transition-colors hover:border-[var(--brand-gold)]/40"
           >
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl">{c.flag_emoji}</span>
-              <span className="font-display text-sm text-white">{c.name}</span>
+            <div className="flex items-baseline gap-3">
+              <span className="text-3xl">{c.flag_emoji}</span>
+              <span className="font-display text-xl text-white">{c.name}</span>
             </div>
-            <div className="mt-3 space-y-1.5">
+            <div className="mt-4 space-y-2.5">
               {PRIMARY_STATS.map((m) => (
                 <Stat key={m} metric={m} snap={c.metrics[m]} />
               ))}
@@ -87,18 +87,18 @@ function Stat({ metric, snap }: { metric: HomepageMetric; snap: CountrySnapshot[
   const meta = HOMEPAGE_METRIC_LABELS[metric];
   if (!snap) {
     return (
-      <div className="flex items-center justify-between text-xs">
-        <span className="text-slate-500">{meta.label}</span>
+      <div className="flex items-center justify-between text-sm">
+        <span className="text-slate-400">{meta.label}</span>
         <span className="text-slate-600">—</span>
       </div>
     );
   }
   return (
-    <div className="flex items-center justify-between text-xs">
-      <span className="text-slate-400">{meta.label}</span>
-      <span className="flex items-center gap-1.5">
-        <Sparkline data={snap.spark} width={36} height={16} color={PALETTE.lav} />
-        <span className="font-mono text-slate-200">{fmt(metric, snap.value)}</span>
+    <div className="flex items-center justify-between text-sm">
+      <span className="text-slate-300">{meta.label}</span>
+      <span className="flex items-center gap-2.5">
+        <Sparkline data={snap.spark} width={72} height={28} color={PALETTE.lav} />
+        <span className="font-mono text-base font-medium text-white">{fmt(metric, snap.value)}</span>
       </span>
     </div>
   );
@@ -114,7 +114,7 @@ function SortBtn({ current, value, onClick, children }: { current: SortMode; val
   return (
     <button
       onClick={() => onClick(value)}
-      className={`rounded-full px-3 py-1 text-xs transition-colors ${
+      className={`rounded-full px-3 py-1.5 text-sm transition-colors ${
         active
           ? 'bg-[var(--brand-lav)] text-[var(--brand-navy)] font-medium'
           : 'border border-white/15 text-slate-300 hover:bg-white/5'
