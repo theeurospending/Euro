@@ -15,14 +15,15 @@ export default async function AdminHome() {
     .maybeSingle();
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-12">
-      <h1 className="text-3xl font-bold">Admin</h1>
-      <p className="mt-2 text-sm text-zinc-500">
-        Signed in as <span className="font-mono">{profile?.email ?? user.email}</span>
-        {profile?.is_superadmin && ' · superadmin'}
+    <main className="mx-auto max-w-5xl px-6 py-12">
+      <div className="kicker text-[var(--brand-navy)]/60">Admin</div>
+      <h1 className="font-display mt-3 text-4xl tracking-tight text-[var(--brand-navy)]">Dashboard</h1>
+      <p className="mt-2 text-sm text-[var(--brand-navy)]/60">
+        Signed in as <span className="font-mono text-[var(--brand-navy)]">{profile?.email ?? user.email}</span>
+        {profile?.is_superadmin && <> · <span className="font-mono">superadmin</span></>}
       </p>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card title="Data sources" href="/admin/data-sources" hint="Trigger ingestion, view per-source status" />
         <Card title="Ingest log" href="/admin/ingest-log" hint="History of every ingest run" />
         <Card title="Monetary events" href="/admin/monetary-events" hint="ECB rate changes, milestones, crises" />
@@ -34,11 +35,8 @@ export default async function AdminHome() {
         <Card title="Social posts" href="/admin/social-media/posts" hint="Publish history per platform" />
         <Card title="Social settings" href="/admin/social-media/settings" hint="Make.com webhook + defaults" />
         <Card title="SEO overrides" href="/admin/seo" hint="Per-path title / description / OG image" />
+        <Card title="Validation comparison" href="/admin/validation-comparison" hint="Eurostat vs OECD disagreements" />
       </div>
-
-      <form action="/api/auth/signout" method="POST" className="mt-12">
-        <button className="text-sm text-zinc-500 underline">Sign out</button>
-      </form>
     </main>
   );
 }
@@ -47,10 +45,12 @@ function Card({ title, href, hint }: { title: string; href: string; hint: string
   return (
     <a
       href={href}
-      className="block rounded-lg border border-zinc-200 p-4 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600"
+      className="group block rounded-lg border border-[var(--brand-navy)]/10 bg-white p-4 transition-colors hover:border-[var(--brand-navy)]/30 hover:shadow-sm"
     >
-      <div className="text-sm font-semibold">{title}</div>
-      <div className="mt-1 text-xs text-zinc-500">{hint}</div>
+      <div className="font-display text-base text-[var(--brand-navy)]">
+        {title} <span className="text-[var(--brand-gold)] opacity-0 transition-opacity group-hover:opacity-100">→</span>
+      </div>
+      <div className="mt-1 text-xs text-[var(--brand-navy)]/60">{hint}</div>
     </a>
   );
 }

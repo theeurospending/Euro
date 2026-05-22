@@ -7,6 +7,8 @@ import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { detectFacts } from '@/lib/social/fact-detector';
 import { generateCaption } from '@/lib/social/caption-generator';
 import { renderChartCardPng } from '@/lib/social/chart-renderer';
+import { renderPhotoCardPng } from '@/lib/social/photo-overlay-renderer';
+import { isDriveConfigured, pickLruImageForCountry, downloadDriveFile, markPhotoUsed } from '@/lib/google-drive';
 import type { CandidateFact, DataPoint } from '@/lib/social/types';
 
 export type SocialDraftRunSummary = {
@@ -114,9 +116,40 @@ async function generateOneDraft(
   // Caption via Anthropic.
   const caption = await generateCaption(fact, 'instagram');
 
+  // Decide post_type: photo_overlay when Google Drive is configured AND the
+  // country has photos available; otherwise fall back to chart.
+  let postType: 'chart' | 'photo_overlay' = fact.chart_type !== 'none' ? 'chart' : 'photo_overlay';
+  let photoSource: { driveFileId: string; dataUrl: string } | null = null;
+  if (isDriveConfigured() && fact.country_iso) {
+    try {
+      const pick = await pickLruImageForCountry(fact.country_iso);
+      if (pick) {
+        const buf = await downloadDriveFile(pick.driveFileId);
+        // Convert to data: URL so Satori can embed.
+        const b64 = arrayBufferToBase64(buf);
+        photoSource = { driveFileId: pick.driveFileId, dataUrl: `data:${pick.mimeType};base64,${b64}` };
+        postType = 'photo_overlay';
+      }
+    } catch {
+      // Drive errors: fall back to chart.
+    }
+  }
+
   // Render PNG.
   let imageUrl: string | null = null;
-  if (fact.chart_type !== 'none' && series.length > 0) {
+  if (postType === 'photo_overlay' && photoSource) {
+    const png = await renderPhotoCardPng({ fact, unit, country_label, photoDataUrl: photoSource.dataUrl });
+    const key = `${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}.png`;
+    const { error: upErr } = await admin.storage.from('social-images').upload(key, new Uint8Array(png), {
+      contentType: 'image/png',
+      cacheControl: '31536000',
+      upsert: false,
+    });
+    if (upErr) throw new Error(`storage upload: ${upErr.message}`);
+    const { data: pub } = admin.storage.from('social-images').getPublicUrl(key);
+    imageUrl = pub.publicUrl;
+    if (fact.country_iso) await markPhotoUsed(fact.country_iso, photoSource.driveFileId);
+  } else if (fact.chart_type !== 'none' && series.length > 0) {
     const png = await renderChartCardPng({ fact, series, unit, country_label });
     const key = `${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}.png`;
     const { error: upErr } = await admin.storage.from('social-images').upload(key, new Uint8Array(png), {
@@ -132,11 +165,11 @@ async function generateOneDraft(
   // Insert draft + mark candidate promoted.
   const { error: draftErr } = await admin.from('social_media_drafts').insert({
     candidate_id: candidateId,
-    post_type: 'chart',
+    post_type: postType,
     country_iso: fact.country_iso,
     caption,
     image_url: imageUrl,
-    chart_data: { rule: fact.rule_name, supporting_data: fact.supporting_data, series: series.slice(-24) },
+    chart_data: { rule: fact.rule_name, supporting_data: fact.supporting_data, series: series.slice(-24), photo_source: photoSource?.driveFileId ?? null },
     status: 'draft',
     platforms: ['instagram', 'x'],
   });
@@ -163,4 +196,15 @@ function finalise(startedAt: string, detected: number, inserted: number, existin
     drafts_failed: failed,
     errors,
   };
+}
+
+function arrayBufferToBase64(buf: ArrayBuffer): string {
+  const bytes = new Uint8Array(buf);
+  let s = '';
+  // Chunked to avoid stack overflow on large blobs.
+  const CHUNK = 8192;
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    s += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + CHUNK)) as number[]);
+  }
+  return btoa(s);
 }
