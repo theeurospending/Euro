@@ -4,6 +4,7 @@ import { loadHomepageData } from '@/lib/homepage-data';
 import { EuropeMap } from '@/components/map/europe-map';
 import { CountryTileGrid } from '@/components/map/country-tile-grid';
 import { SiteHeader } from '@/components/layout/site-header';
+import { NewsletterForm } from '@/components/layout/newsletter-form';
 
 export const dynamic = 'force-dynamic';
 
@@ -80,6 +81,22 @@ export default async function Home() {
                 {ez.latestEvent.description && <p className="mt-3 text-sm text-slate-300">{ez.latestEvent.description}</p>}
               </div>
             )}
+          </div>
+        </section>
+
+        {/* Newsletter */}
+        <section className="border-b border-white/10">
+          <div className="mx-auto max-w-6xl px-6 py-16">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div>
+                <div className="kicker">Weekly digest · Mondays 09:00 UTC</div>
+                <h2 className="font-display mt-3 text-3xl text-white">The biggest moves, in your inbox</h2>
+                <p className="mt-2 text-sm text-slate-400">One email a week. No tracking, no nonsense. Unsubscribe any time.</p>
+              </div>
+              <div className="lg:w-96">
+                <NewsletterForm source="homepage" />
+              </div>
+            </div>
           </div>
         </section>
 

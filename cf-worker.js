@@ -22,7 +22,8 @@ export default {
   async scheduled(event, env, ctx) {
     const cronToTarget = {
       '0 6 * * *':    { path: '/api/cron/ingest', cron: 'daily-06' },
-      '0 7 * * 1':    { path: '/api/cron/ingest', cron: 'weekly-mon-07' },
+      // Mon 07:00 UTC: ingest balance sheet AND fire the weekly digest in parallel.
+      '0 7 * * 1':    { path: '/api/cron/ingest', cron: 'weekly-mon-07', also: ['/api/cron/digest'] },
       '0 8 1 * *':    { path: '/api/cron/ingest', cron: 'monthly-1st-08' },
       '0 10 1 3 *':   { path: '/api/cron/ingest', cron: 'annual-march-10' },
       '*/15 * * * *': { path: '/api/cron/publish', cron: 'every-15-publish' },
@@ -34,27 +35,28 @@ export default {
       return;
     }
 
-    const url = new URL(target.path, 'https://internal.invalid');
-    url.searchParams.set('cron', target.cron);
-
-    const req = new Request(url.toString(), {
-      method: 'POST',
-      headers: {
-        'x-ingest-api-key': env.INGEST_API_KEY ?? '',
-        'content-type': 'application/json',
-      },
-    });
-
-    ctx.waitUntil(
-      openNextWorker
+    const fire = (path) => {
+      const url = new URL(path, 'https://internal.invalid');
+      url.searchParams.set('cron', target.cron);
+      const req = new Request(url.toString(), {
+        method: 'POST',
+        headers: {
+          'x-ingest-api-key': env.INGEST_API_KEY ?? '',
+          'content-type': 'application/json',
+        },
+      });
+      return openNextWorker
         .fetch(req, env, ctx)
         .then(async (res) => {
           const body = await res.text();
-          console.log(`[scheduled ${event.cron}] ${res.status} ${body.slice(0, 500)}`);
+          console.log(`[scheduled ${event.cron} ${path}] ${res.status} ${body.slice(0, 400)}`);
         })
         .catch((err) => {
-          console.error(`[scheduled ${event.cron}] failed`, err);
-        }),
-    );
+          console.error(`[scheduled ${event.cron} ${path}] failed`, err);
+        });
+    };
+
+    const paths = [target.path, ...(target.also ?? [])];
+    ctx.waitUntil(Promise.allSettled(paths.map(fire)));
   },
 };
