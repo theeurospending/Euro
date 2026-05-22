@@ -19,11 +19,18 @@ const CRON_TO_SOURCES: Record<string, string[]> = {
   // Weekly Mon 07:00 UTC: balance sheet (weekly cadence).
   'weekly-mon-07': ['ecb:ilm_balance_sheet'],
 
-  // Monthly 1st 08:00 UTC: monthly cadence sources.
-  'monthly-1st-08': ['ecb:bsi_money_supply', 'ecb:icp_hicp', 'ecb:irs_sovereign_yields'],
-
-  // Quarterly 1st 09:00 UTC: quarterly extractors (none configured yet — Session 13 buffer).
-  'quarterly-09': [],
+  // Monthly 1st 08:00 UTC: monthly cadence sources + quarterly + non-EZ yields.
+  // Quarterly Eurostat data drops once per quarter — running it monthly is harmless
+  // (it re-checks and upserts unchanged), saves a cron slot.
+  'monthly-1st-08': [
+    'ecb:bsi_money_supply',
+    'ecb:icp_hicp',
+    'ecb:irs_sovereign_yields',
+    'ecb:irs_non_ez_yields',
+    'eurostat:prc_hicp_manr',
+    'eurostat:une_rt_m',
+    'eurostat:namq_10_gdp',
+  ],
 
   // Annual 1 March 10:00 UTC: full annual Eurostat + IMF WEO refresh.
   'annual-march-10': [

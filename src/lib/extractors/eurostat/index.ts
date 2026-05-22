@@ -206,6 +206,20 @@ export async function eurostat_demo_pjan(opts: ExtractorOpts = {}): Promise<Extr
 }
 
 // ----------------------------------------------------------------------------
+// namq_10_gdp — quarterly real GDP growth, % change on previous quarter (SCA)
+// ----------------------------------------------------------------------------
+export async function eurostat_namq_10_gdp(opts: ExtractorOpts = {}): Promise<ExtractedRow[]> {
+  const since = opts.sinceYear ?? DEFAULT_SINCE;
+  const ds = await fetchEurostat('namq_10_gdp', {
+    na_item: 'B1GQ',
+    unit: 'CLV_PCH_PRE',
+    s_adj: 'SCA',
+    sinceTimePeriod: `${since}-Q1`,
+  });
+  return attach(parseEurostat(ds, 'quarterly'), 'gdp_real_growth_qoq_pct', '%', 'eurostat:namq_10_gdp');
+}
+
+// ----------------------------------------------------------------------------
 // prc_hicp_manr — monthly HICP annual rate of change
 // ----------------------------------------------------------------------------
 export async function eurostat_prc_hicp_manr(opts: ExtractorOpts = {}): Promise<ExtractedRow[]> {
@@ -245,6 +259,7 @@ export const EUROSTAT_EXTRACTORS = {
   eurostat_demo_pjan,
   eurostat_prc_hicp_manr,
   eurostat_une_rt_m,
+  eurostat_namq_10_gdp,
 } as const;
 
 export type EurostatExtractorName = keyof typeof EUROSTAT_EXTRACTORS;
