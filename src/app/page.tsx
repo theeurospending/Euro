@@ -86,9 +86,10 @@ export default async function Home() {
         {/* Nav cards */}
         <section className="border-b border-white/10">
           <div className="mx-auto max-w-6xl px-6 py-16">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <NavCard href="/compare" title="Compare countries" hint="Multi-country, multi-metric overlays" />
               <NavCard href="/euro"    title="The euro timeline" hint="ECB rates, balance sheet, FX history with monetary events overlaid" />
+              <NavCard href="/data"    title="Open data" hint="CSV downloads per country and per metric" />
               <NavCard href="/blog"    title="Blog" hint="Analysis and commentary" />
             </div>
           </div>

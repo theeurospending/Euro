@@ -78,12 +78,14 @@ export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
       </div>
 
       {/* SVG map */}
-      <div className="relative" style={{ aspectRatio: `${VIEWBOX_W} / ${VIEWBOX_H}` }}>
+      <div className="relative overflow-hidden rounded-lg bg-white" style={{ aspectRatio: `${VIEWBOX_W} / ${VIEWBOX_H}` }}>
         <svg
           viewBox={`0 0 ${VIEWBOX_W} ${VIEWBOX_H}`}
           className="h-full w-full"
           onMouseLeave={() => setHover(null)}
         >
+          {/* Sea / canvas */}
+          <rect width={VIEWBOX_W} height={VIEWBOX_H} fill="#ffffff" />
           {features.map((f) => {
             const numericId = typeof f.id === 'string' ? parseInt(f.id, 10) : (f.id as number);
             const iso = NUMERIC_TO_ISO[numericId];
@@ -95,12 +97,12 @@ export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
             let fill: string;
             if (mode === 'none') {
               if (isEU) fill = NAVY_SHADES[numericId % NAVY_SHADES.length];
-              else fill = '#172241';                  // non-EU: slightly darker than navy bg
+              else fill = '#cbd5e1';                  // non-EU: pale slate
             } else {
               const value = c?.metrics[mode]?.value;
               if (isEU && typeof value === 'number' && metricScale) fill = metricScale(value);
-              else if (isEU) fill = 'rgba(197,203,240,0.10)';
-              else fill = '#172241';
+              else if (isEU) fill = '#e2e8f0';
+              else fill = '#cbd5e1';
             }
 
             const interactive = isEU && Boolean(iso);
@@ -109,8 +111,8 @@ export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
                 <path
                   d={d}
                   fill={fill}
-                  stroke="rgba(197,203,240,0.35)"
-                  strokeWidth={0.6}
+                  stroke="#ffffff"
+                  strokeWidth={0.8}
                   className={interactive ? 'cursor-pointer transition-opacity hover:opacity-80' : 'pointer-events-none'}
                   onMouseEnter={(e) => {
                     if (!interactive || !iso) return;

@@ -5,6 +5,7 @@ const NAV = [
   { href: '/', label: 'Home' },
   { href: '/compare', label: 'Compare' },
   { href: '/euro', label: 'The euro' },
+  { href: '/data', label: 'Data' },
   { href: '/blog', label: 'Blog' },
 ];
 

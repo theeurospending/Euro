@@ -194,7 +194,12 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
 
       {/* Sources footer */}
       <footer className="mt-16 border-t border-white/10 pt-6 text-xs text-slate-400">
-        <div className="kicker">Data sources</div>
+        <div className="flex flex-wrap items-baseline justify-between gap-4">
+          <div className="kicker">Data sources</div>
+          <a href={`/api/export/country/${c.slug}`} className="font-mono text-xs text-[var(--brand-lav)] hover:underline">
+            Download {c.slug}.csv ↓
+          </a>
+        </div>
         <ul className="mt-3 grid gap-1 sm:grid-cols-2">
           {data.sources.map((s) => (
             <li key={s.source} className="font-mono text-slate-300">
