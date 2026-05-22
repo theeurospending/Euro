@@ -15,10 +15,10 @@ export default async function NewsletterPage({ searchParams }: { searchParams: P
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-2xl px-6 py-16 text-slate-100">
+      <main className="mx-auto max-w-2xl px-6 py-16 text-[var(--brand-navy)]">
         <div className="kicker">Weekly · Monday morning</div>
-        <h1 className="font-display mt-3 text-5xl tracking-tight text-white">Newsletter</h1>
-        <p className="mt-4 text-lg text-slate-300">
+        <h1 className="font-display mt-3 text-5xl tracking-tight">Newsletter</h1>
+        <p className="mt-4 text-lg text-[var(--brand-navy)]/80">
           A weekly email with the biggest movements in EU public finance plus any new analysis.
           One email per week. No tracking pixels. Unsubscribe from any email.
         </p>
@@ -56,8 +56,8 @@ export default async function NewsletterPage({ searchParams }: { searchParams: P
           </div>
         )}
 
-        <h2 className="font-display mt-16 text-2xl text-white">What you&apos;ll get</h2>
-        <ul className="mt-4 space-y-3 text-slate-300">
+        <h2 className="font-display mt-16 text-2xl">What you&apos;ll get</h2>
+        <ul className="mt-4 space-y-3 text-[var(--brand-navy)]/80">
           <li><span className="mr-2 text-[var(--brand-gold)]">→</span> Top 3-5 EU economic moves of the week, with the underlying numbers.</li>
           <li><span className="mr-2 text-[var(--brand-gold)]">→</span> Any new analysis from the blog.</li>
           <li><span className="mr-2 text-[var(--brand-gold)]">→</span> Notable monetary events (rate decisions, treaty milestones, etc.) on their anniversary.</li>

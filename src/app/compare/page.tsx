@@ -33,12 +33,12 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
   return (
     <>
     <SiteHeader />
-    <main className="mx-auto max-w-5xl px-6 py-10 text-slate-100">
+    <main className="mx-auto max-w-5xl px-6 py-10 text-[var(--brand-navy)]">
       <div className="kicker">Side-by-side</div>
-      <h1 className="font-display mt-3 text-5xl tracking-tight text-white">Compare</h1>
-      <p className="mt-3 max-w-2xl text-sm text-slate-300">
+      <h1 className="font-display mt-3 text-5xl tracking-tight">Compare</h1>
+      <p className="mt-3 max-w-2xl text-sm text-[var(--brand-navy)]/75">
         Pick countries and a metric. URL is shareable:{' '}
-        <code className="font-mono text-xs text-[var(--brand-lav)]">?countries=DE,FR&amp;metric=gov_debt_pct_gdp&amp;from=2008</code>
+        <code className="font-mono text-xs text-[var(--brand-navy)]">?countries=DE,FR&amp;metric=gov_debt_pct_gdp&amp;from=2008</code>
       </p>
 
       <ComparePicker

@@ -32,8 +32,8 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-2xl px-6 py-10 text-slate-100">
-        <Link href="/blog" className="font-mono text-xs text-slate-400 hover:text-[var(--brand-lav)]">← Blog</Link>
+      <main className="mx-auto max-w-2xl px-6 py-10 text-[var(--brand-navy)]">
+        <Link href="/blog" className="font-mono text-xs text-[var(--brand-navy)]/60 hover:text-[var(--brand-navy)]">← Blog</Link>
 
         {a.cover_image_url && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -41,17 +41,17 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
         )}
 
         <header className="mt-8">
-          <div className="font-mono text-xs text-slate-400">{a.published_at?.slice(0, 10)}</div>
-          <h1 className="font-display mt-2 text-4xl tracking-tight text-white sm:text-5xl">{a.title}</h1>
-          {a.excerpt && <p className="mt-4 text-lg text-slate-300">{a.excerpt}</p>}
+          <div className="font-mono text-xs text-[var(--brand-navy)]/60">{a.published_at?.slice(0, 10)}</div>
+          <h1 className="font-display mt-2 text-4xl tracking-tight sm:text-5xl">{a.title}</h1>
+          {a.excerpt && <p className="mt-4 text-lg text-[var(--brand-navy)]/80">{a.excerpt}</p>}
         </header>
 
-        <article className="prose-on-navy mt-10 max-w-none text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: a.body_html }} />
+        <article className="prose-on-paper mt-10 max-w-none text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: a.body_html }} />
 
         {a.tags.length > 0 && (
-          <div className="mt-12 flex flex-wrap gap-2 border-t border-white/10 pt-6">
+          <div className="mt-12 flex flex-wrap gap-2 border-t border-[var(--brand-navy)]/15 pt-6">
             {a.tags.map((t) => (
-              <Link key={t} href={`/blog/tag/${encodeURIComponent(t)}`} className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-300 transition-colors hover:bg-white/5">#{t}</Link>
+              <Link key={t} href={`/blog/tag/${encodeURIComponent(t)}`} className="rounded-full border border-[var(--brand-navy)]/20 px-3 py-1 text-xs text-[var(--brand-navy)] transition-colors hover:bg-[var(--brand-navy)]/5">#{t}</Link>
             ))}
           </div>
         )}

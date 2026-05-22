@@ -27,17 +27,17 @@ export default async function DataPage() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-5xl px-6 py-10 text-slate-100">
+      <main className="mx-auto max-w-5xl px-6 py-10 text-[var(--brand-navy)]">
         <div className="kicker">Open data · CSV</div>
-        <h1 className="font-display mt-3 text-5xl tracking-tight text-white">Bulk downloads</h1>
-        <p className="mt-4 max-w-2xl text-slate-300">
+        <h1 className="font-display mt-3 text-5xl tracking-tight">Bulk downloads</h1>
+        <p className="mt-4 max-w-2xl text-[var(--brand-navy)]/80">
           Every metric, every country, every period. CSV with one row per observation. Source attribution included.
           Refreshed daily/weekly/monthly via cron from Eurostat, ECB, and IMF.
         </p>
 
         <section className="mt-12">
-          <h2 className="font-display text-2xl text-white">By country</h2>
-          <p className="mt-1 text-xs text-slate-400">All ~30 metrics × all available periods, one file per country.</p>
+          <h2 className="font-display text-2xl">By country</h2>
+          <p className="mt-1 text-sm text-[var(--brand-navy)]/60">All ~30 metrics × all available periods, one file per country.</p>
           <div className="surface mt-4 overflow-hidden">
             <table className="w-full text-sm">
               <thead className="border-b border-white/10 bg-white/[0.03] text-left font-mono text-xs uppercase tracking-wider text-slate-400">
@@ -65,8 +65,8 @@ export default async function DataPage() {
         </section>
 
         <section className="mt-12">
-          <h2 className="font-display text-2xl text-white">By metric</h2>
-          <p className="mt-1 text-xs text-slate-400">One file per metric covering every country with available data.</p>
+          <h2 className="font-display text-2xl">By metric</h2>
+          <p className="mt-1 text-sm text-[var(--brand-navy)]/60">One file per metric covering every country with available data.</p>
           {[...byCategory.entries()].map(([cat, ms]) => (
             <div key={cat} className="mt-6">
               <div className="kicker">{cat.replace('_', ' ')}</div>
@@ -90,10 +90,10 @@ export default async function DataPage() {
         </section>
 
         <section className="mt-16">
-          <h2 className="font-display text-2xl text-white">Citation</h2>
-          <p className="mt-3 text-sm text-slate-300">
+          <h2 className="font-display text-2xl">Citation</h2>
+          <p className="mt-3 text-sm text-[var(--brand-navy)]/80">
             If you use these datasets, attribute the underlying sources (Eurostat, ECB, IMF World Economic Outlook)
-            and link back to <code className="text-[var(--brand-lav)]">eurospending.org</code>.
+            and link back to <code className="font-mono text-[var(--brand-navy)]">eurospending.org</code>.
             The reformatting and aggregation work is licensed{' '}
             <a href="https://creativecommons.org/publicdomain/zero/1.0/" className="underline">CC0 (public domain)</a>.
           </p>

@@ -16,9 +16,9 @@ export default async function BlogIndex() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-3xl px-6 py-10 text-slate-100">
+      <main className="mx-auto max-w-3xl px-6 py-10 text-[var(--brand-navy)]">
         <div className="kicker">Analysis · commentary</div>
-        <h1 className="font-display mt-3 text-5xl tracking-tight text-white">Blog</h1>
+        <h1 className="font-display mt-3 text-5xl tracking-tight">Blog</h1>
 
         {tags.length > 0 && (
           <div className="mt-6 flex flex-wrap gap-2">
@@ -26,9 +26,9 @@ export default async function BlogIndex() {
               <Link
                 key={t.tag}
                 href={`/blog/tag/${encodeURIComponent(t.tag)}`}
-                className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-300 transition-colors hover:bg-white/5"
+                className="rounded-full border border-[var(--brand-navy)]/20 px-3 py-1 text-xs text-[var(--brand-navy)] transition-colors hover:bg-[var(--brand-navy)]/5"
               >
-                #{t.tag} <span className="text-slate-500">{t.count}</span>
+                #{t.tag} <span className="text-[var(--brand-navy)]/50">{t.count}</span>
               </Link>
             ))}
           </div>
@@ -36,25 +36,25 @@ export default async function BlogIndex() {
 
         <div className="mt-10 space-y-10">
           {articles.length === 0 ? (
-            <div className="surface p-10 text-center text-sm text-slate-400">
+            <div className="rounded-lg border border-dashed border-[var(--brand-navy)]/20 p-10 text-center text-sm text-[var(--brand-navy)]/55">
               No articles published yet.
             </div>
           ) : articles.map((a) => (
             <article key={a.id}>
-              <div className="font-mono text-xs text-slate-400">{a.published_at?.slice(0, 10)}</div>
-              <h2 className="font-display mt-2 text-2xl text-white">
-                <Link href={`/blog/${a.slug}`} className="hover:text-[var(--brand-lav)]">{a.title}</Link>
+              <div className="font-mono text-xs text-[var(--brand-navy)]/55">{a.published_at?.slice(0, 10)}</div>
+              <h2 className="font-display mt-2 text-2xl">
+                <Link href={`/blog/${a.slug}`} className="hover:text-[var(--brand-navy)]/70">{a.title}</Link>
               </h2>
-              {a.excerpt && <p className="mt-2 text-slate-300">{a.excerpt}</p>}
+              {a.excerpt && <p className="mt-2 text-[var(--brand-navy)]/80">{a.excerpt}</p>}
               {a.tags.length > 0 && (
-                <div className="mt-2 font-mono text-xs text-slate-500">{a.tags.map((t) => `#${t}`).join(' ')}</div>
+                <div className="mt-2 font-mono text-xs text-[var(--brand-navy)]/50">{a.tags.map((t) => `#${t}`).join(' ')}</div>
               )}
             </article>
           ))}
         </div>
 
         <div className="mt-16 text-xs">
-          <a href="/blog/feed.xml" className="font-mono text-slate-400 hover:text-[var(--brand-lav)]">RSS feed →</a>
+          <a href="/blog/feed.xml" className="font-mono text-[var(--brand-navy)]/60 hover:text-[var(--brand-navy)] underline">RSS feed →</a>
         </div>
       </main>
     </>

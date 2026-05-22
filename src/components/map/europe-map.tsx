@@ -28,9 +28,9 @@ function getProjection() {
 // Single brand-navy fill for default ('none') mode — clean Eurostat-style.
 const DEFAULT_FILL = '#3E5996';
 
-// Sequential blue scale used when a metric is active — strong dark→pale gradient,
-// matches the Daft.ie / Eurostat report style. Darkest = highest pressure.
-const METRIC_BLUES = ['#1F3461', '#2D5499', '#4E73C2', '#7AABDA', '#B5D3E8'];
+// Traffic-light quintile palette: dark green (best) → red (worst).
+// Direction-aware via the metric's `betterDirection`.
+const TRAFFIC = ['#15803d', '#84cc16', '#eab308', '#f97316', '#b91c1c'];
 
 // Non-EU / non-eurozone fill.
 const OUT_OF_SCOPE_FILL = '#cbd5e1';
@@ -242,17 +242,17 @@ function fmtPeriod(p: string): string {
   return p;
 }
 
-// Sequential blue scale based on quintiles.
+// Traffic-light quintile scale.
+// betterDirection='low'  → low values get GREEN (best), high get RED (worst). e.g. debt, inflation
+// betterDirection='high' → high values get GREEN (best), low get RED (worst). e.g. GDP growth
 function blueScale(values: number[], betterDirection: 'low' | 'high'): (v: number) => string {
-  if (values.length === 0) return () => '#1B2A4A';
+  if (values.length === 0) return () => TRAFFIC[2];
   const sorted = [...values].sort((a, b) => a - b);
   const q20 = quantile(sorted, 0.2);
   const q40 = quantile(sorted, 0.4);
   const q60 = quantile(sorted, 0.6);
   const q80 = quantile(sorted, 0.8);
-  // For "better=low" metrics (debt, inflation), low values get LIGHT lavender (good = bright),
-  // high values get DARK navy. For "better=high", reverse.
-  const palette = betterDirection === 'low' ? [...METRIC_BLUES].reverse() : METRIC_BLUES;
+  const palette = betterDirection === 'low' ? TRAFFIC : [...TRAFFIC].reverse();
   return (v: number) => {
     if (v <= q20) return palette[0];
     if (v <= q40) return palette[1];
@@ -272,7 +272,7 @@ function Legend({ metric, values, betterDirection }: { metric: HomepageMetric; v
   const sorted = [...values].sort((a, b) => a - b);
   const lo = sorted[0];
   const hi = sorted[sorted.length - 1];
-  const palette = betterDirection === 'low' ? [...METRIC_BLUES].reverse() : METRIC_BLUES;
+  const palette = betterDirection === 'low' ? TRAFFIC : [...TRAFFIC].reverse();
   return (
     <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
       <span className="font-mono">{fmtValue(metric, lo)}</span>

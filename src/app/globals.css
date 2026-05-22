@@ -12,13 +12,13 @@
   --brand-paper: #F6F4EF;
   --brand-ink: #1B2A4A;
 
-  /* App tokens (navy-dominant treatment) */
-  --background: var(--brand-navy);
-  --foreground: #f5f5f7;
-  --muted: #94a3b8;
+  /* App tokens (paper page, navy tiles) */
+  --background: var(--brand-paper);
+  --foreground: var(--brand-ink);
+  --muted: rgba(27, 42, 74, 0.6);
   --card: var(--brand-navy-deep);
-  --card-border: rgba(197, 203, 240, 0.12);
-  --link: var(--brand-lav);
+  --card-border: rgba(197, 203, 240, 0.15);
+  --link: var(--brand-navy);
   --accent: var(--brand-gold);
 }
 
@@ -62,7 +62,7 @@ html, body {
   font-size: 12px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--brand-grey);
+  color: rgba(27, 42, 74, 0.55);
 }
 
 .tagline {
@@ -72,14 +72,18 @@ html, body {
   text-transform: uppercase;
 }
 
-/* Surface utility for cards on navy bg */
+/* Surface = navy "card" floating on the paper bg.
+   Anything inside inherits light text so existing slate utility classes still work. */
 .surface {
   background: var(--card);
   border: 1px solid var(--card-border);
   border-radius: 14px;
+  color: #e2e8f0;
 }
+.surface h1, .surface h2, .surface h3, .surface h4 { color: #ffffff; }
+.surface .kicker { color: rgba(197, 203, 240, 0.7); }
 
-/* Light-on-dark prose for narrative HTML on country pages */
+/* Light-on-dark prose for narrative HTML inside dark surfaces */
 .prose-on-navy {
   color: #e2e8f0;
 }
@@ -88,3 +92,13 @@ html, body {
 .prose-on-navy strong { color: #fff; }
 .prose-on-navy code { background: rgba(197,203,240,0.08); padding: 0.1em 0.4em; border-radius: 4px; }
 .prose-on-navy blockquote { border-left: 3px solid var(--brand-gold); padding-left: 1em; color: #cbd5e1; font-style: italic; }
+
+/* Body prose (paper bg, navy text) for narrative outside dark surfaces. */
+.prose-on-paper {
+  color: var(--brand-ink);
+}
+.prose-on-paper h2, .prose-on-paper h3 { color: var(--brand-navy); font-family: 'Archivo Narrow', sans-serif; letter-spacing: 0.04em; }
+.prose-on-paper a { color: var(--brand-navy); text-decoration: underline; }
+.prose-on-paper strong { color: var(--brand-navy); }
+.prose-on-paper code { background: rgba(27,42,74,0.06); padding: 0.1em 0.4em; border-radius: 4px; }
+.prose-on-paper blockquote { border-left: 3px solid var(--brand-gold); padding-left: 1em; color: rgba(27,42,74,0.7); font-style: italic; }

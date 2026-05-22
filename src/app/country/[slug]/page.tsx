@@ -47,11 +47,11 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
   return (
     <>
     <SiteHeader />
-    <main className="mx-auto max-w-5xl px-6 py-10 text-slate-100">
+    <main className="mx-auto max-w-5xl px-6 py-10 text-[var(--brand-navy)]">
       {/* Header */}
       <header className="mt-4 flex items-baseline gap-4">
         <span className="text-6xl">{c.flag_emoji}</span>
-        <h1 className="font-display text-5xl tracking-tight text-white">{c.name}</h1>
+        <h1 className="font-display text-5xl tracking-tight">{c.name}</h1>
       </header>
       <p className="kicker mt-3">
         {c.is_eu_member && c.joined_eu && <>EU member since {fmtYear(c.joined_eu)}{c.is_eurozone_member && c.joined_eurozone ? ` · eurozone since ${fmtYear(c.joined_eurozone)}` : ''}</>}
@@ -71,7 +71,7 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
 
       {/* Narrative — intro */}
       {data.narrative.intro_html && (
-        <section className="prose-on-navy mt-10 max-w-none text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: data.narrative.intro_html }} />
+        <section className="prose-on-paper mt-10 max-w-none text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: data.narrative.intro_html }} />
       )}
 
       {/* Fiscal trajectory */}
@@ -180,7 +180,7 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       )}
 
       {/* Narrative tail */}
-      <div className="prose-on-navy mt-12 max-w-none space-y-6 text-base leading-relaxed">
+      <div className="prose-on-paper mt-12 max-w-none space-y-6 text-base leading-relaxed">
         {data.narrative.fiscal_context_html && (
           <section dangerouslySetInnerHTML={{ __html: data.narrative.fiscal_context_html }} />
         )}
@@ -193,17 +193,17 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       </div>
 
       {/* Sources footer */}
-      <footer className="mt-16 border-t border-white/10 pt-6 text-xs text-slate-400">
+      <footer className="mt-16 border-t border-[var(--brand-navy)]/15 pt-6 text-xs text-[var(--brand-navy)]/65">
         <div className="flex flex-wrap items-baseline justify-between gap-4">
           <div className="kicker">Data sources</div>
-          <a href={`/api/export/country/${c.slug}`} className="font-mono text-xs text-[var(--brand-lav)] hover:underline">
+          <a href={`/api/export/country/${c.slug}`} className="font-mono text-xs text-[var(--brand-navy)] underline hover:text-[var(--brand-navy)]/70">
             Download {c.slug}.csv ↓
           </a>
         </div>
         <ul className="mt-3 grid gap-1 sm:grid-cols-2">
           {data.sources.map((s) => (
-            <li key={s.source} className="font-mono text-slate-300">
-              {s.source}{s.latest_ingest && <span className="ml-1 text-slate-500">· refreshed {fmtRelative(s.latest_ingest)}</span>}
+            <li key={s.source} className="font-mono text-[var(--brand-navy)]/75">
+              {s.source}{s.latest_ingest && <span className="ml-1 text-[var(--brand-navy)]/45">· refreshed {fmtRelative(s.latest_ingest)}</span>}
             </li>
           ))}
         </ul>
@@ -220,8 +220,8 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
 function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
     <section className="mt-14">
-      <h2 className="font-display text-2xl text-white">{title}</h2>
-      {hint && <p className="mt-1 text-xs text-slate-400">{hint}</p>}
+      <h2 className="font-display text-2xl">{title}</h2>
+      {hint && <p className="mt-1 text-sm text-[var(--brand-navy)]/60">{hint}</p>}
       <div className="mt-5">{children}</div>
     </section>
   );

@@ -129,7 +129,7 @@ export function ComparePicker({
         <select
           value={selectedMetric}
           onChange={(e) => navigate({ metric: e.target.value })}
-          className="mt-2 w-full rounded-md border border-white/15 bg-[var(--brand-navy-deep)] px-3 py-2 text-sm text-slate-100 focus:border-[var(--brand-lav)] focus:outline-none"
+          className="mt-2 w-full rounded-md border border-[var(--brand-navy)]/20 bg-white px-3 py-2 text-sm text-[var(--brand-navy)] focus:border-[var(--brand-navy)] focus:outline-none"
         >
           {availableMetrics.map((m) => (
             <option key={m.key} value={m.key}>{m.display_name} ({m.unit})</option>
@@ -146,7 +146,7 @@ export function ComparePicker({
               <button
                 key={r.label}
                 onClick={() => navigate({ from: r.from })}
-                className={`rounded-full px-3 py-1 text-xs transition-colors ${active ? 'bg-[var(--brand-lav)] text-[var(--brand-navy)] font-medium' : 'border border-white/15 text-slate-300 hover:bg-white/5'}`}
+                className={`rounded-full px-3 py-1 text-xs transition-colors ${active ? 'bg-[var(--brand-navy)] text-white font-medium' : 'border border-[var(--brand-navy)]/20 text-[var(--brand-navy)] hover:bg-[var(--brand-navy)]/5'}`}
               >
                 {r.label}
               </button>
@@ -157,13 +157,13 @@ export function ComparePicker({
         <div className="ml-auto flex gap-1">
           <button
             onClick={() => navigate({ view: 'chart' })}
-            className={`rounded-full px-3 py-1 text-xs transition-colors ${selectedView === 'chart' ? 'bg-[var(--brand-lav)] text-[var(--brand-navy)] font-medium' : 'border border-white/15 text-slate-300 hover:bg-white/5'}`}
+            className={`rounded-full px-3 py-1 text-xs transition-colors ${selectedView === 'chart' ? 'bg-[var(--brand-navy)] text-white font-medium' : 'border border-[var(--brand-navy)]/20 text-[var(--brand-navy)] hover:bg-[var(--brand-navy)]/5'}`}
           >
             Chart
           </button>
           <button
             onClick={() => navigate({ view: 'leaderboard' })}
-            className={`rounded-full px-3 py-1 text-xs transition-colors ${selectedView === 'leaderboard' ? 'bg-[var(--brand-lav)] text-[var(--brand-navy)] font-medium' : 'border border-white/15 text-slate-300 hover:bg-white/5'}`}
+            className={`rounded-full px-3 py-1 text-xs transition-colors ${selectedView === 'leaderboard' ? 'bg-[var(--brand-navy)] text-white font-medium' : 'border border-[var(--brand-navy)]/20 text-[var(--brand-navy)] hover:bg-[var(--brand-navy)]/5'}`}
           >
             Leaderboard
           </button>

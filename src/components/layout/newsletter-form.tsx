@@ -27,9 +27,9 @@ export function NewsletterForm({ source = 'homepage' }: { source?: string }) {
 
   if (state === 'sent') {
     return (
-      <div className="text-sm text-slate-300">
+      <div className="text-sm text-[var(--brand-navy)]/80">
         <span className="text-[var(--brand-gold)]">✓</span> Check your inbox.
-        We sent a confirmation link to <code className="font-mono text-[var(--brand-lav)]">{email}</code>.
+        We sent a confirmation link to <code className="font-mono text-[var(--brand-navy)]">{email}</code>.
       </div>
     );
   }
@@ -42,16 +42,16 @@ export function NewsletterForm({ source = 'homepage' }: { source?: string }) {
         placeholder="you@example.com"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="flex-1 rounded-md border border-white/15 bg-[var(--brand-navy-deep)] px-3 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:border-[var(--brand-lav)] focus:outline-none"
+        className="flex-1 rounded-md border border-[var(--brand-navy)]/20 bg-white px-3 py-2.5 text-sm text-[var(--brand-navy)] placeholder:text-[var(--brand-navy)]/40 focus:border-[var(--brand-navy)] focus:outline-none"
       />
       <button
         type="submit"
         disabled={state === 'busy' || !email}
-        className="rounded-md bg-[var(--brand-lav)] px-5 py-2.5 text-sm font-medium text-[var(--brand-navy)] hover:bg-white disabled:opacity-50"
+        className="rounded-md bg-[var(--brand-navy)] px-5 py-2.5 text-sm font-medium text-white hover:bg-[var(--brand-navy-deep)] disabled:opacity-50"
       >
         {state === 'busy' ? 'Sending…' : 'Subscribe'}
       </button>
-      {error && <div className="text-xs text-rose-300 sm:basis-full">{error}</div>}
+      {error && <div className="text-xs text-rose-700 sm:basis-full">{error}</div>}
     </form>
   );
 }
