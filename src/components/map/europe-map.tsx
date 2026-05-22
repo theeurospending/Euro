@@ -39,7 +39,7 @@ const COUNTRY_BORDER = '#ffffff';
 export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
   // Default to debt — gives the map an immediate "story" instead of opening blank.
   const [mode, setMode] = useState<ColourMode>('gov_debt_pct_gdp');
-  const [hover, setHover] = useState<{ iso: string; x: number; y: number } | null>(null);
+  const [hover, setHover] = useState<{ iso: string; x: number; y: number; flipBelow: boolean } | null>(null);
 
   const features = useMemo(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -145,7 +145,15 @@ export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
                   onMouseEnter={(e) => {
                     if (!interactive || !iso) return;
                     const rect = e.currentTarget.getBoundingClientRect();
-                    setHover({ iso, x: rect.left + rect.width / 2, y: rect.top });
+                    // Card is ~220px tall. If the country path's top edge is within
+                    // 240px of the viewport top, flip the card below the path.
+                    const flipBelow = rect.top < 240;
+                    setHover({
+                      iso,
+                      x: rect.left + rect.width / 2,
+                      y: flipBelow ? rect.bottom : rect.top,
+                      flipBelow,
+                    });
                   }}
                 />
               </a>
@@ -153,11 +161,13 @@ export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
           })}
         </svg>
 
-        {/* Hover card */}
+        {/* Hover card — flips below the country when there's no room above. */}
         {hoverCountry && hover && (
           <div
-            className="pointer-events-none fixed z-10 -translate-x-1/2 -translate-y-full rounded-lg border border-white/15 bg-[var(--brand-navy-deep)] p-3 shadow-2xl"
-            style={{ left: hover.x, top: hover.y - 8, maxWidth: 240 }}
+            className={`pointer-events-none fixed z-10 -translate-x-1/2 rounded-lg border border-white/15 bg-[var(--brand-navy-deep)] p-3 shadow-2xl ${
+              hover.flipBelow ? '' : '-translate-y-full'
+            }`}
+            style={{ left: hover.x, top: hover.flipBelow ? hover.y + 8 : hover.y - 8, maxWidth: 240 }}
           >
             <div className="flex items-baseline gap-2">
               <span className="text-2xl">{hoverCountry.flag_emoji}</span>
