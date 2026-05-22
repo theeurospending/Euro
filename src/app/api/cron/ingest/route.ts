@@ -40,8 +40,10 @@ const CRON_TO_SOURCES: Record<string, string[]> = {
     'eurostat:nama_10_gdp',
     'eurostat:nama_10_pc',
     'eurostat:prc_hicp_aind',
+    'eurostat:prc_hicp_aind_core',
     'eurostat:une_rt_a',
     'eurostat:demo_pjan',
+    'eurostat:ilc_lvho07a',
     'imf:weo_forecasts',
   ],
 };

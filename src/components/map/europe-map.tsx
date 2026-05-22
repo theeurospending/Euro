@@ -95,8 +95,8 @@ export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
       )}
 
       {/* Metric toolbar */}
-      <div className="mb-4 flex flex-wrap items-center gap-2">
-        <span className="font-mono text-[10px] uppercase tracking-widest text-slate-400">View</span>
+      <div className="mb-5 flex flex-wrap items-center gap-2.5">
+        <span className="font-mono text-xs uppercase tracking-widest text-slate-400">View</span>
         <Chip active={mode === 'none'} onClick={() => setMode('none')}>Default</Chip>
         {(Object.keys(HOMEPAGE_METRIC_LABELS) as HomepageMetric[]).map((m) => (
           <Chip key={m} active={mode === m} onClick={() => setMode(m)}>
@@ -211,10 +211,10 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
   return (
     <button
       onClick={onClick}
-      className={`rounded-full px-3 py-1 text-xs transition-colors ${
+      className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
         active
-          ? 'bg-[var(--brand-lav)] text-[var(--brand-navy)] font-medium'
-          : 'border border-white/15 text-slate-300 hover:bg-white/5'
+          ? 'bg-[var(--brand-gold)] text-[var(--brand-navy)] shadow-lg shadow-[var(--brand-gold)]/20'
+          : 'border border-white/25 text-white hover:bg-white/10 hover:border-white/40'
       }`}
     >
       {children}

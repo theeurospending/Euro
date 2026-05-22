@@ -8,16 +8,20 @@ export type HomepageMetric =
   | 'gov_deficit_pct_gdp'
   | 'gdp_real_growth_pct'
   | 'hicp_annual_pct'
+  | 'hicp_core_annual_pct'
   | 'unemployment_rate_pct'
-  | 'gdp_per_capita_eur';
+  | 'gdp_per_capita_eur'
+  | 'housing_cost_overburden_pct';
 
 export const HOMEPAGE_METRIC_LABELS: Record<HomepageMetric, { label: string; unit: string; betterDirection: 'low' | 'high' }> = {
-  gov_debt_pct_gdp:     { label: 'Debt',          unit: '% GDP',    betterDirection: 'low' },
-  gov_deficit_pct_gdp:  { label: 'Deficit',       unit: '% GDP',    betterDirection: 'high' },
-  gdp_real_growth_pct:  { label: 'GDP growth',    unit: '%',        betterDirection: 'high' },
-  hicp_annual_pct:      { label: 'Inflation',     unit: '%',        betterDirection: 'low' },
-  unemployment_rate_pct:{ label: 'Unemployment',  unit: '%',        betterDirection: 'low' },
-  gdp_per_capita_eur:   { label: 'GDP per cap',   unit: '€',        betterDirection: 'high' },
+  gov_debt_pct_gdp:            { label: 'Debt',            unit: '% GDP', betterDirection: 'low'  },
+  gov_deficit_pct_gdp:         { label: 'Deficit',         unit: '% GDP', betterDirection: 'high' },
+  gdp_real_growth_pct:         { label: 'GDP growth',      unit: '%',     betterDirection: 'high' },
+  hicp_annual_pct:             { label: 'Inflation',       unit: '%',     betterDirection: 'low'  },
+  hicp_core_annual_pct:        { label: 'Real inflation',  unit: '%',     betterDirection: 'low'  },
+  unemployment_rate_pct:       { label: 'Unemployment',    unit: '%',     betterDirection: 'low'  },
+  gdp_per_capita_eur:          { label: 'GDP per cap',     unit: '€',     betterDirection: 'high' },
+  housing_cost_overburden_pct: { label: 'Housing burden',  unit: '%',     betterDirection: 'low'  },
 };
 
 export type CountrySnapshot = {
@@ -48,8 +52,10 @@ const ALL_METRICS: HomepageMetric[] = [
   'gov_deficit_pct_gdp',
   'gdp_real_growth_pct',
   'hicp_annual_pct',
+  'hicp_core_annual_pct',
   'unemployment_rate_pct',
   'gdp_per_capita_eur',
+  'housing_cost_overburden_pct',
 ];
 
 export async function loadHomepageData(): Promise<HomepageData> {

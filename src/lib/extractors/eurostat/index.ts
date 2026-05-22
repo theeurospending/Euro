@@ -206,6 +206,34 @@ export async function eurostat_demo_pjan(opts: ExtractorOpts = {}): Promise<Extr
 }
 
 // ----------------------------------------------------------------------------
+// prc_hicp_aind — CORE variant: HICP excl. food + energy (XEF000)
+// ----------------------------------------------------------------------------
+export async function eurostat_prc_hicp_aind_core(opts: ExtractorOpts = {}): Promise<ExtractedRow[]> {
+  const since = opts.sinceYear ?? DEFAULT_SINCE;
+  const ds = await fetchEurostat('prc_hicp_aind', {
+    coicop: 'XEF000',
+    unit: 'RCH_A_AVG',
+    sinceTimePeriod: String(since),
+  });
+  return attach(parseAnnual(ds), 'hicp_core_annual_pct', '%', 'eurostat:prc_hicp_aind');
+}
+
+// ----------------------------------------------------------------------------
+// ilc_lvho07a — Housing cost overburden rate
+// % of population in households where housing costs > 40% of disposable income
+// ----------------------------------------------------------------------------
+export async function eurostat_ilc_lvho07a(opts: ExtractorOpts = {}): Promise<ExtractedRow[]> {
+  const since = opts.sinceYear ?? DEFAULT_SINCE;
+  const ds = await fetchEurostat('ilc_lvho07a', {
+    incgrp: 'TOTAL',
+    hhtyp: 'TOTAL',
+    unit: 'PC',
+    sinceTimePeriod: String(since),
+  });
+  return attach(parseAnnual(ds), 'housing_cost_overburden_pct', '%', 'eurostat:ilc_lvho07a');
+}
+
+// ----------------------------------------------------------------------------
 // namq_10_gdp — quarterly real GDP growth, % change on previous quarter (SCA)
 // ----------------------------------------------------------------------------
 export async function eurostat_namq_10_gdp(opts: ExtractorOpts = {}): Promise<ExtractedRow[]> {
@@ -260,6 +288,8 @@ export const EUROSTAT_EXTRACTORS = {
   eurostat_prc_hicp_manr,
   eurostat_une_rt_m,
   eurostat_namq_10_gdp,
+  eurostat_prc_hicp_aind_core,
+  eurostat_ilc_lvho07a,
 } as const;
 
 export type EurostatExtractorName = keyof typeof EUROSTAT_EXTRACTORS;
