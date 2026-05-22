@@ -85,7 +85,7 @@ export function EuropeMap({ countries }: { countries: CountrySnapshot[] }) {
   return (
     <div className="relative">
       {/* Headline summary */}
-      {activeLabel && headlineSummary && (
+      {activeLabel && headlineSummary && mode !== 'none' && (
         <div className="mb-5">
           <h3 className="font-display text-2xl tracking-tight text-white sm:text-3xl">
             The average {activeLabel.label.toLowerCase()} across the EU 27 in {fmtPeriod(headlineSummary.period)} was{' '}
