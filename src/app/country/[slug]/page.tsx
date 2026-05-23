@@ -8,6 +8,7 @@ import { TimeSeriesBar } from '@/components/charts/time-series-bar';
 import { Donut } from '@/components/charts/donut';
 import { Sparkline } from '@/components/charts/sparkline';
 import { PALETTE } from '@/components/charts/palette';
+import { MetricInfoLink } from '@/components/ui/metric-info-link';
 
 export const dynamic = 'force-dynamic';
 
@@ -77,7 +78,7 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       {/* Fiscal trajectory */}
       <Section title="Fiscal trajectory" hint="Deficit history + debt vs eurozone average">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-          <ChartCard title="Government deficit / surplus" subtitle="% of GDP, annual (B.9)">
+          <ChartCard title="Government deficit / surplus" subtitle="% of GDP, annual (B.9)" metricKey="gov_deficit_pct_gdp">
             <TimeSeriesBar
               data={data.series['gov_deficit_pct_gdp']?.filter((p) => !p.is_forecast) ?? []}
               yLabel="% GDP"
@@ -86,7 +87,7 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
             />
           </ChartCard>
 
-          <ChartCard title="Government debt" subtitle="% of GDP, vs eurozone average">
+          <ChartCard title="Government debt" subtitle="% of GDP, vs eurozone average" metricKey="gov_debt_pct_gdp">
             <TimeSeriesLine
               series={[
                 { label: c.name, data: data.series['gov_debt_pct_gdp']?.filter((p) => !p.is_forecast) ?? [], color: PALETTE.primary },
@@ -102,13 +103,13 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       {/* Spending breakdown */}
       <Section title="Government spending — latest year" hint="By COFOG function (% of GDP)">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-          <ChartCard title="Spending breakdown" subtitle={firstCofogYearLabel(data) ?? ''}>
+          <ChartCard title="Spending breakdown" subtitle={firstCofogYearLabel(data) ?? ''} metricKey="gov_expenditure_social_protection_pct_gdp">
             <Donut
               data={data.cofog.map((c) => ({ name: c.name, value: Number(c.value.toFixed(2)) }))}
               format="pct1"
             />
           </ChartCard>
-          <ChartCard title="Total expenditure vs revenue" subtitle="% of GDP, annual">
+          <ChartCard title="Total expenditure vs revenue" subtitle="% of GDP, annual" metricKey="gov_expenditure_total_pct_gdp">
             <TimeSeriesLine
               series={[
                 { label: 'Expenditure', data: data.series['gov_expenditure_total_pct_gdp'] ?? [], color: PALETTE.negative },
@@ -124,13 +125,13 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       {/* Macro */}
       <Section title="Macro indicators">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <ChartCard title="Real GDP growth" subtitle="% YoY, annual">
+          <ChartCard title="Real GDP growth" subtitle="% YoY, annual" metricKey="gdp_real_growth_pct">
             <TimeSeriesBar data={data.series['gdp_real_growth_pct']?.filter((p) => !p.is_forecast) ?? []} format="pct1" height={280} />
           </ChartCard>
-          <ChartCard title="HICP inflation" subtitle="% YoY, annual average">
+          <ChartCard title="HICP inflation" subtitle="% YoY, annual average" metricKey="hicp_annual_pct">
             <TimeSeriesLine series={[{ label: 'HICP', data: data.series['hicp_annual_pct'] ?? [], color: PALETTE.warning }]} format="pct1" height={280} />
           </ChartCard>
-          <ChartCard title="Unemployment" subtitle="% of active population">
+          <ChartCard title="Unemployment" subtitle="% of active population" metricKey="unemployment_rate_pct">
             <TimeSeriesLine series={[{ label: 'Unemployment', data: data.series['unemployment_rate_pct'] ?? [], color: PALETTE.negative }]} format="pct1" height={280} />
           </ChartCard>
         </div>
@@ -139,7 +140,7 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       {/* Sovereign yield */}
       {data.series['sovereign_10y_yield']?.length > 0 && (
         <Section title="Sovereign borrowing cost" hint="10Y benchmark government bond yield (monthly)">
-          <ChartCard title="10Y yield">
+          <ChartCard title="10Y yield" metricKey="sovereign_10y_yield">
             <TimeSeriesLine series={[{ label: c.name, data: data.series['sovereign_10y_yield'] ?? [], color: PALETTE.primary }]} format="pct1" />
           </ChartCard>
         </Section>
@@ -167,7 +168,7 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
       {/* IMF forecasts */}
       {data.series['imf_gdp_growth_forecast_pct']?.some((p) => p.is_forecast) && (
         <Section title="IMF WEO forecasts">
-          <ChartCard title="GDP growth — historical + forecast" subtitle="Solid = actual · dashed = forecast">
+          <ChartCard title="GDP growth — historical + forecast" subtitle="Solid = actual · dashed = forecast" metricKey="imf_gdp_growth_forecast_pct">
             <TimeSeriesLine
               series={[
                 { label: 'Historical', data: data.series['imf_gdp_growth_forecast_pct']?.filter((p) => !p.is_forecast) ?? [], color: PALETTE.primary },
@@ -227,10 +228,13 @@ function Section({ title, hint, children }: { title: string; hint?: string; chil
   );
 }
 
-function ChartCard({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
+function ChartCard({ title, subtitle, metricKey, children }: { title: string; subtitle?: string; metricKey?: string; children: React.ReactNode }) {
   return (
     <div className="surface p-4">
-      <div className="font-display text-sm tracking-wide text-white">{title}</div>
+      <div className="flex items-center gap-1.5 font-display text-sm tracking-wide text-white">
+        {title}
+        {metricKey && <MetricInfoLink metricKey={metricKey} />}
+      </div>
       {subtitle && <div className="mt-0.5 text-xs text-slate-400">{subtitle}</div>}
       <div className="mt-3">{children}</div>
     </div>
