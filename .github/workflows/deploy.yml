@@ -1,0 +1,44 @@
+name: Deploy to Cloudflare Workers
+
+# Two ways to deploy:
+#   * "Run workflow" button (workflow_dispatch) — pick any branch to deploy now.
+#   * automatically on push to the production branch (main).
+#
+# Requires one repository secret: CLOUDFLARE_API_TOKEN (a Cloudflare API token
+# with "Edit Cloudflare Workers" permission). The account id lives in
+# wrangler.toml, so no other secret is needed for the deploy itself.
+#
+# Worker runtime secrets (Supabase keys, ANTHROPIC_API_KEY, GOOGLE_DRIVE_*,
+# etc.) are managed separately with `wrangler secret put` and are NOT touched
+# by a deploy — they persist on the Worker across deploys.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - claude/setup-cloud-integration-ovzPY   # repo default / integration branch
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (OpenNext) + deploy (Wrangler)
+        run: npm run cf:deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
