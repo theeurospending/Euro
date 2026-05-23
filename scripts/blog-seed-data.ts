@@ -483,6 +483,24 @@ export const ARTICLES: SeedArticle[] = [
     ].join(''),
   },
   {
+    slug: 'migration-and-population-change',
+    title: 'Net migration and population change',
+    excerpt: 'Why most EU population change now comes from migration rather than births, and how the crude rates are measured.',
+    tags: ['explainer', 'demographics'],
+    metricKeys: ['net_migration_rate', 'population_change_rate'],
+    body: [
+      p('Eurostat breaks the year-on-year change in a country\'s population into two crude rates, each expressed per 1,000 people so countries of different sizes compare fairly.'),
+      ul([
+        '<strong>Net migration rate</strong> — arrivals minus departures (plus a small statistical adjustment), per 1,000 population. A positive figure means more people moved in than out.',
+        '<strong>Population change rate</strong> — the total change in population per 1,000, combining net migration with natural change (births minus deaths).',
+      ]),
+      h('Why it matters'),
+      p('Across most of the EU, natural change has turned negative — more deaths than births — so net migration is now the main thing keeping populations from shrinking. Population is the denominator behind per-capita prosperity and the working-age base that funds pensions and healthcare, which makes these rates a quiet but powerful driver of the public finances tracked elsewhere on this site.'),
+      note('These are demographic accounting rates, not a judgement. We show the figure; the interpretation is yours.'),
+      p('Source: Eurostat demographics (demo_gind), annual.'),
+    ].join(''),
+  },
+  {
     slug: 'imf-forecasts',
     title: 'IMF forecasts (World Economic Outlook)',
     excerpt: 'Forward-looking projections for growth, inflation, deficits and debt, on a consistent cross-country basis.',

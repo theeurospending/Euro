@@ -52,9 +52,9 @@ export default async function Home() {
         {/* Tile grid */}
         <section className="border-b border-[var(--brand-navy)]/10">
           <div className="mx-auto max-w-6xl px-6 py-16">
-            <div className="kicker">EU 27</div>
-            <h2 className="font-display mt-3 text-3xl text-[var(--brand-navy)]">All EU countries</h2>
-            <p className="mt-2 text-sm text-[var(--brand-navy)]/60">Sort by any metric. Click a card for the full country page.</p>
+            <div className="kicker">EU 27 + European comparators</div>
+            <h2 className="font-display mt-3 text-3xl text-[var(--brand-navy)]">All European countries</h2>
+            <p className="mt-2 text-sm text-[var(--brand-navy)]/60">Sort by any metric — ranked worst to best — with a traffic-light read on each figure. Click a card for the full country page.</p>
             <div className="mt-8">
               <CountryTileGrid countries={data.countries} />
             </div>

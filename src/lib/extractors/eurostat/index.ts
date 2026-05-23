@@ -275,8 +275,30 @@ export async function eurostat_une_rt_m(opts: ExtractorOpts = {}): Promise<Extra
   return attach(parseEurostat(ds, 'monthly'), 'unemployment_monthly_pct', '%', 'eurostat:une_rt_m');
 }
 
+// ----------------------------------------------------------------------------
+// demo_gind — population change components (crude rates, per 1,000 population)
+//   CNMIGRATRT — net migration plus statistical adjustment
+//   GROWRT     — total population change
+// ----------------------------------------------------------------------------
+export async function eurostat_demo_gind(opts: ExtractorOpts = {}): Promise<ExtractedRow[]> {
+  const since = opts.sinceYear ?? DEFAULT_SINCE;
+  const netMig = await fetchEurostat('demo_gind', {
+    indic_de: 'CNMIGRATRT',
+    sinceTimePeriod: String(since),
+  });
+  const popChange = await fetchEurostat('demo_gind', {
+    indic_de: 'GROWRT',
+    sinceTimePeriod: String(since),
+  });
+  return [
+    ...attach(parseAnnual(netMig),    'net_migration_rate',     'per 1,000', 'eurostat:demo_gind'),
+    ...attach(parseAnnual(popChange), 'population_change_rate', 'per 1,000', 'eurostat:demo_gind'),
+  ];
+}
+
 // Registry — looked up by `data_sources.extractor_name`.
 export const EUROSTAT_EXTRACTORS = {
+  eurostat_demo_gind,
   eurostat_gov_10a_main,
   eurostat_gov_10dd_edpt1,
   eurostat_gov_10a_exp_cofog,

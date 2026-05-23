@@ -140,6 +140,14 @@ export const METRIC_EXPLAINER: Record<string, MetricExplainer> = {
     "slug": "housing-cost-burden",
     "title": "Housing cost burden"
   },
+  "net_migration_rate": {
+    "slug": "migration-and-population-change",
+    "title": "Net migration and population change"
+  },
+  "population_change_rate": {
+    "slug": "migration-and-population-change",
+    "title": "Net migration and population change"
+  },
   "imf_gdp_growth_forecast_pct": {
     "slug": "imf-forecasts",
     "title": "IMF forecasts (World Economic Outlook)"
