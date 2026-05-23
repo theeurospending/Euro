@@ -15,7 +15,9 @@ name: Deploy to Cloudflare Workers
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
+      - claude/setup-cloud-integration-ovzPY   # repo default / integration branch
 
 concurrency:
   group: deploy-${{ github.ref }}
