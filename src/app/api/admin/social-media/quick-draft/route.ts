@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-auth';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { generateCaption } from '@/lib/social/caption-generator';
-import { renderChartCardPng } from '@/lib/social/chart-renderer';
+import { renderInfographicPng, selectInfographicTemplate } from '@/lib/social/infographics';
 import type { CandidateFact, DataPoint } from '@/lib/social/types';
 
 export const runtime = 'nodejs';
@@ -65,7 +65,8 @@ export async function POST(request: Request) {
 
   try {
     const caption = await generateCaption(fact, 'instagram');
-    const png = await renderChartCardPng({
+    const template = selectInfographicTemplate(fact, series as DataPoint[]);
+    const png = await renderInfographicPng(template, {
       fact,
       series: series as DataPoint[],
       unit: metric.unit,
@@ -84,7 +85,7 @@ export async function POST(request: Request) {
       country_iso: countryIso,
       caption,
       image_url: pub.publicUrl,
-      chart_data: { rule: 'quick_draft', supporting_data: fact.supporting_data, series: series.slice(-24) },
+      chart_data: { rule: 'quick_draft', template, supporting_data: fact.supporting_data, series: series.slice(-24) },
       status: 'draft',
       platforms: ['instagram', 'x'],
     }).select('id').single();

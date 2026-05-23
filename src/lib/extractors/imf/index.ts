@@ -15,6 +15,8 @@ const ISO3_TO_OUR: Record<string, string> = {
   ITA: 'IT', LVA: 'LV', LTU: 'LT', LUX: 'LU', MLT: 'MT', NLD: 'NL', POL: 'PL',
   PRT: 'PT', ROU: 'RO', SVK: 'SK', SVN: 'SI', ESP: 'ES', SWE: 'SE',
   GBR: 'GB', USA: 'US', CHE: 'CH', NOR: 'NO',
+  // Major non-EU economies for the region comparison.
+  CHN: 'CN', IND: 'IN', JPN: 'JP',
   // Eurozone aggregate (IMF uses EUR or sometimes EA)
   EUR: 'EZ', EA:  'EZ',
 };

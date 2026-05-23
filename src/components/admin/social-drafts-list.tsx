@@ -15,6 +15,7 @@ type Draft = {
   platforms: string[];
   error_message: string | null;
   created_at: string;
+  chart_data?: { template?: string } | null;
 };
 
 export function DraftsList({ drafts }: { drafts: Draft[] }) {
@@ -59,7 +60,7 @@ export function DraftsList({ drafts }: { drafts: Draft[] }) {
               <div className="text-xs text-zinc-500">
                 <span className="font-mono">#{d.id}</span>
                 {' · '}<span>{d.country_iso ?? 'EZ-wide'}</span>
-                {' · '}<span>{d.post_type}</span>
+                {' · '}<span>{d.chart_data?.template ?? d.post_type}</span>
                 {' · '}<span>{d.status}</span>
                 {' · '}<span>{d.platforms.join(', ')}</span>
               </div>

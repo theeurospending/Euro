@@ -1,6 +1,7 @@
 import { TimeSeriesLine } from '@/components/charts/time-series-line';
 import type { FormatId } from '@/components/charts/formatters';
 import { nthCountryColor } from '@/components/charts/palette';
+import { MetricInfoLink } from '@/components/ui/metric-info-link';
 import type { CompareSeries, ComparableMetric } from '@/lib/compare-data';
 
 export function CompareChart({ series, metric }: { series: CompareSeries[]; metric: ComparableMetric | undefined }) {
@@ -13,7 +14,10 @@ export function CompareChart({ series, metric }: { series: CompareSeries[]; metr
   }));
   return (
     <div className="surface p-4">
-      <div className="font-display text-sm tracking-wide text-white">{metric.display_name}</div>
+      <div className="flex items-center gap-1.5 font-display text-sm tracking-wide text-white">
+        {metric.display_name}
+        <MetricInfoLink metricKey={metric.key} />
+      </div>
       <div className="mt-0.5 font-mono text-xs text-slate-400">{metric.unit} · {metric.frequency}</div>
       <div className="mt-3">
         <TimeSeriesLine series={lines} format={format} height={420} />

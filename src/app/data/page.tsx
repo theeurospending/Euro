@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { SiteHeader } from '@/components/layout/site-header';
+import { MetricInfoLink } from '@/components/ui/metric-info-link';
 
 export const dynamic = 'force-dynamic';
 
@@ -72,17 +73,19 @@ export default async function DataPage() {
               <div className="kicker">{cat.replace('_', ' ')}</div>
               <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {(ms ?? []).map((m) => (
-                  <a
+                  <div
                     key={m.key}
-                    href={`/api/export/metric/${m.key}`}
-                    className="surface flex items-center justify-between p-3 transition-colors hover:border-[var(--brand-gold)]/40"
+                    className="surface flex items-center justify-between gap-2 p-3 transition-colors hover:border-[var(--brand-gold)]/40"
                   >
-                    <span>
+                    <span className="flex items-center gap-1.5 text-slate-300">
                       <span className="text-sm text-white">{m.display_name}</span>
-                      <span className="ml-2 font-mono text-xs text-slate-400">{m.unit}</span>
+                      <MetricInfoLink metricKey={m.key} />
+                      <span className="font-mono text-xs text-slate-400">{m.unit}</span>
                     </span>
-                    <span className="font-mono text-xs text-[var(--brand-lav)]">{m.key}.csv ↓</span>
-                  </a>
+                    <a href={`/api/export/metric/${m.key}`} className="font-mono text-xs text-[var(--brand-lav)] hover:underline">
+                      {m.key}.csv ↓
+                    </a>
+                  </div>
                 ))}
               </div>
             </div>

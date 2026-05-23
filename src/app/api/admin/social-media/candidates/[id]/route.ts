@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-auth';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { generateCaption } from '@/lib/social/caption-generator';
-import { renderChartCardPng } from '@/lib/social/chart-renderer';
+import { renderInfographicPng, selectInfographicTemplate } from '@/lib/social/infographics';
 import type { CandidateFact, DataPoint } from '@/lib/social/types';
 
 export const runtime = 'nodejs';
@@ -67,17 +67,15 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
     const caption = await generateCaption(fact, 'instagram');
 
-    let imageUrl: string | null = null;
-    if (fact.chart_type !== 'none' && series.length > 0) {
-      const png = await renderChartCardPng({ fact, series, unit, country_label });
-      const key = `${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}.png`;
-      const { error: upErr } = await admin.storage.from('social-images').upload(key, new Uint8Array(png), {
-        contentType: 'image/png', cacheControl: '31536000', upsert: false,
-      });
-      if (upErr) throw new Error(`upload: ${upErr.message}`);
-      const { data: pub } = admin.storage.from('social-images').getPublicUrl(key);
-      imageUrl = pub.publicUrl;
-    }
+    const template = selectInfographicTemplate(fact, series);
+    const png = await renderInfographicPng(template, { fact, series, unit, country_label });
+    const key = `${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}.png`;
+    const { error: upErr } = await admin.storage.from('social-images').upload(key, new Uint8Array(png), {
+      contentType: 'image/png', cacheControl: '31536000', upsert: false,
+    });
+    if (upErr) throw new Error(`upload: ${upErr.message}`);
+    const { data: pub } = admin.storage.from('social-images').getPublicUrl(key);
+    const imageUrl = pub.publicUrl;
 
     await admin.from('social_media_drafts').insert({
       candidate_id: id,
@@ -85,7 +83,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       country_iso: fact.country_iso,
       caption,
       image_url: imageUrl,
-      chart_data: { rule: fact.rule_name, supporting_data: fact.supporting_data, series: series.slice(-24) },
+      chart_data: { rule: fact.rule_name, template, supporting_data: fact.supporting_data, series: series.slice(-24) },
       status: 'draft',
       platforms: ['instagram', 'x'],
     });

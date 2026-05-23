@@ -11,18 +11,41 @@ export type HomepageMetric =
   | 'hicp_core_annual_pct'
   | 'unemployment_rate_pct'
   | 'gdp_per_capita_eur'
-  | 'housing_cost_overburden_pct';
+  | 'housing_cost_overburden_pct'
+  | 'net_migration_rate'
+  | 'population_change_rate';
 
 export const HOMEPAGE_METRIC_LABELS: Record<HomepageMetric, { label: string; unit: string; betterDirection: 'low' | 'high' }> = {
-  gov_debt_pct_gdp:            { label: 'Debt',            unit: '% GDP', betterDirection: 'low'  },
-  gov_deficit_pct_gdp:         { label: 'Deficit',         unit: '% GDP', betterDirection: 'high' },
-  gdp_real_growth_pct:         { label: 'GDP growth',      unit: '%',     betterDirection: 'high' },
-  hicp_annual_pct:             { label: 'Inflation',       unit: '%',     betterDirection: 'low'  },
-  hicp_core_annual_pct:        { label: 'Real inflation',  unit: '%',     betterDirection: 'low'  },
-  unemployment_rate_pct:       { label: 'Unemployment',    unit: '%',     betterDirection: 'low'  },
-  gdp_per_capita_eur:          { label: 'GDP per cap',     unit: '€',     betterDirection: 'high' },
-  housing_cost_overburden_pct: { label: 'Housing burden',  unit: '%',     betterDirection: 'low'  },
+  gov_debt_pct_gdp:            { label: 'Debt',            unit: '% GDP',    betterDirection: 'low'  },
+  gov_deficit_pct_gdp:         { label: 'Deficit',         unit: '% GDP',    betterDirection: 'high' },
+  gdp_real_growth_pct:         { label: 'GDP growth',      unit: '%',        betterDirection: 'high' },
+  hicp_annual_pct:             { label: 'Inflation',       unit: '%',        betterDirection: 'low'  },
+  hicp_core_annual_pct:        { label: 'Real inflation',  unit: '%',        betterDirection: 'low'  },
+  unemployment_rate_pct:       { label: 'Unemployment',    unit: '%',        betterDirection: 'low'  },
+  gdp_per_capita_eur:          { label: 'GDP per cap',     unit: '€',        betterDirection: 'high' },
+  housing_cost_overburden_pct: { label: 'Housing burden',  unit: '%',        betterDirection: 'low'  },
+  net_migration_rate:          { label: 'Net migration',   unit: '/1,000',   betterDirection: 'high' },
+  population_change_rate:       { label: 'Pop. change',     unit: '/1,000',   betterDirection: 'high' },
 };
+
+// Traffic-light status for a metric value. Indicative bands anchored on the
+// reference points in the "benchmarks-and-thresholds" explainer (Maastricht
+// 3%/60%, ECB 2% target) — meant as a quick read, not an official judgement.
+export type MetricStatus = 'ok' | 'risky' | 'bad';
+
+export function metricStatus(metric: HomepageMetric, v: number): MetricStatus | null {
+  switch (metric) {
+    case 'gov_debt_pct_gdp':            return v <= 60   ? 'ok' : v <= 90 ? 'risky' : 'bad';
+    case 'gov_deficit_pct_gdp':         return v >= -3   ? 'ok' : v >= -6 ? 'risky' : 'bad';
+    case 'gdp_real_growth_pct':         return v >= 2    ? 'ok' : v >= 0  ? 'risky' : 'bad';
+    case 'hicp_annual_pct':
+    case 'hicp_core_annual_pct':        return v <= 2.5  ? 'ok' : v <= 4  ? 'risky' : 'bad';
+    case 'unemployment_rate_pct':       return v < 5     ? 'ok' : v < 9   ? 'risky' : 'bad';
+    case 'gdp_per_capita_eur':          return v >= 40000 ? 'ok' : v >= 25000 ? 'risky' : 'bad';
+    case 'housing_cost_overburden_pct': return v < 8     ? 'ok' : v <= 15 ? 'risky' : 'bad';
+    default: return null;
+  }
+}
 
 export type CountrySnapshot = {
   iso_code: string;
@@ -56,6 +79,8 @@ const ALL_METRICS: HomepageMetric[] = [
   'unemployment_rate_pct',
   'gdp_per_capita_eur',
   'housing_cost_overburden_pct',
+  'net_migration_rate',
+  'population_change_rate',
 ];
 
 export async function loadHomepageData(): Promise<HomepageData> {

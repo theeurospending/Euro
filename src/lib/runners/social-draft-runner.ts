@@ -6,7 +6,7 @@
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { detectFacts } from '@/lib/social/fact-detector';
 import { generateCaption } from '@/lib/social/caption-generator';
-import { renderChartCardPng } from '@/lib/social/chart-renderer';
+import { renderInfographicPng, selectInfographicTemplate, seedFrom } from '@/lib/social/infographics';
 import { renderPhotoCardPng } from '@/lib/social/photo-overlay-renderer';
 import { isDriveConfigured, pickLruImageForCountry, downloadDriveFile, markPhotoUsed } from '@/lib/google-drive';
 import type { CandidateFact, DataPoint } from '@/lib/social/types';
@@ -27,10 +27,15 @@ export async function runSocialDraftGeneration(opts: { maxDrafts?: number } = {}
   const errors: { message: string }[] = [];
   const admin = createSupabaseAdminClient();
 
-  // Configurable cap; default from admin_settings.social.weekly_draft_cap.
-  const { data: capRow } = await admin
-    .from('admin_settings').select('value').eq('key', 'social.weekly_draft_cap').maybeSingle();
-  const cap = opts.maxDrafts ?? (typeof capRow?.value === 'number' ? capRow.value : 20);
+  // Configurable cap + photo-overlay share, from admin_settings.
+  const { data: settingRows } = await admin
+    .from('admin_settings').select('key, value')
+    .in('key', ['social.weekly_draft_cap', 'social.photo_overlay_pct']);
+  const settings = new Map((settingRows ?? []).map((r) => [r.key, r.value]));
+  const capSetting = settings.get('social.weekly_draft_cap');
+  const cap = opts.maxDrafts ?? (typeof capSetting === 'number' ? capSetting : 20);
+  const pctSetting = settings.get('social.photo_overlay_pct');
+  const photoPct = typeof pctSetting === 'number' ? pctSetting : 20;
 
   // 1. Detect facts.
   let facts: CandidateFact[] = [];
@@ -78,7 +83,7 @@ export async function runSocialDraftGeneration(opts: { maxDrafts?: number } = {}
       chart_type: c.chart_type,
     };
     try {
-      await generateOneDraft(admin, c.id, fact);
+      await generateOneDraft(admin, c.id, fact, photoPct);
       generated++;
     } catch (e) {
       failed++;
@@ -93,6 +98,7 @@ async function generateOneDraft(
   admin: ReturnType<typeof createSupabaseAdminClient>,
   candidateId: number,
   fact: CandidateFact,
+  photoPct: number,
 ): Promise<void> {
   const country_label = await resolveCountryLabel(admin, fact.country_iso);
   const metric = (fact.supporting_data.metric ?? null) as string | null;
@@ -116,22 +122,26 @@ async function generateOneDraft(
   // Caption via Anthropic.
   const caption = await generateCaption(fact, 'instagram');
 
-  // Decide post_type: photo_overlay when Google Drive is configured AND the
-  // country has photos available; otherwise fall back to chart.
-  let postType: 'chart' | 'photo_overlay' = fact.chart_type !== 'none' ? 'chart' : 'photo_overlay';
+  // Decide post_type. Roughly photoPct% of posts use a Google Drive photo
+  // overlay; the rest use one of the on-brand infographic templates. The seed
+  // is per-fact so the choice is deterministic across re-renders but varied
+  // across a batch.
+  const wantsPhoto = isDriveConfigured() && Boolean(fact.country_iso) && (seedFrom(fact) % 100) < clampPct(photoPct);
+  let postType: 'chart' | 'photo_overlay' = 'chart';
+  const template = selectInfographicTemplate(fact, series);
   let photoSource: { driveFileId: string; dataUrl: string } | null = null;
-  if (isDriveConfigured() && fact.country_iso) {
+
+  if (wantsPhoto && fact.country_iso) {
     try {
       const pick = await pickLruImageForCountry(fact.country_iso);
       if (pick) {
         const buf = await downloadDriveFile(pick.driveFileId);
-        // Convert to data: URL so Satori can embed.
-        const b64 = arrayBufferToBase64(buf);
+        const b64 = arrayBufferToBase64(buf);  // data: URL so Satori can embed
         photoSource = { driveFileId: pick.driveFileId, dataUrl: `data:${pick.mimeType};base64,${b64}` };
         postType = 'photo_overlay';
       }
     } catch {
-      // Drive errors: fall back to chart.
+      // Drive errors: fall back to an infographic.
     }
   }
 
@@ -139,27 +149,11 @@ async function generateOneDraft(
   let imageUrl: string | null = null;
   if (postType === 'photo_overlay' && photoSource) {
     const png = await renderPhotoCardPng({ fact, unit, country_label, photoDataUrl: photoSource.dataUrl });
-    const key = `${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}.png`;
-    const { error: upErr } = await admin.storage.from('social-images').upload(key, new Uint8Array(png), {
-      contentType: 'image/png',
-      cacheControl: '31536000',
-      upsert: false,
-    });
-    if (upErr) throw new Error(`storage upload: ${upErr.message}`);
-    const { data: pub } = admin.storage.from('social-images').getPublicUrl(key);
-    imageUrl = pub.publicUrl;
+    imageUrl = await uploadPng(admin, png);
     if (fact.country_iso) await markPhotoUsed(fact.country_iso, photoSource.driveFileId);
-  } else if (fact.chart_type !== 'none' && series.length > 0) {
-    const png = await renderChartCardPng({ fact, series, unit, country_label });
-    const key = `${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}.png`;
-    const { error: upErr } = await admin.storage.from('social-images').upload(key, new Uint8Array(png), {
-      contentType: 'image/png',
-      cacheControl: '31536000',
-      upsert: false,
-    });
-    if (upErr) throw new Error(`storage upload: ${upErr.message}`);
-    const { data: pub } = admin.storage.from('social-images').getPublicUrl(key);
-    imageUrl = pub.publicUrl;
+  } else {
+    const png = await renderInfographicPng(template, { fact, series, unit, country_label });
+    imageUrl = await uploadPng(admin, png);
   }
 
   // Insert draft + mark candidate promoted.
@@ -169,7 +163,13 @@ async function generateOneDraft(
     country_iso: fact.country_iso,
     caption,
     image_url: imageUrl,
-    chart_data: { rule: fact.rule_name, supporting_data: fact.supporting_data, series: series.slice(-24), photo_source: photoSource?.driveFileId ?? null },
+    chart_data: {
+      rule: fact.rule_name,
+      template: postType === 'photo_overlay' ? 'photo_overlay' : template,
+      supporting_data: fact.supporting_data,
+      series: series.slice(-24),
+      photo_source: photoSource?.driveFileId ?? null,
+    },
     status: 'draft',
     platforms: ['instagram', 'x'],
   });
@@ -196,6 +196,23 @@ function finalise(startedAt: string, detected: number, inserted: number, existin
     drafts_failed: failed,
     errors,
   };
+}
+
+function clampPct(n: number): number {
+  if (!Number.isFinite(n)) return 20;
+  return Math.max(0, Math.min(100, Math.round(n)));
+}
+
+async function uploadPng(admin: ReturnType<typeof createSupabaseAdminClient>, png: ArrayBuffer): Promise<string> {
+  const key = `${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}.png`;
+  const { error: upErr } = await admin.storage.from('social-images').upload(key, new Uint8Array(png), {
+    contentType: 'image/png',
+    cacheControl: '31536000',
+    upsert: false,
+  });
+  if (upErr) throw new Error(`storage upload: ${upErr.message}`);
+  const { data: pub } = admin.storage.from('social-images').getPublicUrl(key);
+  return pub.publicUrl;
 }
 
 function arrayBufferToBase64(buf: ArrayBuffer): string {

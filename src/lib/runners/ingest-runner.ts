@@ -9,6 +9,7 @@ import {
 } from '@/lib/extractors/eurostat';
 import { ECB_EXTRACTORS, type EcbExtractorName } from '@/lib/extractors/ecb';
 import { IMF_EXTRACTORS, type ImfExtractorName } from '@/lib/extractors/imf';
+import { PRICES_EXTRACTORS, type PricesExtractorName } from '@/lib/extractors/prices';
 
 type TriggeredBy = 'manual' | 'admin' | 'cron';
 
@@ -133,6 +134,10 @@ async function runOneSource(
     } else if (src.category === 'imf') {
       const fn = IMF_EXTRACTORS[src.extractor_name as ImfExtractorName];
       if (!fn) throw new Error(`Unknown IMF extractor "${src.extractor_name}"`);
+      fetched = await fn({ sinceYear: opts.sinceYear });
+    } else if (src.category === 'prices') {
+      const fn = PRICES_EXTRACTORS[src.extractor_name as PricesExtractorName];
+      if (!fn) throw new Error(`Unknown prices extractor "${src.extractor_name}"`);
       fetched = await fn({ sinceYear: opts.sinceYear });
     } else {
       throw new Error(`Unknown source category "${src.category}"`);
