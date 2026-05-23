@@ -140,6 +140,14 @@ export const METRIC_EXPLAINER: Record<string, MetricExplainer> = {
     "slug": "housing-cost-burden",
     "title": "Housing cost burden"
   },
+  "gold_eur": {
+    "slug": "euro-vs-gold-and-bitcoin",
+    "title": "The euro priced in gold and Bitcoin"
+  },
+  "btc_eur": {
+    "slug": "euro-vs-gold-and-bitcoin",
+    "title": "The euro priced in gold and Bitcoin"
+  },
   "net_migration_rate": {
     "slug": "migration-and-population-change",
     "title": "Net migration and population change"

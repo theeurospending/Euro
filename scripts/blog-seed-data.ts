@@ -483,6 +483,23 @@ export const ARTICLES: SeedArticle[] = [
     ].join(''),
   },
   {
+    slug: 'euro-vs-gold-and-bitcoin',
+    title: 'The euro priced in gold and Bitcoin',
+    excerpt: 'Why we track the euro against scarce assets, and what a rising gold or Bitcoin price really says about the currency.',
+    tags: ['explainer', 'monetary'],
+    metricKeys: ['gold_eur', 'btc_eur'],
+    body: [
+      p('Inflation measures the euro against a basket of everyday goods. Pricing it against scarce assets — gold, with thousands of years as money, and Bitcoin, with a fixed supply of 21 million — gives a complementary view of the currency\'s value.'),
+      ul([
+        '<strong>Gold (EUR per troy ounce)</strong> — the classic store of value. A rising euro price of gold means each euro commands less of it.',
+        '<strong>Bitcoin (EUR)</strong> — a fixed-supply digital asset, far more volatile, but a stark benchmark for a currency whose supply keeps growing.',
+      ]),
+      h('How to read these charts'),
+      p('When the euro price of gold or Bitcoin rises, it is partly the asset moving and partly the euro losing ground. Neither is a like-for-like inflation measure — both are volatile and driven by their own demand — but a long, persistent climb is hard to separate from a currency that is being steadily diluted.'),
+      note('Prices are euro-denominated daily closes from a public market source, not an official EU statistic. We show them as context for the debasement story, not as a forecast.'),
+    ].join(''),
+  },
+  {
     slug: 'migration-and-population-change',
     title: 'Net migration and population change',
     excerpt: 'Why most EU population change now comes from migration rather than births, and how the crude rates are measured.',
