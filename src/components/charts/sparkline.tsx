@@ -10,8 +10,8 @@ export function Sparkline({
   color = PALETTE.primary,
 }: {
   data: { value: number }[];
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   color?: string;
 }) {
   if (!data || data.length < 2) {
