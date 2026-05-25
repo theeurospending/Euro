@@ -255,7 +255,7 @@ export async function eurostat_prc_hicp_manr(opts: ExtractorOpts = {}): Promise<
   const ds = await fetchEurostat('prc_hicp_manr', {
     coicop: 'CP00',
     unit: 'RCH_A',
-    sinceTimePeriod: `${since}M01`,
+    sinceTimePeriod: `${since}-01`,
   });
   return attach(parseEurostat(ds, 'monthly'), 'hicp_monthly_pct', '%', 'eurostat:prc_hicp_manr');
 }
@@ -270,7 +270,7 @@ export async function eurostat_une_rt_m(opts: ExtractorOpts = {}): Promise<Extra
     age: 'Y15-74',
     unit: 'PC_ACT',
     s_adj: 'SA',
-    sinceTimePeriod: `${since}M01`,
+    sinceTimePeriod: `${since}-01`,
   });
   return attach(parseEurostat(ds, 'monthly'), 'unemployment_monthly_pct', '%', 'eurostat:une_rt_m');
 }
