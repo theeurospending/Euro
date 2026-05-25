@@ -19,15 +19,6 @@ const SORTABLE_METRICS: HomepageMetric[] = [
   'net_migration_rate',
 ];
 
-const PRIMARY_STATS: HomepageMetric[] = [
-  'gov_debt_pct_gdp',
-  'hicp_annual_pct',
-  'hicp_core_annual_pct',
-  'unemployment_rate_pct',
-  'housing_cost_overburden_pct',
-  'net_migration_rate',
-];
-
 type SortMode = HomepageMetric | 'name';
 
 export function CountryTileGrid({ countries }: { countries: CountrySnapshot[] }) {
@@ -55,6 +46,9 @@ export function CountryTileGrid({ countries }: { countries: CountrySnapshot[] })
     });
     return bestFirst ? arr.reverse() : arr;
   }, [list, sortBy, bestFirst]);
+
+  // Cards show a single metric — the one being sorted on (default to debt when sorting by name).
+  const displayMetric: HomepageMetric = sortBy === 'name' ? 'gov_debt_pct_gdp' : sortBy;
 
   return (
     <div>
@@ -98,11 +92,7 @@ export function CountryTileGrid({ countries }: { countries: CountrySnapshot[] })
                 )}
               </span>
             </div>
-            <div className="mt-4 space-y-2.5">
-              {PRIMARY_STATS.map((m) => (
-                <Stat key={m} metric={m} snap={c.metrics[m]} />
-              ))}
-            </div>
+            <BigStat metric={displayMetric} snap={c.metrics[displayMetric]} />
           </Link>
         ))}
       </div>
@@ -110,27 +100,34 @@ export function CountryTileGrid({ countries }: { countries: CountrySnapshot[] })
   );
 }
 
-function Stat({ metric, snap }: { metric: HomepageMetric; snap: CountrySnapshot['metrics'][HomepageMetric] }) {
+function BigStat({ metric, snap }: { metric: HomepageMetric; snap: CountrySnapshot['metrics'][HomepageMetric] }) {
   const meta = HOMEPAGE_METRIC_LABELS[metric];
-  if (!snap) {
-    return (
-      <div className="flex items-center justify-between text-sm">
-        <span className="flex items-center gap-2"><Dot status={null} /><span className="text-slate-400">{meta.label}</span></span>
-        <span className="text-slate-600">—</span>
-      </div>
-    );
-  }
-  const status = metricStatus(metric, snap.value);
+  const status = snap ? metricStatus(metric, snap.value) : null;
+  const delta = snap?.yoy_delta_abs ?? null;
   return (
-    <div className="flex items-center justify-between text-sm">
-      <span className="flex items-center gap-2">
-        <Dot status={status} />
-        <span className="text-slate-300">{meta.label}</span>
-      </span>
-      <span className="flex items-center gap-2.5">
-        <Sparkline data={snap.spark} width={72} height={28} color={PALETTE.lav} />
-        <span className="font-mono text-base font-medium text-white">{fmt(metric, snap.value)}</span>
-      </span>
+    <div className="mt-4">
+      <div className="flex items-center justify-between">
+        <span className="flex items-center gap-2 text-sm text-slate-300">
+          <Dot status={status} />
+          {meta.label}
+        </span>
+        <span className="font-mono text-2xl font-semibold text-white">
+          {snap ? fmt(metric, snap.value) : <span className="text-base text-slate-600">no data</span>}
+        </span>
+      </div>
+
+      <div className="mt-3 h-32 w-full">
+        {snap && snap.spark.length > 1
+          ? <Sparkline data={snap.spark} width="100%" height={128} color={PALETTE.lav} />
+          : <div className="flex h-full items-center justify-center rounded border border-dashed border-white/10 text-xs text-slate-500">no series yet</div>}
+      </div>
+
+      {snap && (
+        <div className="mt-2 flex items-center justify-between font-mono text-xs text-slate-400">
+          <span>as of {snap.period_start.slice(0, 7)}</span>
+          {delta != null && <span>{delta >= 0 ? '+' : ''}{delta.toFixed(1)} vs prev</span>}
+        </div>
+      )}
     </div>
   );
 }
