@@ -134,7 +134,8 @@ function eurostatTimeLabelToPeriodStart(label: string, frequency: 'annual' | 'mo
     return /^\d{4}$/.test(label) ? `${label}-01-01` : null;
   }
   if (frequency === 'monthly') {
-    const m = label.match(/^(\d{4})M(\d{2})$/);
+    // Eurostat returns monthly labels as "2024-01" (some datasets "2024M01").
+    const m = label.match(/^(\d{4})[-M](\d{2})$/);
     if (m) return `${m[1]}-${m[2]}-01`;
     return null;
   }
