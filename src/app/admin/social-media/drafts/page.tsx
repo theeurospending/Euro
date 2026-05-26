@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { DraftsList } from '@/components/admin/social-drafts-list';
+import { BulkScheduleButton } from '@/components/admin/bulk-schedule-button';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,6 +27,10 @@ export default async function DraftsPage({ searchParams }: { searchParams: Promi
           <Link href="/admin/social-media/candidates" className="text-sm text-blue-700 hover:underline">← Candidates</Link>
           <Link href="/admin" className="text-sm text-zinc-500 underline">← Admin</Link>
         </div>
+      </div>
+
+      <div className="mb-6">
+        <BulkScheduleButton />
       </div>
 
       <div className="mb-4 flex gap-2 text-xs">
