@@ -57,7 +57,7 @@ export type CountrySnapshot = {
   is_aggregate: boolean;
   display_order: number;
   // Per-metric latest value (historical, excluding forecasts).
-  metrics: Partial<Record<HomepageMetric, { period_start: string; value: number; spark: { value: number }[]; yoy_delta_abs: number | null }>>;
+  metrics: Partial<Record<HomepageMetric, { period_start: string; value: number; spark: { period: string; value: number }[]; yoy_delta_abs: number | null }>>;
 };
 
 export type HomepageData = {
@@ -137,7 +137,7 @@ export async function loadHomepageData(): Promise<HomepageData> {
         period_start: latest.period_start,
         value: latest.value,
         yoy_delta_abs,
-        spark: arr.slice(-12).map((p) => ({ value: p.value })),
+        spark: arr.slice(-12).map((p) => ({ period: p.period_start, value: p.value })),
       };
     }
     return { ...c, metrics };
