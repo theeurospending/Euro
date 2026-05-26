@@ -35,7 +35,7 @@ export async function runSocialDraftGeneration(opts: { maxDrafts?: number } = {}
   const capSetting = settings.get('social.weekly_draft_cap');
   const cap = opts.maxDrafts ?? (typeof capSetting === 'number' ? capSetting : 20);
   const pctSetting = settings.get('social.photo_overlay_pct');
-  const photoPct = typeof pctSetting === 'number' ? pctSetting : 20;
+  const photoPct = typeof pctSetting === 'number' ? pctSetting : 75;
 
   // 1. Detect facts.
   let facts: CandidateFact[] = [];
