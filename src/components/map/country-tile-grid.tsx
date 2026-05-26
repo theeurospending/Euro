@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Sparkline } from '@/components/charts/sparkline';
+import { CardChart } from '@/components/charts/card-chart';
 import type { CountrySnapshot, HomepageMetric, MetricStatus } from '@/lib/homepage-data';
 import { HOMEPAGE_METRIC_LABELS, metricStatus } from '@/lib/homepage-data';
 import { PALETTE } from '@/components/charts/palette';
@@ -117,8 +117,8 @@ function BigStat({ metric, snap }: { metric: HomepageMetric; snap: CountrySnapsh
       </div>
 
       <div className="mt-3 h-32 w-full">
-        {snap && snap.spark.length > 1
-          ? <Sparkline data={snap.spark} width="100%" height={128} color={PALETTE.lav} />
+        {snap
+          ? <CardChart data={snap.spark} color={PALETTE.lav} format={(v) => fmt(metric, v)} />
           : <div className="flex h-full items-center justify-center rounded border border-dashed border-white/10 text-xs text-slate-500">no series yet</div>}
       </div>
 
