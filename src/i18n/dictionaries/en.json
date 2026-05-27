@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Home",
+    "compare": "Compare",
+    "euro": "The euro",
+    "data": "Data",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Language"
+  },
+  "home": {
+    "hero_kicker": "Euro Economics · since 1999",
+    "hero_title": "How Europe spends, borrows, and inflates.",
+    "hero_intro": "Live tracker of every EU country's economic trajectory. Pick a metric to colour the map; click any country for the full story.",
+    "tiles_kicker": "EU 27 + European comparators",
+    "tiles_title": "All European countries",
+    "tiles_intro": "Sort by any metric — ranked worst to best — with a traffic-light read on each figure. Click a card for the full country page.",
+    "euro_kicker": "Eurozone snapshot",
+    "euro_title": "The currency, right now",
+    "metric_refi": "ECB main refi rate",
+    "metric_hicp": "Eurozone HICP (YoY)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "as of",
+    "newsletter_kicker": "Weekly digest · Mondays 09:00 UTC",
+    "newsletter_title": "The biggest moves, in your inbox",
+    "newsletter_intro": "One email a week. No tracking, no nonsense. Unsubscribe any time.",
+    "card_compare_title": "Compare countries",
+    "card_compare_hint": "Multi-country, multi-metric overlays",
+    "card_euro_title": "The euro timeline",
+    "card_euro_hint": "ECB rates, balance sheet, FX history with monetary events overlaid",
+    "card_data_title": "Open data",
+    "card_data_hint": "CSV downloads per country and per metric",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analysis and commentary"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Data: Eurostat · ECB · IMF"
+  }
+}

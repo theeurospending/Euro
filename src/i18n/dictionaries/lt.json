@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Pradžia",
+    "compare": "Palyginti",
+    "euro": "Euras",
+    "data": "Duomenys",
+    "blog": "Tinklaraštis"
+  },
+  "language": {
+    "select": "Kalba"
+  },
+  "home": {
+    "hero_kicker": "Euro ekonomika · nuo 1999 m.",
+    "hero_title": "Kaip Europa leidžia, skolinasi ir kuria infliaciją.",
+    "hero_intro": "Tiesioginis kiekvienos ES šalies ekonominės trajektorijos stebėjimas. Pasirinkite rodiklį žemėlapiui nuspalvinti; spustelėkite šalį, kad pamatytumėte visą istoriją.",
+    "tiles_kicker": "ES 27 + Europos palyginimai",
+    "tiles_title": "Visos Europos šalys",
+    "tiles_intro": "Rūšiuokite pagal bet kurį rodiklį — nuo blogiausio iki geriausio — su šviesoforo įvertinimu kiekvienam skaičiui. Spustelėkite kortelę, kad atvertumėte visą šalies puslapį.",
+    "euro_kicker": "Euro zonos apžvalga",
+    "euro_title": "Valiuta dabar",
+    "metric_refi": "ECB pagrindinė refinansavimo norma",
+    "metric_hicp": "Euro zonos SVKI (metinis)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "data",
+    "newsletter_kicker": "Savaitinė apžvalga · pirmadieniais 09:00 UTC",
+    "newsletter_title": "Didžiausi pokyčiai jūsų pašto dėžutėje",
+    "newsletter_intro": "Vienas el. laiškas per savaitę. Jokio sekimo, jokių nesąmonių. Atsisakykite bet kada.",
+    "card_compare_title": "Palyginti šalis",
+    "card_compare_hint": "Kelių šalių ir kelių rodiklių sluoksniai",
+    "card_euro_title": "Euro laiko juosta",
+    "card_euro_hint": "ECB palūkanos, balansas ir valiutų kursų istorija su pinigų politikos įvykiais",
+    "card_data_title": "Atvirieji duomenys",
+    "card_data_hint": "CSV atsisiuntimai pagal šalį ir rodiklį",
+    "card_blog_title": "Tinklaraštis",
+    "card_blog_hint": "Analizė ir komentarai"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Duomenys: Eurostat · ECB · TVF"
+  }
+}

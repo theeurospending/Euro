@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Forside",
+    "compare": "Sammenlign",
+    "euro": "Euroen",
+    "data": "Data",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Sprog"
+  },
+  "home": {
+    "hero_kicker": "Euroøkonomi · siden 1999",
+    "hero_title": "Hvordan Europa bruger, låner og skaber inflation.",
+    "hero_intro": "Live-tracker af hvert EU-lands økonomiske udvikling. Vælg en indikator for at farve kortet; klik på et land for hele historien.",
+    "tiles_kicker": "EU 27 + europæiske sammenligninger",
+    "tiles_title": "Alle europæiske lande",
+    "tiles_intro": "Sortér efter enhver indikator — fra værst til bedst — med en trafiklysvurdering for hvert tal. Klik på et kort for den fulde landeside.",
+    "euro_kicker": "Øjebliksbillede af eurozonen",
+    "euro_title": "Valutaen lige nu",
+    "metric_refi": "ECB's primære refinansieringsrente",
+    "metric_hicp": "Eurozonens HICP (år til år)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "pr.",
+    "newsletter_kicker": "Ugentligt overblik · mandage 09:00 UTC",
+    "newsletter_title": "De største bevægelser, i din indbakke",
+    "newsletter_intro": "Én e-mail om ugen. Ingen sporing, ingen vrøvl. Afmeld når som helst.",
+    "card_compare_title": "Sammenlign lande",
+    "card_compare_hint": "Overlejringer på tværs af lande og indikatorer",
+    "card_euro_title": "Euroens tidslinje",
+    "card_euro_hint": "ECB-renter, balance og valutahistorik med pengepolitiske begivenheder lagt ovenpå",
+    "card_data_title": "Åbne data",
+    "card_data_hint": "CSV-downloads pr. land og pr. indikator",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analyse og kommentarer"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Data: Eurostat · ECB · IMF"
+  }
+}

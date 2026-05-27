@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Inter, IBM_Plex_Mono, Archivo_Narrow } from "next/font/google";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 import "./globals.css";
 
 const inter = Inter({
@@ -45,14 +47,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = (await headers()).get("x-locale") || DEFAULT_LOCALE;
   return (
     <html
-      lang="en"
+      lang={lang}
       className={`${inter.variable} ${ibmMono.variable} ${archivoNarrow.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">

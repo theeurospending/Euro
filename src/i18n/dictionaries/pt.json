@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Início",
+    "compare": "Comparar",
+    "euro": "O euro",
+    "data": "Dados",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Idioma"
+  },
+  "home": {
+    "hero_kicker": "Economia do euro · desde 1999",
+    "hero_title": "Como a Europa gasta, pede emprestado e gera inflação.",
+    "hero_intro": "Monitorização em direto da trajetória económica de cada país da UE. Escolha um indicador para colorir o mapa; clique num país para ver a história completa.",
+    "tiles_kicker": "UE 27 + comparadores europeus",
+    "tiles_title": "Todos os países europeus",
+    "tiles_intro": "Ordene por qualquer indicador — do pior ao melhor — com uma leitura tipo semáforo em cada número. Clique num cartão para ver a página completa do país.",
+    "euro_kicker": "Panorama da zona euro",
+    "euro_title": "A moeda, neste momento",
+    "metric_refi": "Taxa de refinanciamento principal do BCE",
+    "metric_hicp": "IHPC da zona euro (homólogo)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "em",
+    "newsletter_kicker": "Resumo semanal · segundas 09:00 UTC",
+    "newsletter_title": "Os maiores movimentos, na sua caixa de entrada",
+    "newsletter_intro": "Um e-mail por semana. Sem rastreio, sem disparates. Cancele quando quiser.",
+    "card_compare_title": "Comparar países",
+    "card_compare_hint": "Sobreposições de vários países e vários indicadores",
+    "card_euro_title": "A cronologia do euro",
+    "card_euro_hint": "Taxas do BCE, balanço e histórico cambial com os eventos monetários sobrepostos",
+    "card_data_title": "Dados abertos",
+    "card_data_hint": "Transferências CSV por país e por indicador",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Análise e comentário"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Dados: Eurostat · BCE · FMI"
+  }
+}

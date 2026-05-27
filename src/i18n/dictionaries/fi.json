@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Etusivu",
+    "compare": "Vertaa",
+    "euro": "Euro",
+    "data": "Data",
+    "blog": "Blogi"
+  },
+  "language": {
+    "select": "Kieli"
+  },
+  "home": {
+    "hero_kicker": "Euron talous · vuodesta 1999",
+    "hero_title": "Miten Eurooppa kuluttaa, ottaa velkaa ja synnyttää inflaatiota.",
+    "hero_intro": "Reaaliaikainen seuranta jokaisen EU-maan talouskehityksestä. Valitse mittari värittääksesi kartan; napsauta maata nähdäksesi koko tarinan.",
+    "tiles_kicker": "EU 27 + eurooppalaiset vertailut",
+    "tiles_title": "Kaikki Euroopan maat",
+    "tiles_intro": "Lajittele minkä tahansa mittarin mukaan — huonoimmasta parhaaseen — liikennevaloarviolla jokaiselle luvulle. Napsauta korttia nähdäksesi maan koko sivun.",
+    "euro_kicker": "Euroalueen tilannekuva",
+    "euro_title": "Valuutta juuri nyt",
+    "metric_refi": "EKP:n perusrahoitusoperaatioiden korko",
+    "metric_hicp": "Euroalueen YKHI (vuositasolla)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "tilanne",
+    "newsletter_kicker": "Viikkokatsaus · maanantaisin 09:00 UTC",
+    "newsletter_title": "Suurimmat liikkeet, postilaatikkoosi",
+    "newsletter_intro": "Yksi sähköposti viikossa. Ei seurantaa, ei hölynpölyä. Peruuta tilaus milloin tahansa.",
+    "card_compare_title": "Vertaa maita",
+    "card_compare_hint": "Useiden maiden ja mittareiden päällekkäisnäkymät",
+    "card_euro_title": "Euron aikajana",
+    "card_euro_hint": "EKP:n korot, tase ja valuuttakurssihistoria rahapoliittisten tapahtumien kanssa",
+    "card_data_title": "Avoin data",
+    "card_data_hint": "CSV-lataukset maittain ja mittareittain",
+    "card_blog_title": "Blogi",
+    "card_blog_hint": "Analyysit ja kommentit"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Data: Eurostat · EKP · IMF"
+  }
+}

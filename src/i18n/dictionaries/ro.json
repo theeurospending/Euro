@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Acasă",
+    "compare": "Compară",
+    "euro": "Euro",
+    "data": "Date",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Limbă"
+  },
+  "home": {
+    "hero_kicker": "Economia euro · din 1999",
+    "hero_title": "Cum cheltuiește, se împrumută și produce inflație Europa.",
+    "hero_intro": "Urmărire în timp real a traiectoriei economice a fiecărei țări din UE. Alege un indicator pentru a colora harta; dă clic pe o țară pentru povestea completă.",
+    "tiles_kicker": "UE 27 + comparatoare europene",
+    "tiles_title": "Toate țările europene",
+    "tiles_intro": "Sortează după orice indicator — de la cel mai slab la cel mai bun — cu o citire tip semafor pentru fiecare cifră. Dă clic pe un card pentru pagina completă a țării.",
+    "euro_kicker": "Imagine de ansamblu a zonei euro",
+    "euro_title": "Moneda, chiar acum",
+    "metric_refi": "Rata principală de refinanțare a BCE",
+    "metric_hicp": "IAPC zona euro (anual)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "la data de",
+    "newsletter_kicker": "Rezumat săptămânal · luni 09:00 UTC",
+    "newsletter_title": "Cele mai mari mișcări, în căsuța ta",
+    "newsletter_intro": "Un e-mail pe săptămână. Fără urmărire, fără prostii. Dezabonează-te oricând.",
+    "card_compare_title": "Compară țări",
+    "card_compare_hint": "Suprapuneri pentru mai multe țări și mai mulți indicatori",
+    "card_euro_title": "Cronologia euro",
+    "card_euro_hint": "Ratele BCE, bilanțul și istoricul cursului valutar cu evenimentele monetare suprapuse",
+    "card_data_title": "Date deschise",
+    "card_data_hint": "Descărcări CSV pe țară și pe indicator",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analize și comentarii"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Date: Eurostat · BCE · FMI"
+  }
+}

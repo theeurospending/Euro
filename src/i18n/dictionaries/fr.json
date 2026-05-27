@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "compare": "Comparer",
+    "euro": "L'euro",
+    "data": "Données",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Langue"
+  },
+  "home": {
+    "hero_kicker": "Économie de l'euro · depuis 1999",
+    "hero_title": "Comment l'Europe dépense, emprunte et fait grimper les prix.",
+    "hero_intro": "Suivi en direct de la trajectoire économique de chaque pays de l'UE. Choisissez un indicateur pour colorer la carte ; cliquez sur un pays pour voir toute l'histoire.",
+    "tiles_kicker": "UE 27 + comparateurs européens",
+    "tiles_title": "Tous les pays européens",
+    "tiles_intro": "Triez selon n'importe quel indicateur — du pire au meilleur — avec une lecture en feux tricolores pour chaque chiffre. Cliquez sur une carte pour la page complète du pays.",
+    "euro_kicker": "Aperçu de la zone euro",
+    "euro_title": "La monnaie, en ce moment",
+    "metric_refi": "Taux de refinancement principal de la BCE",
+    "metric_hicp": "IPCH zone euro (sur un an)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "au",
+    "newsletter_kicker": "Résumé hebdomadaire · lundis 09h00 UTC",
+    "newsletter_title": "Les plus grands mouvements, dans votre boîte mail",
+    "newsletter_intro": "Un e-mail par semaine. Aucun pistage, aucune absurdité. Désabonnement à tout moment.",
+    "card_compare_title": "Comparer les pays",
+    "card_compare_hint": "Superpositions multi-pays et multi-indicateurs",
+    "card_euro_title": "La chronologie de l'euro",
+    "card_euro_hint": "Taux de la BCE, bilan et historique des changes avec les événements monétaires superposés",
+    "card_data_title": "Données ouvertes",
+    "card_data_hint": "Téléchargements CSV par pays et par indicateur",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analyses et commentaires"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Données : Eurostat · BCE · FMI"
+  }
+}

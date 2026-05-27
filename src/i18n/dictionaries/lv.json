@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Sākums",
+    "compare": "Salīdzināt",
+    "euro": "Eiro",
+    "data": "Dati",
+    "blog": "Blogs"
+  },
+  "language": {
+    "select": "Valoda"
+  },
+  "home": {
+    "hero_kicker": "Eiro ekonomika · kopš 1999. gada",
+    "hero_title": "Kā Eiropa tērē, aizņemas un rada inflāciju.",
+    "hero_intro": "Katras ES valsts ekonomiskās trajektorijas tiešraides izsekošana. Izvēlieties rādītāju, lai iekrāsotu karti; noklikšķiniet uz valsts, lai redzētu visu stāstu.",
+    "tiles_kicker": "ES 27 + Eiropas salīdzinājumi",
+    "tiles_title": "Visas Eiropas valstis",
+    "tiles_intro": "Kārtojiet pēc jebkura rādītāja — no sliktākā līdz labākajam — ar luksofora vērtējumu katram skaitlim. Noklikšķiniet uz kartītes, lai atvērtu pilnu valsts lapu.",
+    "euro_kicker": "Eirozonas momentuzņēmums",
+    "euro_title": "Valūta tieši tagad",
+    "metric_refi": "ECB galvenā refinansēšanas likme",
+    "metric_hicp": "Eirozonas SPCI (gada)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "uz",
+    "newsletter_kicker": "Iknedēļas pārskats · pirmdienās 09:00 UTC",
+    "newsletter_title": "Lielākās izmaiņas jūsu pastkastē",
+    "newsletter_intro": "Viens e-pasts nedēļā. Bez izsekošanas, bez muļķībām. Atsakieties jebkurā laikā.",
+    "card_compare_title": "Salīdzināt valstis",
+    "card_compare_hint": "Vairāku valstu un vairāku rādītāju pārklājumi",
+    "card_euro_title": "Eiro laika līnija",
+    "card_euro_hint": "ECB likmes, bilance un valūtas kursu vēsture ar monetārajiem notikumiem",
+    "card_data_title": "Atvērtie dati",
+    "card_data_hint": "CSV lejupielādes pa valstīm un rādītājiem",
+    "card_blog_title": "Blogs",
+    "card_blog_hint": "Analīze un komentāri"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Dati: Eurostat · ECB · SVF"
+  }
+}

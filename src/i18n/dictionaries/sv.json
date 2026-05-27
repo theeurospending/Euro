@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Hem",
+    "compare": "Jämför",
+    "euro": "Euron",
+    "data": "Data",
+    "blog": "Blogg"
+  },
+  "language": {
+    "select": "Språk"
+  },
+  "home": {
+    "hero_kicker": "Euroekonomi · sedan 1999",
+    "hero_title": "Hur Europa spenderar, lånar och skapar inflation.",
+    "hero_intro": "Liveuppföljning av varje EU-lands ekonomiska utveckling. Välj ett mått för att färglägga kartan; klicka på ett land för hela historien.",
+    "tiles_kicker": "EU 27 + europeiska jämförelser",
+    "tiles_title": "Alla europeiska länder",
+    "tiles_intro": "Sortera efter valfritt mått — från sämst till bäst — med en trafikljusavläsning för varje siffra. Klicka på ett kort för hela landssidan.",
+    "euro_kicker": "Ögonblicksbild av euroområdet",
+    "euro_title": "Valutan, just nu",
+    "metric_refi": "ECB:s huvudsakliga refinansieringsränta",
+    "metric_hicp": "Euroområdets HIKP (år för år)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "per",
+    "newsletter_kicker": "Veckosammanfattning · måndagar 09:00 UTC",
+    "newsletter_title": "De största rörelserna, i din inkorg",
+    "newsletter_intro": "Ett mejl i veckan. Ingen spårning, inget nonsens. Avsluta prenumerationen när som helst.",
+    "card_compare_title": "Jämför länder",
+    "card_compare_hint": "Överlägg för flera länder och flera mått",
+    "card_euro_title": "Eurons tidslinje",
+    "card_euro_hint": "ECB-räntor, balansräkning och valutahistorik med penningpolitiska händelser pålagda",
+    "card_data_title": "Öppna data",
+    "card_data_hint": "CSV-nedladdningar per land och per mått",
+    "card_blog_title": "Blogg",
+    "card_blog_hint": "Analys och kommentarer"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Data: Eurostat · ECB · IMF"
+  }
+}

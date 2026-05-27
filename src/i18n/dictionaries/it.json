@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Home",
+    "compare": "Confronta",
+    "euro": "L'euro",
+    "data": "Dati",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Lingua"
+  },
+  "home": {
+    "hero_kicker": "Economia dell'euro · dal 1999",
+    "hero_title": "Come l'Europa spende, si indebita e genera inflazione.",
+    "hero_intro": "Monitoraggio in tempo reale della traiettoria economica di ogni Paese dell'UE. Scegli un indicatore per colorare la mappa; clicca su un Paese per la storia completa.",
+    "tiles_kicker": "UE 27 + comparatori europei",
+    "tiles_title": "Tutti i Paesi europei",
+    "tiles_intro": "Ordina per qualsiasi indicatore — dal peggiore al migliore — con una lettura a semaforo per ogni valore. Clicca su una scheda per la pagina completa del Paese.",
+    "euro_kicker": "Panoramica dell'eurozona",
+    "euro_title": "La valuta, in questo momento",
+    "metric_refi": "Tasso di rifinanziamento principale della BCE",
+    "metric_hicp": "IPCA dell'eurozona (su base annua)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "al",
+    "newsletter_kicker": "Riassunto settimanale · lunedì 09:00 UTC",
+    "newsletter_title": "I movimenti più importanti, nella tua casella di posta",
+    "newsletter_intro": "Un'email a settimana. Nessun tracciamento, nessuna sciocchezza. Disiscriviti quando vuoi.",
+    "card_compare_title": "Confronta i Paesi",
+    "card_compare_hint": "Sovrapposizioni multi-Paese e multi-indicatore",
+    "card_euro_title": "La cronologia dell'euro",
+    "card_euro_hint": "Tassi BCE, bilancio e storico dei cambi con gli eventi monetari sovrapposti",
+    "card_data_title": "Dati aperti",
+    "card_data_hint": "Download CSV per Paese e per indicatore",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analisi e commenti"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Dati: Eurostat · BCE · FMI"
+  }
+}

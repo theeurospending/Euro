@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Dar",
+    "compare": "Qabbel",
+    "euro": "L-ewro",
+    "data": "Dejta",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Lingwa"
+  },
+  "home": {
+    "hero_kicker": "Ekonomija tal-ewro · mill-1999",
+    "hero_title": "Kif l-Ewropa tonfoq, tissellef u toħloq l-inflazzjoni.",
+    "hero_intro": "Traċċar dirett tat-trajettorja ekonomika ta' kull pajjiż tal-UE. Agħżel indikatur biex tikkulurixxi l-mappa; ikklikkja fuq pajjiż għall-istorja sħiħa.",
+    "tiles_kicker": "UE 27 + komparaturi Ewropej",
+    "tiles_title": "Il-pajjiżi Ewropej kollha",
+    "tiles_intro": "Issortja skont kwalunkwe indikatur — mill-agħar sal-aħjar — b'qari tat-tip ta' dawl tat-traffiku għal kull figura. Ikklikkja fuq karta għall-paġna sħiħa tal-pajjiż.",
+    "euro_kicker": "Ħarsa lejn iż-żona tal-ewro",
+    "euro_title": "Il-munita, bħalissa",
+    "metric_refi": "Ir-rata ewlenija ta' rifinanzjament tal-BĊE",
+    "metric_hicp": "HICP taż-żona tal-ewro (fis-sena)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "sa",
+    "newsletter_kicker": "Sommarju ta' kull ġimgħa · it-Tnejn 09:00 UTC",
+    "newsletter_title": "L-akbar movimenti, fil-kaxxa tiegħek",
+    "newsletter_intro": "Email waħda fil-ġimgħa. Bla traċċar, bla bluha. Ħassar l-abbonament meta trid.",
+    "card_compare_title": "Qabbel il-pajjiżi",
+    "card_compare_hint": "Sovrappożizzjonijiet ta' diversi pajjiżi u indikaturi",
+    "card_euro_title": "Il-linja taż-żmien tal-ewro",
+    "card_euro_hint": "Rati tal-BĊE, karta tal-bilanċ u storja tal-kambju b'avvenimenti monetarji sovrapposti",
+    "card_data_title": "Dejta miftuħa",
+    "card_data_hint": "Niżżel CSV skont il-pajjiż u skont l-indikatur",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analiżi u kummentarju"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Dejta: Eurostat · BĊE · FMI"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Domov",
+    "compare": "Primerjaj",
+    "euro": "Evro",
+    "data": "Podatki",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Jezik"
+  },
+  "home": {
+    "hero_kicker": "Gospodarstvo evra · od leta 1999",
+    "hero_title": "Kako Evropa troši, si izposoja in ustvarja inflacijo.",
+    "hero_intro": "Sprotno spremljanje gospodarske poti vsake države EU. Izberite kazalnik za obarvanje zemljevida; kliknite državo za celotno zgodbo.",
+    "tiles_kicker": "EU 27 + evropske primerjave",
+    "tiles_title": "Vse evropske države",
+    "tiles_intro": "Razvrstite po katerem koli kazalniku — od najslabšega do najboljšega — s semaforskim branjem za vsako vrednost. Kliknite kartico za celotno stran države.",
+    "euro_kicker": "Pregled evroobmočja",
+    "euro_title": "Valuta prav zdaj",
+    "metric_refi": "Glavna obrestna mera refinanciranja ECB",
+    "metric_hicp": "HICP evroobmočja (letno)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "na dan",
+    "newsletter_kicker": "Tedenski pregled · ob ponedeljkih 09:00 UTC",
+    "newsletter_title": "Največji premiki v vašem nabiralniku",
+    "newsletter_intro": "En e-poštni naslov na teden. Brez sledenja, brez nesmislov. Odjavite se kadar koli.",
+    "card_compare_title": "Primerjaj države",
+    "card_compare_hint": "Prekrivanja več držav in več kazalnikov",
+    "card_euro_title": "Časovnica evra",
+    "card_euro_hint": "Obrestne mere ECB, bilanca in zgodovina deviznih tečajev s prekritimi denarnimi dogodki",
+    "card_data_title": "Odprti podatki",
+    "card_data_hint": "Prenosi CSV po državah in po kazalnikih",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analize in komentarji"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Podatki: Eurostat · ECB · MDS"
+  }
+}
