@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Domov",
+    "compare": "Porovnať",
+    "euro": "Euro",
+    "data": "Dáta",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Jazyk"
+  },
+  "home": {
+    "hero_kicker": "Ekonomika eura · od roku 1999",
+    "hero_title": "Ako Európa míňa, požičiava si a vytvára infláciu.",
+    "hero_intro": "Sledovanie ekonomickej trajektórie každej krajiny EÚ v reálnom čase. Vyberte ukazovateľ na zafarbenie mapy; kliknutím na krajinu zobrazíte celý príbeh.",
+    "tiles_kicker": "EÚ 27 + európske porovnania",
+    "tiles_title": "Všetky európske krajiny",
+    "tiles_intro": "Zoraďte podľa ľubovoľného ukazovateľa — od najhoršieho po najlepší — so semaforovým hodnotením pri každej hodnote. Kliknutím na kartu zobrazíte úplnú stránku krajiny.",
+    "euro_kicker": "Prehľad eurozóny",
+    "euro_title": "Mena práve teraz",
+    "metric_refi": "Hlavná refinančná sadzba ECB",
+    "metric_hicp": "HICP eurozóny (medziročne)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "k dátumu",
+    "newsletter_kicker": "Týždenný prehľad · pondelky 09:00 UTC",
+    "newsletter_title": "Najväčšie pohyby vo vašej schránke",
+    "newsletter_intro": "Jeden e-mail týždenne. Žiadne sledovanie, žiadne nezmysly. Odhláste sa kedykoľvek.",
+    "card_compare_title": "Porovnať krajiny",
+    "card_compare_hint": "Prekrytia viacerých krajín a viacerých ukazovateľov",
+    "card_euro_title": "Časová os eura",
+    "card_euro_hint": "Sadzby ECB, bilancia a história výmenných kurzov s prekrytými menovými udalosťami",
+    "card_data_title": "Otvorené dáta",
+    "card_data_hint": "Stiahnutia CSV podľa krajiny a podľa ukazovateľa",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analýzy a komentáre"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Dáta: Eurostat · ECB · MMF"
+  }
+}

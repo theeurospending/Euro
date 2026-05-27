@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Avaleht",
+    "compare": "Võrdle",
+    "euro": "Euro",
+    "data": "Andmed",
+    "blog": "Blogi"
+  },
+  "language": {
+    "select": "Keel"
+  },
+  "home": {
+    "hero_kicker": "Euro majandus · alates 1999",
+    "hero_title": "Kuidas Euroopa kulutab, laenab ja tekitab inflatsiooni.",
+    "hero_intro": "Iga ELi riigi majandustrajektoori reaalajas jälgija. Vali näitaja, et kaarti värvida; klõpsa riigil, et näha kogu lugu.",
+    "tiles_kicker": "EL 27 + Euroopa võrdlused",
+    "tiles_title": "Kõik Euroopa riigid",
+    "tiles_intro": "Sorteeri mis tahes näitaja järgi — halvimast parimani — iga väärtuse juures foorituli-hinnang. Klõpsa kaardil, et avada riigi täislehekülg.",
+    "euro_kicker": "Euroala hetkeseis",
+    "euro_title": "Valuuta praegu",
+    "metric_refi": "EKP peamine refinantseerimismäär",
+    "metric_hicp": "Euroala ÜTHI (aastane)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "seisuga",
+    "newsletter_kicker": "Iganädalane ülevaade · esmaspäeviti 09:00 UTC",
+    "newsletter_title": "Suurimad muutused, sinu postkasti",
+    "newsletter_intro": "Üks e-kiri nädalas. Ei mingit jälgimist ega jama. Loobu igal ajal.",
+    "card_compare_title": "Võrdle riike",
+    "card_compare_hint": "Mitme riigi ja mitme näitaja kihistused",
+    "card_euro_title": "Euro ajatelg",
+    "card_euro_hint": "EKP intressid, bilanss ja valuutakursside ajalugu koos rahapoliitiliste sündmustega",
+    "card_data_title": "Avaandmed",
+    "card_data_hint": "CSV-allalaadimised riigi ja näitaja kaupa",
+    "card_blog_title": "Blogi",
+    "card_blog_hint": "Analüüsid ja kommentaarid"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Andmed: Eurostat · EKP · IMF"
+  }
+}

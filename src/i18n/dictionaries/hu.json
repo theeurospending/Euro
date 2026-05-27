@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Kezdőlap",
+    "compare": "Összehasonlítás",
+    "euro": "Az euró",
+    "data": "Adatok",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Nyelv"
+  },
+  "home": {
+    "hero_kicker": "Euró-gazdaság · 1999 óta",
+    "hero_title": "Hogyan költ, hitelez és gerjeszt inflációt Európa.",
+    "hero_intro": "Minden EU-ország gazdasági pályájának élő követése. Válasszon egy mutatót a térkép színezéséhez; kattintson egy országra a teljes történetért.",
+    "tiles_kicker": "EU 27 + európai összehasonlítások",
+    "tiles_title": "Az összes európai ország",
+    "tiles_intro": "Rendezze bármely mutató szerint — a legrosszabbtól a legjobbig — minden értéknél jelzőlámpás kiértékeléssel. Kattintson egy kártyára az ország teljes oldaláért.",
+    "euro_kicker": "Pillanatkép az eurózónáról",
+    "euro_title": "A valuta most",
+    "metric_refi": "Az EKB irányadó refinanszírozási kamatlába",
+    "metric_hicp": "Eurózóna HICP (éves)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "ekkor",
+    "newsletter_kicker": "Heti összefoglaló · hétfőnként 09:00 UTC",
+    "newsletter_title": "A legnagyobb mozgások a postaládájában",
+    "newsletter_intro": "Heti egy e-mail. Nincs nyomkövetés, nincs felesleg. Bármikor leiratkozhat.",
+    "card_compare_title": "Országok összehasonlítása",
+    "card_compare_hint": "Több ország és több mutató átfedései",
+    "card_euro_title": "Az euró idővonala",
+    "card_euro_hint": "EKB-kamatok, mérleg és árfolyam-történet a monetáris eseményekkel együtt",
+    "card_data_title": "Nyílt adatok",
+    "card_data_hint": "CSV-letöltések országonként és mutatónként",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Elemzések és kommentárok"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Adatok: Eurostat · EKB · IMF"
+  }
+}

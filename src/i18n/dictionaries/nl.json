@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Home",
+    "compare": "Vergelijken",
+    "euro": "De euro",
+    "data": "Data",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Taal"
+  },
+  "home": {
+    "hero_kicker": "Euro-economie · sinds 1999",
+    "hero_title": "Hoe Europa uitgeeft, leent en inflatie veroorzaakt.",
+    "hero_intro": "Live-tracker van het economische traject van elk EU-land. Kies een indicator om de kaart in te kleuren; klik op een land voor het volledige verhaal.",
+    "tiles_kicker": "EU 27 + Europese vergelijkingslanden",
+    "tiles_title": "Alle Europese landen",
+    "tiles_intro": "Sorteer op elke indicator — van slechtste naar beste — met een stoplichtweergave bij elk cijfer. Klik op een kaart voor de volledige landpagina.",
+    "euro_kicker": "Momentopname van de eurozone",
+    "euro_title": "De munt, op dit moment",
+    "metric_refi": "ECB-basisherfinancieringsrente",
+    "metric_hicp": "Eurozone-HICP (op jaarbasis)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "per",
+    "newsletter_kicker": "Wekelijks overzicht · maandag 09:00 UTC",
+    "newsletter_title": "De grootste bewegingen, in je inbox",
+    "newsletter_intro": "Eén e-mail per week. Geen tracking, geen onzin. Op elk moment uitschrijven.",
+    "card_compare_title": "Landen vergelijken",
+    "card_compare_hint": "Overlays voor meerdere landen en indicatoren",
+    "card_euro_title": "De euro-tijdlijn",
+    "card_euro_hint": "ECB-rentes, balans en wisselkoersgeschiedenis met monetaire gebeurtenissen erover gelegd",
+    "card_data_title": "Open data",
+    "card_data_hint": "CSV-downloads per land en per indicator",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analyse en commentaar"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Data: Eurostat · ECB · IMF"
+  }
+}

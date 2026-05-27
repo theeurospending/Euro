@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Početna",
+    "compare": "Usporedi",
+    "euro": "Euro",
+    "data": "Podaci",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Jezik"
+  },
+  "home": {
+    "hero_kicker": "Ekonomija eura · od 1999.",
+    "hero_title": "Kako Europa troši, posuđuje i stvara inflaciju.",
+    "hero_intro": "Praćenje gospodarske putanje svake zemlje EU-a u stvarnom vremenu. Odaberite pokazatelj za bojanje karte; kliknite na zemlju za cijelu priču.",
+    "tiles_kicker": "EU 27 + europske usporedbe",
+    "tiles_title": "Sve europske zemlje",
+    "tiles_intro": "Sortirajte po bilo kojem pokazatelju — od najgoreg do najboljeg — uz semaforsko očitanje za svaku vrijednost. Kliknite na karticu za potpunu stranicu zemlje.",
+    "euro_kicker": "Pregled europodručja",
+    "euro_title": "Valuta upravo sada",
+    "metric_refi": "Glavna stopa refinanciranja ESB-a",
+    "metric_hicp": "HICP europodručja (godišnje)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "na dan",
+    "newsletter_kicker": "Tjedni pregled · ponedjeljkom 09:00 UTC",
+    "newsletter_title": "Najveći pomaci, u vašem pretincu",
+    "newsletter_intro": "Jedan e-mail tjedno. Bez praćenja, bez gluposti. Odjavite se u bilo kojem trenutku.",
+    "card_compare_title": "Usporedi zemlje",
+    "card_compare_hint": "Preklapanja više zemalja i više pokazatelja",
+    "card_euro_title": "Vremenska crta eura",
+    "card_euro_hint": "Stope ESB-a, bilanca i povijest tečaja s preklopljenim monetarnim događajima",
+    "card_data_title": "Otvoreni podaci",
+    "card_data_hint": "CSV preuzimanja po zemlji i po pokazatelju",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analize i komentari"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Podaci: Eurostat · ESB · MMF"
+  }
+}

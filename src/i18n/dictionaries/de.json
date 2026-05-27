@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Start",
+    "compare": "Vergleichen",
+    "euro": "Der Euro",
+    "data": "Daten",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Sprache"
+  },
+  "home": {
+    "hero_kicker": "Euro-Wirtschaft · seit 1999",
+    "hero_title": "Wie Europa ausgibt, sich verschuldet und Inflation erzeugt.",
+    "hero_intro": "Live-Tracker der wirtschaftlichen Entwicklung jedes EU-Landes. Wählen Sie eine Kennzahl, um die Karte einzufärben; klicken Sie auf ein Land für die ganze Geschichte.",
+    "tiles_kicker": "EU 27 + europäische Vergleichsländer",
+    "tiles_title": "Alle europäischen Länder",
+    "tiles_intro": "Sortieren Sie nach jeder Kennzahl — vom schlechtesten zum besten Wert — mit einer Ampelbewertung für jede Zahl. Klicken Sie auf eine Karte für die vollständige Länderseite.",
+    "euro_kicker": "Eurozone-Momentaufnahme",
+    "euro_title": "Die Währung, genau jetzt",
+    "metric_refi": "EZB-Hauptrefinanzierungssatz",
+    "metric_hicp": "Eurozone-HVPI (J/J)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "Stand",
+    "newsletter_kicker": "Wöchentlicher Überblick · montags 09:00 UTC",
+    "newsletter_title": "Die größten Bewegungen, in Ihrem Postfach",
+    "newsletter_intro": "Eine E-Mail pro Woche. Kein Tracking, kein Unsinn. Jederzeit abbestellbar.",
+    "card_compare_title": "Länder vergleichen",
+    "card_compare_hint": "Überlagerungen für mehrere Länder und Kennzahlen",
+    "card_euro_title": "Die Euro-Zeitleiste",
+    "card_euro_hint": "EZB-Zinsen, Bilanz und Wechselkursverlauf mit überlagerten geldpolitischen Ereignissen",
+    "card_data_title": "Offene Daten",
+    "card_data_hint": "CSV-Downloads pro Land und pro Kennzahl",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analysen und Kommentare"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Daten: Eurostat · EZB · IWF"
+  }
+}

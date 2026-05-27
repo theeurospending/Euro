@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Strona główna",
+    "compare": "Porównaj",
+    "euro": "Euro",
+    "data": "Dane",
+    "blog": "Blog"
+  },
+  "language": {
+    "select": "Język"
+  },
+  "home": {
+    "hero_kicker": "Gospodarka euro · od 1999 r.",
+    "hero_title": "Jak Europa wydaje, pożycza i napędza inflację.",
+    "hero_intro": "Śledzenie na żywo trajektorii gospodarczej każdego kraju UE. Wybierz wskaźnik, aby pokolorować mapę; kliknij kraj, aby zobaczyć całą historię.",
+    "tiles_kicker": "UE 27 + porównania europejskie",
+    "tiles_title": "Wszystkie kraje europejskie",
+    "tiles_intro": "Sortuj według dowolnego wskaźnika — od najgorszego do najlepszego — z oceną w stylu sygnalizacji świetlnej dla każdej wartości. Kliknij kartę, aby zobaczyć pełną stronę kraju.",
+    "euro_kicker": "Migawka strefy euro",
+    "euro_title": "Waluta właśnie teraz",
+    "metric_refi": "Podstawowa stopa refinansowa EBC",
+    "metric_hicp": "HICP strefy euro (rok do roku)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "na dzień",
+    "newsletter_kicker": "Cotygodniowy przegląd · poniedziałki 09:00 UTC",
+    "newsletter_title": "Największe ruchy w Twojej skrzynce",
+    "newsletter_intro": "Jeden e-mail tygodniowo. Bez śledzenia, bez bzdur. Zrezygnuj w dowolnej chwili.",
+    "card_compare_title": "Porównaj kraje",
+    "card_compare_hint": "Nakładki dla wielu krajów i wielu wskaźników",
+    "card_euro_title": "Oś czasu euro",
+    "card_euro_hint": "Stopy EBC, bilans i historia kursów walut z nałożonymi wydarzeniami monetarnymi",
+    "card_data_title": "Otwarte dane",
+    "card_data_hint": "Pobieranie CSV według kraju i wskaźnika",
+    "card_blog_title": "Blog",
+    "card_blog_hint": "Analizy i komentarze"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Dane: Eurostat · EBC · MFW"
+  }
+}

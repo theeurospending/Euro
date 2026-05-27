@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Baile",
+    "compare": "Cuir i gComparáid",
+    "euro": "An euro",
+    "data": "Sonraí",
+    "blog": "Blag"
+  },
+  "language": {
+    "select": "Teanga"
+  },
+  "home": {
+    "hero_kicker": "Eacnamaíocht an euro · ó 1999",
+    "hero_title": "Mar a chaitheann, a fhaigheann ar iasacht agus a chruthaíonn an Eoraip boilsciú.",
+    "hero_intro": "Rianaitheoir beo ar chonair eacnamaíoch gach tíre san AE. Roghnaigh meadaracht chun an léarscáil a dhathú; cliceáil ar thír chun an scéal iomlán a fheiceáil.",
+    "tiles_kicker": "AE 27 + comparadóirí Eorpacha",
+    "tiles_title": "Gach tír Eorpach",
+    "tiles_intro": "Sórtáil de réir aon mheadarachta — ón gceann is measa go dtí an ceann is fearr — le léamh soilse tráchta ar gach figiúr. Cliceáil ar chárta chun leathanach iomlán na tíre a fheiceáil.",
+    "euro_kicker": "Léargas ar an euro-chrios",
+    "euro_title": "An t-airgeadra, anois díreach",
+    "metric_refi": "Príomhráta athmhaoinithe an BCE",
+    "metric_hicp": "HICP an euro-chreasa (bliain ar bhliain)",
+    "metric_eurusd": "EUR / USD",
+    "as_of": "amhail",
+    "newsletter_kicker": "Achoimre sheachtainiúil · Luan 09:00 UTC",
+    "newsletter_title": "Na gluaiseachtaí is mó, i do bhosca isteach",
+    "newsletter_intro": "Ríomhphost amháin sa tseachtain. Gan rianú, gan amaidí. Díliostáil am ar bith.",
+    "card_compare_title": "Cuir tíortha i gcomparáid",
+    "card_compare_hint": "Forleagain il-tíre agus il-mheadrachta",
+    "card_euro_title": "Amlíne an euro",
+    "card_euro_hint": "Rátaí an BCE, clár comhardaithe agus stair an mhalairte le himeachtaí airgeadaíochta forleagtha",
+    "card_data_title": "Sonraí oscailte",
+    "card_data_hint": "Íoslódálacha CSV de réir tíre agus de réir meadarachta",
+    "card_blog_title": "Blag",
+    "card_blog_hint": "Anailís agus tráchtaireacht"
+  },
+  "footer": {
+    "tagline": "eurospending.org · Brand Kit v1.0",
+    "data_credit": "Sonraí: Eurostat · BCE · CAI"
+  }
+}
