@@ -96,7 +96,17 @@ export type DriveImageRef = {
   driveFileId: string;
   name: string;
   mimeType: string;
+  sizeBytes: number | null;
+  thumbnailLink: string | null;
 };
+
+// Source photos are arbitrary dimensions and can be many MB. We never feed the
+// full-resolution original to the renderer (decoding a 20MP photo can exhaust
+// the Worker's memory). Instead we pull Drive's pre-generated thumbnail at this
+// width; the overlay renderer's objectFit:'cover' handles the square crop.
+const THUMB_PX = 1280;
+// Hard ceiling for the full-file fallback (used only when no thumbnail exists).
+const MAX_FULL_BYTES = 8 * 1024 * 1024;
 
 /** List image files in a country's folder. */
 export async function listCountryImages(iso: string): Promise<DriveImageRef[]> {
@@ -105,21 +115,63 @@ export async function listCountryImages(iso: string): Promise<DriveImageRef[]> {
   const token = await getAccessToken();
   const url = new URL('https://www.googleapis.com/drive/v3/files');
   url.searchParams.set('q', `'${folderId}' in parents and mimeType contains 'image/' and trashed = false`);
-  url.searchParams.set('fields', 'files(id,name,mimeType)');
+  url.searchParams.set('fields', 'files(id,name,mimeType,size,thumbnailLink)');
   url.searchParams.set('pageSize', '100');
   const res = await fetch(url.toString(), { headers: { authorization: `Bearer ${token}` } });
   if (!res.ok) throw new Error(`Drive list HTTP ${res.status}`);
-  const json = await res.json() as { files: { id: string; name: string; mimeType: string }[] };
-  return (json.files ?? []).map((f) => ({ driveFileId: f.id, name: f.name, mimeType: f.mimeType }));
+  const json = await res.json() as {
+    files: { id: string; name: string; mimeType: string; size?: string; thumbnailLink?: string }[];
+  };
+  return (json.files ?? []).map((f) => ({
+    driveFileId: f.id,
+    name: f.name,
+    mimeType: f.mimeType,
+    sizeBytes: f.size ? Number(f.size) : null,
+    thumbnailLink: f.thumbnailLink ?? null,
+  }));
 }
 
-/** Download a Drive file as an ArrayBuffer. */
+/** Download a Drive file as an ArrayBuffer (full resolution). */
 export async function downloadDriveFile(fileId: string): Promise<ArrayBuffer> {
   const token = await getAccessToken();
   const url = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`;
   const res = await fetch(url, { headers: { authorization: `Bearer ${token}` } });
   if (!res.ok) throw new Error(`Drive download HTTP ${res.status}`);
   return await res.arrayBuffer();
+}
+
+// Drive thumbnailLinks end with a size token like "=s220" (sometimes with
+// suffixes such as "=s220-p-k"). Swap it for the width we want.
+function resizeThumbUrl(link: string, px: number): string {
+  return /=s\d+/.test(link) ? link.replace(/=s\d+(-[a-z0-9-]*)?$/i, `=s${px}`) : `${link}=s${px}`;
+}
+
+/**
+ * Fetch a render-ready, size-bounded version of a Drive photo.
+ * Prefers the Drive thumbnail (≈THUMB_PX wide); falls back to the full file
+ * only when it's small enough to decode safely. Returns null if neither is
+ * usable, so the caller can fall back to a non-photo template.
+ */
+export async function downloadDrivePhoto(
+  ref: DriveImageRef,
+): Promise<{ buf: ArrayBuffer; mimeType: string } | null> {
+  if (ref.thumbnailLink) {
+    try {
+      const res = await fetch(resizeThumbUrl(ref.thumbnailLink, THUMB_PX));
+      const ct = res.headers.get('content-type') ?? '';
+      if (res.ok && ct.startsWith('image/')) {
+        return { buf: await res.arrayBuffer(), mimeType: ct };
+      }
+    } catch {
+      // fall through to full download
+    }
+  }
+  if (ref.sizeBytes !== null && ref.sizeBytes > MAX_FULL_BYTES) return null;
+  try {
+    return { buf: await downloadDriveFile(ref.driveFileId), mimeType: ref.mimeType };
+  } catch {
+    return null;
+  }
 }
 
 /** Pick the least-recently-used image for a country, respecting use_count. */

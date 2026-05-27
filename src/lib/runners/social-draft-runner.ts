@@ -8,7 +8,7 @@ import { detectFacts } from '@/lib/social/fact-detector';
 import { generateCaption } from '@/lib/social/caption-generator';
 import { renderInfographicPng, selectInfographicTemplate, seedFrom } from '@/lib/social/infographics';
 import { renderPhotoCardPng } from '@/lib/social/photo-overlay-renderer';
-import { isDriveConfigured, pickLruImageForCountry, downloadDriveFile, markPhotoUsed } from '@/lib/google-drive';
+import { isDriveConfigured, pickLruImageForCountry, downloadDrivePhoto, markPhotoUsed } from '@/lib/google-drive';
 import type { CandidateFact, DataPoint } from '@/lib/social/types';
 
 export type SocialDraftRunSummary = {
@@ -135,10 +135,12 @@ async function generateOneDraft(
     try {
       const pick = await pickLruImageForCountry(fact.country_iso);
       if (pick) {
-        const buf = await downloadDriveFile(pick.driveFileId);
-        const b64 = arrayBufferToBase64(buf);  // data: URL so Satori can embed
-        photoSource = { driveFileId: pick.driveFileId, dataUrl: `data:${pick.mimeType};base64,${b64}` };
-        postType = 'photo_overlay';
+        const photo = await downloadDrivePhoto(pick);  // size-bounded thumbnail
+        if (photo) {
+          const b64 = arrayBufferToBase64(photo.buf);  // data: URL so Satori can embed
+          photoSource = { driveFileId: pick.driveFileId, dataUrl: `data:${photo.mimeType};base64,${b64}` };
+          postType = 'photo_overlay';
+        }
       }
     } catch {
       // Drive errors: fall back to an infographic.
