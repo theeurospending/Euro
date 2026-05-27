@@ -70,6 +70,14 @@ export type HomepageData = {
   };
 };
 
+// Reduce an ascending series to one point per calendar year (the last reading
+// of each year), so a card spark spans 1999→now without monthly noise.
+function toAnnual(arr: { period_start: string; value: number }[]): { period: string; value: number }[] {
+  const byYear = new Map<string, { period: string; value: number }>();
+  for (const p of arr) byYear.set(p.period_start.slice(0, 4), { period: p.period_start, value: p.value });
+  return [...byYear.values()];
+}
+
 const ALL_METRICS: HomepageMetric[] = [
   'gov_debt_pct_gdp',
   'gov_deficit_pct_gdp',
@@ -93,18 +101,15 @@ export async function loadHomepageData(): Promise<HomepageData> {
     .eq('is_aggregate', false)
     .order('display_order');
 
-  // 2. Per-country data points for the 6 homepage metrics.
-  //    We pull recent 24 months for sparklines AND the latest annual value.
-  //    Bounded query: limit to last ~36 months of period_starts to cap rows.
-  const sinceCutoff = new Date();
-  sinceCutoff.setUTCFullYear(sinceCutoff.getUTCFullYear() - 4);
-  const sinceIso = sinceCutoff.toISOString().slice(0, 10);
-
+  // 2. Per-country data points for the homepage metrics, back to the start of
+  //    the euro (1999). The card sparklines span the whole euro era; monthly
+  //    metrics are downsampled to one point per year (see toAnnual) so the
+  //    chart stays legible and matches the year axis.
   const { data: countryRows } = await admin
     .from('economic_data_points')
     .select('country_iso, metric_key, period_start, value, is_forecast')
     .in('metric_key', ALL_METRICS)
-    .gte('period_start', sinceIso)
+    .gte('period_start', '1999-01-01')
     .eq('is_forecast', false)
     .order('period_start', { ascending: true });
 
@@ -137,7 +142,7 @@ export async function loadHomepageData(): Promise<HomepageData> {
         period_start: latest.period_start,
         value: latest.value,
         yoy_delta_abs,
-        spark: arr.slice(-12).map((p) => ({ period: p.period_start, value: p.value })),
+        spark: toAnnual(arr),
       };
     }
     return { ...c, metrics };
